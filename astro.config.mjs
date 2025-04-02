@@ -5,7 +5,7 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://docs.nkkswitches.com/',
-	base: '/nkk-docs',
+	base: '/',
 	integrations: [
 		starlight({
 			title: 'NKK Switches Docs',
