@@ -10,19 +10,27 @@ export default defineConfig({
 		starlight({
 			title: 'NKK Switches Docs',
 			social: {
-				github: 'https://github.com/withastro/starlight',
+				email: 'mailto:engineering@nkkswitches.com',
+				linkedin: 'https://www.linkedin.com/company/nkk-switches/',
+				facebook: 'https://facebook.com/NKKSwitches1',
+				github: 'https://github.com/NKK-Switches'
 			},
 			sidebar: [
 				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
+					label: 'Switches',
+					autogenerate: { directory: 'switches' },
+				},
+					{
+					label: 'Controllers',
+					autogenerate: { directory: 'controllers' },
+				},
+					{
+					label: 'Solutions',
+					autogenerate: { directory: 'solutions' },
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Engineering Kits',
+					autogenerate: { directory: 'engkits' },
 				},
 			],
 		}),
