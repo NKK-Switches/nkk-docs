@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { ion } from "starlight-ion-theme";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,29 +10,48 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'NKK Switches Docs',
-			social: {
-				email: 'mailto:engineering@nkkswitches.com',
-				linkedin: 'https://www.linkedin.com/company/nkk-switches/',
-				facebook: 'https://facebook.com/NKKSwitches1',
-				github: 'https://github.com/NKK-Switches'
-			},
+			social: [
+				{
+				  icon: "github",
+				  label: "GitHub",
+				  href: "https://github.com/NKK-Switches",
+				},
+				{
+				  icon: "linkedin",
+				  label: "Linkedin",
+				  href: "https://www.linkedin.com/company/nkk-switches/",
+				},
+				{
+				  icon: "facebook",
+				  label: "Facebook",
+				  href: "https://facebook.com/NKKSwitches1",
+				},
+				{
+				  icon: "email",
+				  label: "Email",
+				  href: "mailto:engineering@nkkswitches.com",
+				},
+			  ],
 			sidebar: [
 				{
 					label: 'Switches',
-					autogenerate: { directory: 'switches' },
+					autogenerate: { directory: 'docs/switches' },
 				},
 					{
 					label: 'Controllers',
-					autogenerate: { directory: 'controllers' },
+					autogenerate: { directory: 'docs/controllers' },
 				},
 					{
 					label: 'Solutions',
-					autogenerate: { directory: 'solutions' },
+					autogenerate: { directory: 'docs/solutions' },
 				},
 				{
 					label: 'Engineering Kits',
-					autogenerate: { directory: 'engkits' },
+					autogenerate: { directory: 'docs/engkits' },
 				},
+			],
+			plugins: [
+				ion()
 			],
 		}),
 	],
