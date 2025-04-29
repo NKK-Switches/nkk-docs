@@ -1,5 +1,6 @@
 ---
-title: Frameless OLED
+title: Low Resolution
+topic: switches
 description: A reference page in my new Starlight docs site.
 ---
 

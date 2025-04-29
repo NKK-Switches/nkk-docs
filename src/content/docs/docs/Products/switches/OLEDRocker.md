@@ -1,5 +1,6 @@
 ---
-title: High Resolution
+title: OLED Rocker
+topic: switches
 description: A reference page in my new Starlight docs site.
 ---
 

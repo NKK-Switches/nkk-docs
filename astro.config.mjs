@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import { ion } from "starlight-ion-theme";
+import { ion, resolve } from "starlight-ion-theme";
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,28 +30,50 @@ export default defineConfig({
 				  icon: "email",
 				  label: "Email",
 				  href: "mailto:engineering@nkkswitches.com",
-				},
-			  ],
+				}
+			],
 			sidebar: [
 				{
-					label: 'Switches',
-					autogenerate: { directory: 'docs/switches' },
-				},
-					{
-					label: 'Controllers',
-					autogenerate: { directory: 'docs/controllers' },
-				},
-					{
-					label: 'Solutions',
-					autogenerate: { directory: 'docs/solutions' },
+					label: '[home]Welcome',
+					link: 'docs/welcome/',
 				},
 				{
-					label: 'Engineering Kits',
-					autogenerate: { directory: 'docs/engkits' },
+					label: '[book]Products Documentation',
+					autogenerate: { directory: 'docs/Products' },
+				},
+				{
+					label: '[rocket]Application Notes',
+					autogenerate: { directory: 'docs/Application Notes' },
+				},
+				{
+					label: '[changelog]Whitepapers',
+					autogenerate: { directory: 'docs/Whitepapers' },
+				},
+				{
+					label: '[box]How To',
+					autogenerate: { directory: 'docs/How To' },
 				},
 			],
+			lastUpdated: true,
+			pagination: false,
 			plugins: [
-				ion()
+					ion({
+						icons: {
+						iconDir: './src/icons',
+					},
+					footer: {
+					  text: '©️ NKK Switches 2025',
+					  links: [{
+						text: 'Homepage',
+						href: 'https://www.nkkswitches.com/',
+					  }],
+					  icons: [{
+						name: 'github',
+						href: 'https://github.com/NKK-Switches'
+					  }],
+					  newTab: true
+					}
+				}),
 			],
 		}),
 	],

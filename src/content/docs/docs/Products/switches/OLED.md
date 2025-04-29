@@ -1,5 +1,6 @@
 ---
-title: OLED Rocker
+title: OLED
+topic: switches
 description: A reference page in my new Starlight docs site.
 ---
 
