@@ -1,36 +1,26 @@
 ---
-title: Welcome to NKK 
-description: Get started building your docs site with Starlight.
-template: splash
-hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
-  actions:
-    - text: Example Guide
-      link: /docs/welcome/
-      icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
+title: Welcome
+description: Learn how to use a dropdown menu to switch between topics in your Starlight website.
 ---
+
+This package exposes a dropdown menu component meant to be used as a [custom topic list](https://starlight-sidebar-topics.netlify.app/docs/guides/custom-topic-list/) for the [Starlight Sidebar Topics](https://starlight-sidebar-topics.netlify.app/) plugin.
+
+:::tip[See it in action]
+At the top of the sidebar, you can find the dropdown menu in action to switch between the different topics used in this documentation, such as "Documentation" and "Demo" that each have their own sidebar configuration, while the "Starlight Docs" topic is a direct link to the Starlight documentation.
+:::
+
+## Prerequisites
+
+You will need to have a Starlight website set up.
+If you don't have one yet, you can follow the ["Getting Started"](https://starlight.astro.build/getting-started) guide in the Starlight docs to create one.
+
+You will also need to have the [Starlight Sidebar Topics](https://starlight-sidebar-topics.netlify.app/) plugin installed and configured.
+If you don't have it set up yet, you can follow the ["Getting Started"](https://starlight-sidebar-topics.netlify.app/getting-started) guide in the Starlight Sidebar Topics docs.
+
+## Installation
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+You can also render the dropdown menu in a different location in your website by overriding different components.
+Lean more about [overriding components](https://starlight.astro.build/guides/overriding-components/) in the Starlight docs.
