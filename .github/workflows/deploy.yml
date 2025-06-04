@@ -24,6 +24,8 @@ jobs:
         run: npm install
       - name: Install Theme
         run: npm i starlight-ion-theme
+      - name: Install Sidebar Topics
+        run: npm i starlight-sidebar-topics
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
