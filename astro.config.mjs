@@ -10,11 +10,11 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'NKK Switches Docs',
-			/*social: [
+			/*{social: [
 				{
 				  github: "https://github.com/NKK-Switches"
 				},
-				{
+				
 				  linkedin: "https://www.linkedin.com/company/nkk-switches/"
 				},
 				{
