@@ -1,0 +1,264 @@
+---
+title: "[box] Creator Program API Reference"
+description: Learn how to use a dropdown menu to switch between topics in your Starlight website.
+
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+This page will explain how to use the onboard program creator. To get started you will need to have one of our Wi-Fi enabled products and access the on board we portal. 
+
+<Aside>If you need assistance with our Wi-Fi enabled products see the guide below.</Aside>
+
+
+<LinkCard title="Getting Started With Wi-Fi Products" href="/docs/how-to/getting-started-with-wifi-products/" />
+
+## Inputs
+![](../../../../assets/input.png)
+
+The input block will define all inputs that will be needed for your device. The input block will take 4 parameters that are required. &#x20;
+
+| Parameter | Input description                                                        | Default Value |
+| --------- | ------------------------------------------------------------------------ | ------------- |
+| Name      | The human readable comment of the input.                                 | in1           |
+| Pin       | The pin number that the input will represent.                            | 0             |
+| Type      | The type of input. Either analog or digital.                             | analog        |
+| Pull      | Either pull up or pull down. If no pull is needed, use DNP (Do Not Pull) | DNP           |
+
+## Outputs
+![](../../../../assets/output.png)
+
+The output block will define all the outputs that will be needed for your device. The output block will take 3 parameters that are required to create a valid output. The output block will fit inside of the input block and will take states and conditions blocks will fit inside.  When PWM is selected the output block will require a channel and frequency input as well.&#x20;
+
+| Parameter | Input description                              | Default Value |
+| --------- | ---------------------------------------------- | ------------- |
+| Name      | The human readable comment of the output.      | out1          |
+| Pin       | The pin number that the output will represent. | -1            |
+| Type      | The type of output. Either digital or PWM.     | digital       |
+
+## States & Conditions
+
+### State
+
+![](../../../../assets/state.png)
+
+The state block is a general block to set or show the state of the switch element.&#x20;
+
+### Condition
+
+![](../../../../assets/condition.png)
+
+The condition block is used to set conditions.&#x20;
+
+## State Options
+
+### Output
+
+![](../../../../assets/output_pin.png)
+
+LOW or HIGH, state of the output pin, "type" must be digital
+
+### Duty
+
+![](../../../../assets/duty.png)
+
+Duty cycle of the PWM channel, "type" must be PWM
+
+### On Duration
+
+![](../../../../assets/on_duration.png)
+
+Duration of how long the output pin is high, overrides "output" and "PWM"
+
+### Off Duration
+
+![](../../../../assets/off_duration.png)
+
+Duration of how long the output pin is low, overrides "output" and "PWM"
+
+### Clear Background
+
+![](../../../../assets/clear_background.png)
+
+0 or 1, if you want text to superimpose over previous pixels, or if you want to clear pixels before setting new text
+
+### Set Text
+
+![](../../../../assets/text.png)
+
+Set Text to a specific row on the switch, if row 3 is selected, the font will be forced to 6x8.
+
+### Font
+
+![](../../../../assets/font.png)
+
+Font size for text (6x8 & 9x12)
+
+### Invert
+
+![](../../../../assets/invert.png)
+
+Choose to invert the text or image placed
+
+### Set Color
+
+![](../../../../assets/color.png)
+
+Set backlight color
+
+![](../../../../assets/color_on_off.png)
+
+if blinking is required, the first  and second backlight colors, overrides "color". Duration is in milliseconds.
+
+### Brightness
+
+![](../../../../assets/brightness.png)
+
+Backlight brightness
+
+### Contrast
+
+![](../../../../assets/contrast.png)
+
+LCD contrast
+
+### Display Analog Value
+
+![](../../../../assets/display_analog.png)
+
+Use to display analong values. They can be displayed in number of different ways. 
+
+* DisplayAnalogVoltage
+* DisplayAnalogPercent
+* DisplayAnalogBarGraph
+* DisplayAnalogFraction
+* DisplayAnalogValue
+
+### Display Timer
+
+![](../../../../assets/display_timer.png)
+
+Displays selected timer
+
+### Display Flag
+
+![](../../../../assets/display_flag.png)
+
+Displays selected flag
+
+### Display Stopwatch
+
+![](../../../../assets/display_stopwatch.png)
+
+Displays the stopwatch in HH:MM:SS
+
+### Display Stopwatch Days
+
+![](../../../../assets/display_stopwatch_days.png)
+
+Displays the stopwatch in days
+
+## Condition Options
+
+### Pin
+
+![](../../../../assets/pin.png)
+
+Input pin to read
+
+### State
+
+![](../../../../assets/output_state.png)
+
+Digital state of the input pin
+
+### Threshold
+
+#### Range
+
+![](../../../../assets/threshold_range.png)
+
+* "max" (max number of the analog range)
+
+* "min" (min number of the analog range)
+
+#### Voltage
+
+![](../../../../assets/threshold_voltage.png)
+
+* "max" (max number of the analog voltage)
+
+* "min" (min number of the analog voltage)
+
+#### Percent
+
+![](../../../../assets/threshold_percentage.png)
+
+* "max" (max number of the analog percent)
+
+* "min" (min number of the analog percent)
+
+### Comparison
+
+![](../../../../assets/comparison.png)
+
+Less, greater, or equal, must be used with threshold
+
+### Switch
+
+![](../../../../assets/switch.png)
+
+Pressed, released, held, heldReleased, IS state to read
+
+### Timer
+
+![](../../../../assets/timer.png)
+
+Expired, running, paused, stopped, timer condition to check
+
+### Flag
+
+![](../../../../assets/flag.png)
+
+Flags 1-12 to read, DNP any flags not reading
+
+## Hardware Blocks
+
+### Timer
+
+![](../../../../assets/timer_action.png)
+
+Start, stop, restart, pause, or resume a selected timer
+
+![](../../../../assets/timer_duration.png)
+
+Milliseconds value to use with the timer, when a timer uses "start" the duration is used
+
+![](../../../../assets/timer_operation.png)
+
+Timer duration operation, value is in milliseconds
+
+### Flag
+
+Number to set the flag to, or "++" or "--" to increment by 1
+
+![](../../../../assets/flag_action.png)
+
+### Channel
+
+PWM channel to use for this pin if "type" is PWM
+
+![](../../../../assets/channel_number.png)
+
+### Frequency
+
+Frequency of PWM channel if "type" is PWM
+
+![](../../../../assets/frequency.png)
+
+## Images
+
+Path of the image on the flash storage to display. This will list the current images already on the device flash. To upload more images please see the getting started guide. 
+
+![](../../../../assets/image.png)
+
+<LinkCard title="Getting Started With Wi-Fi Products" href="/docs/how-to/getting-started-with-wifi-products/" />
