@@ -1,0 +1,237 @@
+---
+title: LCD 36x24
+description: LCD 36x24 Application Notes.
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the LCD 36x24 SmartDisplay </div>
+
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+  <img src="/src/assets/36x24.png" width="200"/>
+  <img src="/src/assets/36x24-compact.png" width="160"/>
+  <img src="/src/assets/36x24-display.png" width="180"/>
+</div>
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Information](#general-information)
+- [Part Numbers](#part-numbers)
+  - [Switches](#switches)
+  - [Engineering Development Kits](#engineering-development-kits)
+  - [IS-C3201 Controller](#is-c3201-controller)
+- [Pin-outs](#pin-outs)
+- [LED Backlighting](#led-backlighting)
+- [Controlling Multiple Switches](#controlling-multiple-switches)
+- [Bit Map Picture Format for One Module](#bit-map-picture-format-for-one-module)
+- [Refresh and LP Timing](#refresh-and-lp-timing)
+- [Timer Interrupt](#timer-interrupt)
+- [Sample Schematics](#sample-schematics)
+- [Frequently Asked Questions](#frequently-asked-questions)
+
+## General Information
+
+The application notes should be used in conjunction with the LCD 36x24 [datasheets](/docs/datasheets) which has the LED, LCD, and other specifications as well as the timing diagram for the communication.
+
+## Part Numbers
+
+### Switches
+
+The LCD 36x24 SmartDisplay is currently available as 36x24 standard pushbuttons, 36x24 compact pushbuttons, and 36x24 displays. The pushbuttons have an RBG or bi-color option for backlighting. For prototyping, it is recommended to use the relevant SmartDisplay socket accessory.
+
+| Switch                                                                      | PN            | Socket                                             | Description                       |
+| --------------------------------------------------------------------------- | ------------- | -------------------------------------------------- | --------------------------------- |
+| LCD 36x24 RGB Pushbutton <img src="/src/assets/36x24.png" width="50"/>                 | IS15BBFP4RGB  | AT9704-065E                                        | Standard size, RGB backlight      |
+| Compact LCD 36x24 RGB Pushbutton <img src="/src/assets/36x24-compact.png" width="40"/> | IS15BSBFP4RGB | AT9704-065F                                        | Compact size, RBG backlight       |
+| LCD 36x24 RGB Display <img src="/src/assets/36x24-display.png" width="45"/>            | IS01BBFRGB    | Industry standard, 2mm x 2mm (example: 79107-7005) | Display only                      |
+| LCD 36x24 Bicolor Pushbutton                                                | IS15BAFP4CF   | AT9704-02YC, *AT9704-065E                          | Standard size, bi-color backlight |
+| Compact LCD 36x24 Bicolor Pushbutton                                        | IS15BSAFP4CF  | AT9704-065F                                        | Compact size, bi-color backlight  |
+
+*AT9704-065E can be used with IS15BAFP4CF by removing pin 3.
+
+### Engineering Development Kits 
+
+Engineering Development Kits are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by not only familiarizing design engineers to SmartDisplay products, but also as a development platform for experimentation and design viability testing. The schematic and source codes in C language are provided. Please refer to the [Engineering Kits for LCD 36x24](/docs/engineering-kits/lcd-36x24-engineering-kits-user-manual) documentation for more information.
+
+<img src="/src/assets/IS-ENG-KIT-5-SC.png" width="300"/>
+
+### IS-C3201 Controller
+
+NKK offers predesigned controllers for SmartDisplay. The IS-C3201 Intelligent Controller controls up to 32 LCD 36x24 switches. It is designed to be used in many different applications. There is total flexibility with user-defined features that allow the controllers to be programmed for specific applications. Please refer to the [IS-C3201](/docs/controllers/is-c3201-user-manual) documentation for more information.
+
+<img src="/src/assets/C3201-top.png" width="300"/>
+
+## Pin-outs
+
+The standard size LCD 36x24 RGB pushbuttons have a different pin-out from the standard size bi-color pushbuttons. All the compact size pushbuttons have the same pin-out. All the displays have the same pin-out.
+
+All the functions are the same regardless of the pin-outs, so for the purpose of these application notes, the RGB SmartDisplay will be used as the example. The following are the pin-outs for the RGB SmartDisplay:
+
+| Pin | Symbol    | Pin Name               | Function                                      |
+| --- | --------- | ---------------------- | --------------------------------------------- |
+| 1   | SW        | Switch Terminal        | Normally open switch                          |
+| 2   | SW        | Switch Terminal        | Normally open switch                          |
+| 3   | BL-LED(-) | LED Backlight Terminal | Cathode for Red                               |
+| 4   | BL-LED(-) | LED Backlight Terminal | Cathode for Blue                              |
+| 5   | Dout      | Data Output            | To daisy chain, connect to Din of next switch |
+| 6   | FLM       | First Line Marker      | Control line for LCD display                  |
+| 7   | LP        | Latch Pulse            | Control line for LCD display                  |
+| 8   | SCP       | Serial Clock Pulse     | Clock for shifting data of LCD display        |
+| 9   | Din       | Data Input             | Data input for LCD display                    |
+| 10  | GND       | Ground                 |                                               |
+| 11  | VDD       | Power                  | +5 V power source for logic circuit           |
+| 12  | VLC       | LCD Power              | Power source for LCD drive                    |
+| 13  | BL-LED(+) | LED Backlight Terminal | Common Anode for LEDs                         |
+| 14  | BL-LED(-) | LED Backlight Terminal | Cathode for Green                             |
+
+**Switch terminals (SW, SW)**: The switch is normally open. The switch can be scanned by connecting one pin to ground and the other pin to a micro-controller. For a matrix of switches, many different methods can be used for scanning.
+
+**Ground**: The ground for logic, LCD, and LEDs.
+
+**VDD**: Power source for logic (5V and 1mA).
+
+**VLC**: Supply voltage for LCD (7.3V to 7.5V and less than 1mA). The required voltage value depends on the refresh rate of the LCD display, the temperature, and the desired viewing angle. It is recommended that this voltage be adjustable. This can be achieved by using a potentiometer between higher voltage such as 9V or 12V and ground or using an OpAmp.
+
+**BL-LED(+), BL-LED(-), BL-LED(-), BL-LED(-)**: LED backlighting as shown in the diagram below.
+
+<img src="/src/assets/leds-36x24.png" width="400"/>
+
+The LED forward voltages for the LCD 36x24 RGB SmartDisplay are as follows:
+
+LED (red) = 2.1V  
+LED (green) = 3.3V   
+LED (blue) = 3.3V
+
+The absolute maximum current rating is 20mA. A current limiting resistor should be used. The brightness of the backlighting is determined by the current value. Other colors are achieved by different combinations of red, green, and blue.
+
+<Aside type="note" title="Note">
+  Please refer to the [datasheets](/docs/datasheets) for the specific switch of interest for the LED specifications.
+</Aside>
+
+**SCP and Din**: Clock and Data communication. These are connected to data in and clock of an internal 40-bit shift register of the SmartDisplay. The clock pin and the data pin can be connected to the pins of a micro-controller. The clock line should be normally high. First, the data bit is set on the data line and then the clock is toggled.
+
+The LCD display has 36 pixels in each row. Positions 37, 38, 39, and 40 of the internal shift register are not used. The maximum clock frequency is rated for 6.0 MHz.
+
+**FLM and LP**: Control lines for the internal LCD driver. These lines are connected to micro-controller pins. They are normally low. LP is toggled after the data is shifted to the right position in the internal shift register of the SmartDisplays. FLM is set to high before shifting the data for the first line of the display, and cleared after the data is shifted and LP is toggled for the first line.
+
+**Dout**: Data out. This pin is the output of the 40th position of the internal shift register. It is used to daisy chain the SmartDisplays. It connects to data in (pin 8) of the next switch.
+
+## LED Backlighting
+
+Backlighting can be controlled using current limiting resistors and a driver IC with latch as shown below:
+
+<img src="/src/assets/leds2-36x24.png" width="500"/>
+
+The circuit below results in consistent brightness between single LED ON and multiple LEDs ON.
+
+<img src="/src/assets/leds3-36x24.png" width="500"/>
+
+
+<Aside type="note" title="Note">
+  It is recommended to use an LED driver for controlling the backlighting. This eliminates the need for resistors and a driver IC with latch. It allows for achieving any color as well as color matching via software control.
+</Aside>
+
+## Controlling Multiple Switches
+
+- All the SCP pins are connected to the same source.
+- All the LP pins are connected to the same source.
+- All the FLM pins are connected to the same source.
+- Din of the first switch is connected to the source. Dout of the first switch is connected to Din of the second switch, etc.
+
+If the fan-out of the source is not sufficient, a buffer IC should be used for SCP, LP, and FLM. As the number of switches increases, directly controlling the clock and data by the micro-controller becomes inefficient. A different method should be used to shift the data faster. Some possible options are using a serial port in 8-bit mode or using three shift registers. Three parallel-in serial-out shift registers can be used to accomplish this task as shown below. This circuit converts the parallel byte to serial.
+
+<img src="/src/assets/shift-registers-36x24.png" width="1000"/>
+
+## Bit Map Picture Format for One Module
+
+The display on the SmartDisplay is a graphic LCD with a matrix of 36 columns by 24 rows. The SmartDisplay has an internal 40-bit shift register. The first 36 bits of the shift register correspond to the 36 columns of the display and the last 4 bits of the shift register are not used. See [Figure 1](#figure-1). The internal shift register shifts left to right, so the 40th bit is shifted first and the first bit is shifted last.
+
+The first four bits of data shifted in are not used. The fifth bit corresponds to the rightmost pixel of the row and the 40th bit of data shifted in corresponds to the leftmost pixel of the row. A high bit causes the corresponding pixel to be on and a low bit causes the corresponding pixel to be off. When the switches are daisy-chained, the first forty bits of data shifted in correspond to the last switch, and the last forty bits of data shifted in correspond to the first switch.
+
+LP and FLM are normally low. FLM must be set high before shifting the data for the first row, and cleared after the data is shifted and the LP is toggled. For rows 2 to 24, after the data is shifted, each row LP must be toggled.
+
+<div id="figure-1" style={{ textAlign: "left" }}>
+  <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Figure 1.</div>
+  <img src="/src/assets/bit-map-36x24.png" width="700"/>
+</div>
+
+## Refresh and LP Timing
+
+The display must be refreshed continuously. The LP-to-LP timing must be consistent. LP causes the internal LCD driver to use the data from the internal 40-bit shift register to energize the pixels of the corresponding row. If the LP-to-LP timing is not consistent, the pixel rows that are energized for a longer time will be darker. If a row gets charged for too long, it could damage the display.
+
+When the LP-to-LP timing exceeds 1.2 ms, a flicker will be noticed on the displays. Lower LP-to-LP timing up to 0.7 ms causes better contrast. However, LP-to-LP timing below 0.7 ms does not cause significant contrast improvement.
+
+## Timer Interrupt
+
+A timer interrupt should be used for refreshing the display, backlighting, and switch scan. The timer interrupt interval should be equal to the desired LP-to-LP timing. The timer interrupt should be set to low priority.
+
+The following SmartDisplay related functions could be performed by timer interrupt routines:
+1. Start of interrupt routine.
+2. If it is the first line of the display, set the FLM to high.
+3. Shift the data for the corresponding row of displays.
+4. Toggle the LP.
+5. Set the FLM low.
+6. Put LED data into effect.
+7. Increment the line number of the display. If equal to 25, set it to 1.
+8. If the line number for the display is equal to 1, then scan the switches. This compensates for switch bouncing.
+9. End of interrupt routine.
+
+Manipulation of data and any other tasks can be done by the main program.
+
+## Sample Schematics
+
+Please see the [Engineering Kits for LCD 36x24](/docs/engineering-kits/lcd-36x24-engineering-kits-user-manual) for an example schematic on how to control two switches.
+
+## Frequently Asked Questions
+
+**Does the display have to be refreshed?**  
+**Yes.** The displays must be refreshed. The drawback for the switches that have a refreshing circuit in the switch cap, is that the controller cannot detect when the refreshing circuit freezes due to an ESD charge.
+
+**Why is one of the display rows darker than the rest?**  
+The timing between the latch pulse of that row and the next row is longer than the timing between the rest of the latch pulses.
+
+**What happens if the display is not refreshed?**  
+If the VLC is present, one row of display gets charged for a long time, which can damage the display. If the micro-controller goes into sleep mode, it must disable the VLC.
+
+**Does the micro-controller have to have external memory?**  
+For many switches, having memory is useful for keeping a large number of pictures. For a small number of switches, the pictures can be made on the fly using ASCII code and a look up table without using external memory.
+
+**Is the display visible without the backlighting?**  
+**Yes.** The LCD in the switch is transflective so it can be seen with sufficient ambient lighting.
+
+**Is the display sunlight readable?**  
+Since the LCD is transflective, it is sunlight readable. However, there will be reflection from the lens.
+
+**How many switches can be driven by a micro-controller?**  
+The number that a micro-controller can control depends on the instruction execution time, other tasks performed, hardware design, and software design.
+
+**Example:**  
+**Given:** A micro-controller with an average instruction execution time of 1 ms and with 34% of the time performing other tasks. The LP-to-LP timing is 1 ms.  
+**Calculate:** The number of modules that can be controlled by the micro-controller.  
+**Solution:** Time to refresh one line = (1ms)*(0.66) = 0.66 ms = 660 instructions.
+
+The data must be addressed, retrieved, and shifted. The time for each of these tasks depends on hardware and software design. The fastest addressing scheme is to have the buffer of the picture data on the RAM as shown on [Figure 1](#figure-1).
+
+This scheme has the higher byte of the DATA POINTER holding the module line number and the lower byte of the DATA POINTER points to the last byte of the last module (same number for all the lines). Once the DATA POINTER is loaded, a byte of the data is retrieved and shifted, and the lower byte of the DATA POINTER decrements, a byte of the data is retrieved and shifted, and so forth until the lower byte of the DATA POINTER is equal to zero.
+
+Shifting the data with micro-controller pins for many modules is very time consuming. In this example, we assume the data is written via the micro-controller parallel bus to a device such as the 3-shift register method described above or via serial port (8-bit mode). The shift speed of data must be such that the micro-controller does not wait to write the shift data.
+
+This method takes 3 instructions per byte of data (load the byte, write the byte to the shift register, and decrement the data pointer). If the Interrupt overhead takes 15 instructions, this micro-controller can control 43 modules (660 instructions/line – 15 instructions/overhead) / ((5 bytes/module) * (3 instructions/byte)) = 43 modules. However, due to driver fan-out and noise the actual number should be less. NKK has controlled 16 to 24 modules using a 74HC4050 driver without problems.
+
+**Can the switches be controlled with low voltage?**  
+The specification does not support it, but NKK has tested the switches at 3.0V VDD and signals without problems.
+
+**I only need to display a small picture. Do I need to refresh the whole display?**  
+The FLM signal indicates the first line. If you do not need the display for all the 24 rows of pixels, you can use FLM after as many lines as needed. If you need to center your display, you can toggle the LP to insert a line.
+
+**Is it possible to have an image with shades of gray?**  
+**Yes**, it is possible. Multiple pictures must be refreshed consecutively. The pixels that are ON for all the pictures will be the darkest, the pixels that are OFF for only one picture will be the second darkest and so on. The number of shades of gray depends on how fast the controller can refresh the LCD.
+
+**How many backlight colors can be achieved?**  
+**Infinite.** It depends on how many levels of control are present for each discrete color.
+For example, with an RGB SmartDisplay and 16 levels of control for each color the total number of colors is 16x16x16 = 4096 different colors.
+
+

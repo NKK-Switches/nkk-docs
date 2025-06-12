@@ -1,26 +1,30 @@
 ---
 title: Welcome
-description: Learn how to use a dropdown menu to switch between topics in your Starlight website.
+description: Welcome
 ---
 
-This package exposes a dropdown menu component meant to be used as a [custom topic list](https://starlight-sidebar-topics.netlify.app/docs/guides/custom-topic-list/) for the [Starlight Sidebar Topics](https://starlight-sidebar-topics.netlify.app/) plugin.
+import { LinkCard, Aside } from '@astrojs/starlight/components';
 
-:::tip[See it in action]
-At the top of the sidebar, you can find the dropdown menu in action to switch between the different topics used in this documentation, such as "Documentation" and "Demo" that each have their own sidebar configuration, while the "Starlight Docs" topic is a direct link to the Starlight documentation.
-:::
+NKK Switches provides comprehensive full-service solutions to support the integration of SmartDisplay into many different applications.
+Featured here are resources that can help to integrate SmartDisplay products into your application.
 
-## Prerequisites
-
-You will need to have a Starlight website set up.
-If you don't have one yet, you can follow the ["Getting Started"](https://starlight.astro.build/getting-started) guide in the Starlight docs to create one.
-
-You will also need to have the [Starlight Sidebar Topics](https://starlight-sidebar-topics.netlify.app/) plugin installed and configured.
-If you don't have it set up yet, you can follow the ["Getting Started"](https://starlight-sidebar-topics.netlify.app/getting-started) guide in the Starlight Sidebar Topics docs.
-
-## Installation
+For personal support and customized design solution services, please email NKK engineering at: smartdisplay@nkkswitches.com.
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-
-You can also render the dropdown menu in a different location in your website by overriding different components.
-Lean more about [overriding components](https://starlight.astro.build/guides/overriding-components/) in the Starlight docs.
+<CardGrid>
+  <Card title="Download Catalog">
+    <a href="https://www.nkkswitches.com/pdf/smartswitch-1.pdf" target="_blank" rel="noopener noreferrer">SmartDisplay Complete Catalog (PDF)</a>
+  </Card>
+  <Card title="SmartDisplay Brochure">
+    <a href="https://www.nkkswitches.com/pdf/NKKSmartDisplayBrochure.pdf" target="_blank" rel="noopener noreferrer">SmartDisplay Brochure (PDF)</a>
+    Download our SmartDisplay brochure for an overview of the entire SmartDisplay product line, available development kits, and design solution services.  
+  </Card>
+  <Card title="Product Selector">
+    <a href="https://www.nkkswitches.com/pdf/NKK_SmartDisplay_Product_Selector_Guide.pdf" target="_blank" rel="noopener noreferrer">Product Selector (PDF)</a>
+    Download our SmartDisplay Product Selector to view part details, specifications, and features by product.  
+  </Card>
+  <Card title="SmartDisplay Products">    
+    View the entire line of <a href="https://www.nkkswitches.com/smartdisplay/" target="_blank" rel="noopener noreferrer">SmartDisplay products</a>, 100-piece pricing, and available inventory.  
+  </Card>  
+</CardGrid>

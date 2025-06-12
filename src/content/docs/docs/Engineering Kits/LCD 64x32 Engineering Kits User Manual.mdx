@@ -1,0 +1,513 @@
+---
+title: LCD 64x32
+description: LCD 64x32 Engineering Kits user manual.
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> LCD 64x32 Engineering Kits User Manual </div>
+
+<img src="/src/assets/IS-ENG-KIT-6-CH.png" width="400"/>  
+
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors, which may appear in this document, nor does it make a commitment to update the information contained herein.
+SmartDisplay is a trademark of NKK Switches. All Engineering Kits are tested 100% and programmed with the default images and attributes. As the firmware for these kits can be modified by the customer, any damage caused by a customer mistake is not warrantied.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Information](#general-information)
+- [Available LCD 64x32 SmartDisplays](#available-lcd-64x32-smartdisplays)
+- [Possible Engineering Kits Using the S02G1 Controller](#possible-engineering-kits-using-the-s02g1-controller)
+- [Firmware Overview](#firmware-overview)
+  - [Attribute Block](#attribute-block)
+  - [Backlight LED Code](#backlight-led-code)
+- [Operational Overview](#operational-overview)
+  - [Power-up Sequence](#power-up-sequence)
+  - [Main Program](#main-program)
+  - [Timer-Interrupt](#timer-interrupt)
+- [Communication Protocol](#communication-protocol)
+- [Commands to the Controller](#commands-to-the-controller)
+    - [Command to Reboot the Controller](#command-to-reboot-the-controller)
+    - [Command to Check Communication](#command-to-check-communication)
+    - [Command to Download LED Brightness Level](#command-to-download-led-brightness-level)
+    - [Command to Query the Controller for Mode, Controller, and Firmware Version](#command-to-query-the-controller-for-mode-controller-and-firmware-version)
+    - [Command to Manually Set Images for Switch#1 and Switch#2](#command-to-manually-set-images-for-switch1-and-switch2)
+    - [Command to Download Backlight Codes for Switch#1 and Switch#2](#command-to-download-backlight-codes-for-switch1-and-switch2)
+    - [Commands that Disable Switch and Timer Execution](#commands-that-disable-switch-and-timer-execution)
+    - [Command to Disable Switch and Timer Execution](#command-to-disable-switch-and-timer-execution)
+    - [Command to Erase the Flash Memory](#command-to-erase-the-flash-memory)
+    - [Command to Download Setup Data](#command-to-download-setup-data)
+    - [Command to Download an Image](#command-to-download-an-image)
+    - [Command to Upload an Image](#command-to-upload-an-image)
+    - [Command to Download Attribute Block](#command-to-download-attribute-block)
+    - [Command to Upload an Attribute Block](#command-to-upload-an-attribute-block)
+- [Hardware Considerations](#hardware-considerations)
+- [Programming Setup](#programming-setup)
+- [Modifying the Firmware](#modifying-the-firmware)
+- [Board Dimensions](#board-dimensions)
+- [Schematics](#schematics)
+- [Key Terms \& Definitions](#key-terms--definitions)
+- [Warranty](#warranty)
+
+## General Information
+
+The Engineering Kits (IS-ENG-KIT-xx) are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by, not only familiarizing design engineers to the SmartDisplay products, but also as a development platform for experimentation and design viability testing.
+
+The controller used for the LCD 64x32 SmartDisplays is the S02G1. The [schematic](#schematics) is at the end of this document. The C language source codes and a Windows based communication software, Engineering Kits Communicator, can be downloaded [here](https://www.nkkswitches.com/download-software/). The software is designed to download images, attributes, and manual commands as well as display responses from the kit.
+
+Features of the S02G1:
+- Controls up to two LCD 64x32 SmartDisplays.
+- 1M on-board NOR flash memory to store images, attributes, or any other information.
+- Serial communication via USB (115.2K, 1 start bit, 8 bit, 1 stop bit).
+- Auxiliary port with 7 I/O pins of microcontroller to control/sense other user-defined applications.
+- Stand-alone or real-time operation.
+- Preprogrammed for basic operation.
+- Reports via USB the switch closures and releases, timer expirations, and addresses of the images displayed.
+- Programmable for changing the displayed images based on switch actuations and user defined timers.
+- Schematics and firmware are provided for user firmware customization.
+- User can program the Engineering Kits using a PICKIT3 debugger and pin adaptor.
+- The kits come with a 6-foot USB 2.0 A to Mini-B cable (IS-USB1).
+- Power Specs: 3.3V to 5.5V.
+- Maximum current:  150mA@5VDC. 
+- Can be powered either by USB or by optional 5V power connection (.100” spacing).
+- Window based software is provided for communication. 
+  - Accepts bitmap files, then extracts the images and downloads them to the controller.
+  - Allows typing of commands and downloading to the controller.
+  - Extracts HEX or ASCII data from Excel files and downloads to the controller.
+  - Messages to and from the controller are displayed in different colors.
+
+## Available LCD 64x32 SmartDisplays
+
+There are 4 products in LCD 64x32 family, a display, a compact size, and two standard size SmartDisplays. The two standard sized switches are further divided by differences in switch travel and pinout footprint. Please note that the IS15ESBFP4RGB compact and IS15EBFP4RGB-09YN standard have the same pinout footprint. All products have RGB backlighting with 64 possible colors.
+
+| Switch                                                                          | PN                | Socket                       | Description                                                    |
+| ------------------------------------------------------------------------------- | ----------------- | ---------------------------- | -------------------------------------------------------------- |
+| LCD 64x32 Pushbutton <img src="/src/assets/64x32.png" width="50"/>                         | IS15EBFP4RGB-09YN | *AT9704-065FH                | Standard size, tactile travel (hybrid of standard and compact) |
+| Compact LCD 64x32 Pushbutton <img src="/src/assets/64x32-compact.png" width="43"/>         | IS15ESBFP4RGB     | *AT9704-065FH                | Compact size, tactile travel                                   |
+| Long Travel LCD 64x32 Pushbutton <img src="/src/assets/64x32-long-travel.png" width="50"/> | IS15EBFP4RGB      | AT9704-085K                  | Standard size, long travel, unique socket                      |
+| LCD 64x32 Display <img src="/src/assets/64x32-display.png" width="42"/>                    | IS01EBFRGB        | Industry standard, 2mm x 2mm | Display only                                                   |
+
+*AT9704-065FH is AT9704-065F with pins 3, 4, 11, 12, 13, and 14 removed.
+
+## Possible Engineering Kits Using the S02G1 Controller
+
+Many Engineering Kits can be made with the S02G1 controller simply by soldering on various sockets (table below). The LCD 64x32 Pushbutton and Compact Pushbutton both have the same pinout footprint and use the same socket. All the Engineering Kits come with switches/display on the sockets and a USB cable. Controlling all the LCD 64x32 kits is the same.
+
+| Engineering Kit Part Number | Switch/Display 1                 | PN 1              | Switch 2                          | PN 2              |
+| --------------------------- | -------------------------------- | ----------------- | --------------------------------- | ----------------- |
+| IS-ENG-KIT-6-DH             | LCD 64x32 Display                | IS01EBFRGB        | LCD 64x32 Pushbutton              | IS15EBFP4RGB-09YN |
+| IS-ENG-KIT-6-SH             | Long Travel LCD 64x32 Pushbutton | IS15EBFP4RGB      | LCD 64x32 Pushbutton              | IS15EBFP4RGB-09YN |
+| IS-ENG-KIT-6-CH             | Compact LCD 64x32 Pushbutton     | IS15ESBFP4RGB     | LCD 64x32 Pushbutton              | IS15EBFP4RGB-09YN |
+| IS-ENG-KIT-6-DC             | LCD 64x32 Display                | IS01EBFRGB        | Compact LCD 64x32 Pushbutton      | IS15ESBFP4RGB     |
+| IS-ENG-KIT-6-DS             | LCD 64x32 Display                | IS01EBFRGB        | Long Travel LCD 64x32  Pushbutton | IS15EBFP4RGB      |
+| IS-ENG-KIT-6-CS             | Compact LCD 64x32 Pushbutton     | IS15ESBFP4RGB     | Long Travel LCD 64x32 Pushbutton  | IS15EBFP4RGB      |
+| IS-ENG-KIT-6-HH             | LCD 64x32 Pushbutton             | IS15EBFP4RGB-09YN | LCD 64x32 Pushbutton              | IS15EBFP4RGB-09YN |
+| IS-ENG-KIT-6-CC             | Compact LCD 64x32 Pushbutton     | IS15ESBFP4RGB     | Compact LCD 64x32 Pushbutton      | IS15ESBFP4RGB     |
+| IS-ENG-KIT-6-SS             | Long Travel LCD 64x32 Pushbutton | IS15EBFP4RGB      | Long Travel LCD 64x32 Pushbutton  | IS15EBFP4RGB      |
+
+<div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-6-DH</div>
+    <img src="/src/assets/IS-ENG-KIT-6-DH.png" width="300"/>
+  </div>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-6-SH</div>
+    <img src="/src/assets/IS-ENG-KIT-6-SH.png" width="300"/>
+  </div>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-6-CH</div>
+    <img src="/src/assets/IS-ENG-KIT-6-CH.png" width="300"/>
+  </div>
+</div>
+
+## Firmware Overview
+
+The firmware is written such that it is easy to modify or add features. Only basic features are implemented in the factory default to keep the firmware easy to follow. As such it is not optimized.
+
+There is no difference in controlling the various LCD 64x32 switches/display. The LCD 64x32 switch handles refreshing the LCD and controlling the LED backlight colors via the internal controller. There are no requirements for initialization or refreshing for the LCD 64x32. The LCD 64x32 powers up with the LCD OFF, the backlight OFF, and at the lowest brightness level. There are no limitations as to when the LCD image, backlight color, or brightness level can be changed. Any changes made to the LCD image, backlight color, or brightness level stay in effect until reboot or power down.
+
+The firmware communicates to a host computer via RS232 through USB. Any data sent from the host are received via interrupt and placed in a receive buffer. The data get processed in the main program. Any transmit datum is put in a transmit buffer. Each timer interrupt transmits a byte from the transmit buffer if it is not empty. The firmware also handles read and write operations from and to the external flash memory, as well as controls the two LCD switches. The communication protocol is outlined in following sections.
+
+The 1M flash memory is a NOR flash and as such, when writing to the memory, it can only turn an ON cell to the OFF state. The erase command turns all the cells to the ON state. If images or other data on the flash memory need to be changed then it is required that the erase command be sent first. The flash memory has partial erase commands available, however, as of the first firmware release date only the complete erase is implemented in the firmware.
+
+The 7 I/O pins in the auxiliary port are initialized as inputs with weak pull-ups. These pins can be used to sense or control in user-defined custom applications.
+
+The flash memory is set up to save up to 2047 images and attributes. Two bytes are needed to address an image or attribute block.
+
+| Address | LCD64x32 |                 |     |
+| ------- | -------- | --------------- | --- |
+| 0001    | Image    | Attribute Block |
+| 0002    | Image    | Attribute Block |
+| . . .   | Image    | Attribute Block |
+| . . .   | Image    | Attribute Block |
+| 07FE    | Image    | Attribute Block |
+| 07FF    | Image    | Attribute Block |
+
+Each image is 256 bytes and each Attribute Block is 16 bytes long. 
+
+### Attribute Block
+
+| Name           | Current address | End address for the loop | Timer1 for the loop | Timer2 for the loop | Next address for SW1 upon switch press | Next address for SW2 upon switch press | Jump address for SW1 at the end of the loop | Jump address for SW2 at the end of the loop | LED color code for ON-cycle | LED color code for OFF-cycle |
+| -------------- | --------------- | ------------------------ | ------------------- | ------------------- | -------------------------------------- | -------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------- | ---------------------------- |
+| **Range**      | 0000 to 07FF    | 0000 to 07FF             | 00 to FF            | 00 to FF            | 0000 to 07FF                           | 0000 to 07FF                           | 0000 to 07FF                                | 0000 to 07FF                                | LED code                    | LED code                     |
+| **# of bytes** | 2               | 2                        | 1                   | 1                   | 2                                      | 2                                      | 2                                           | 2                                           | 1                           | 1                            |
+
+Each switch has an associated active Attribute Block in the RAM. Additionally, each switch is associated to an active display address and active backlight codes. If the system detects that an image needs changing, the image from the flash memory address of the active address is transferred to the switch. If the system detects that the backlight timer has expired, the LED backlights change according to the ON/OFF cycle of the currently displayed backlight address.
+
+An address is assigned to a switch via switch press, timer expiration, or upon power-up. Before an address is assigned to a switch, the controller checks the Attribute Block in the flash at the assigned address. If the first two bytes are equal to the assigned address, the Attribute Block from flash is loaded to the active Attribute Block. After loading, the active LED code and active display are loaded based on the attributes. If Timer1 does not equal zero, the loop timer starts running. If the first two bytes of the attribute block are not equal to the assigned address, no action is taken.
+
+If Timer1 does not equal zero, a loop timer is started. The loop timer is calculated by multiplying Timer1 and Timer2. When the loop timer expires the displayed address is compared to the End Address. If they are equal, and the jump addresses for SW1/SW2 do not equal zero, then the jump addresses become the new active addresses for switch1 and switch2. Then the attributes and images are loaded accordingly. If the jump addresses of SW1/SW2 are equal to zero, there is no change to the active addresses and the loop restarts for the associated switch. If the displayed address and the End Address are not equal, then the displayed address + 1 is loaded as the displayed address and the image is sent to the switch. The loop timer then restarts. When a new displayed address is loaded, the backlight LED codes for that address are sent to the switch.
+
+When a switch is pressed, if the press addresses for SW1/SW2 of the active Attribute Block are not equal to zero they become the active addresses for switch1 and switch2, and are sent to the switches. If the press addresses of SW1/SW2 are equal to zero, there will not be any update or change to the active addresses.
+ 
+The backlight code has 2 bits for each color according to the switch specification.
+
+### Backlight LED Code
+
+| Switch/Display Type | Code  |       |       |           |
+| ------------------- | ----- | ----- | ----- | --------- |
+| RGB switch/display  | RED   | GREEN | BLUE  | Must be 1 |  |
+| Bits                | B7 B6 | B5 B4 | B3 B2 | B1 B0     |
+| Possible values     | 0/1   | 0/1   | 0/1   | 1         |
+
+The controller alternates between the ON and OFF codes every second.
+
+## Operational Overview
+
+### Power-up Sequence  
+Upon power-up the controller executes the following 7 steps and then enters the main program.
+1. Initializes the active attribute blocks for both switches to zero.   
+2. Set 0001H address to switch#1, set 0002H address to switch#2, and initialize all the active backlight codes to white.   
+3. Check the setup values from flash memory and if valid, change the active address for switch#2.   
+4. Check the Attribute Blocks from the flash memory and if valid, load them to the active Attribute Blocks in the RAM.
+5. Set the timer-interrupt for every 0.5ms.
+6. Set up the UART (RS232) communication.
+7. Transmit 11H to host.
+
+### Main Program  
+The main program continuously goes through the following steps:
+1. Check and execute commands if there is data in the RS232 receive buffer.
+2. If the time for switch scan is expired: Scan the switches for being pressed.
+3. If switch #1 timer has expired: The timer is stopped, then report 83H and process according to the active attribute of switch#1.
+4. If switch #2 timer has expired: The timer is stopped, then report 84H and process according to the active attribute of switch#2.
+5. If switch#1 is pressed: Report 81H and process according to the active attribute of the switch#1.
+6. If switch#2 is pressed: Report 82H and process according to the active attribute of the switch#2.
+7. If switch#1 is released: Report C1H.  
+8. If switch#2 is released: Report C2H.  
+9. If switch#1 image changes: Report FFH followed by the switch#1 active address and update the memory for switch#1 with the active address image from the flash for switch#1. Start timer for switch#1 if Timer1 is non-zero.
+10. If switch#2 image changes: Report FEH followed by the switch#2 active address and update the memory for switch#2 with the active address image from the flash for switch#2. Start timer for switch#2 if Timer1 is non-zero.
+11.	If the backlight timer has expired: The switch#1 backlight is updated with the active backlight code for switch#1 and according to the ON/OFF cycle and the switch#2 backlight is updated with the active backlight code for switch#2 and according to the ON/OFF cycle.
+12.	Go to step 1.
+
+### Timer-Interrupt  
+Timer-interrupt is set for every 0.5ms.  It does the following functions:
+1. Increment the master half millisecond timer that the main program uses for all timers. All timers use this for a starting time and to check if the stop time has passed.
+2.	If the RS232 transmit buffer is not empty, transmit a byte.
+3.	Exit the interrupt.
+
+## Communication Protocol
+
+The controller communicates with the host via USB serial communication (115.2K, 1 start bit, 8 bit, 1 stop bit).
+
+**Communication Initiated by the Controller**:  
+The controller transmits the switch activities, timer expirations, and the addresses of images when they are displayed. The protocol for the code transmitted are explained in the Main Program in the Operational Overview.
+
+**Communication Initiated by the Host**:  
+The controller receives the data via a serial interrupt routine that places the data in the circular receive buffer. When the controller detects data in the circular receive buffer in the main program, the controller reads one byte and executes according to the following scenario.
+
+1. If the byte is 01H the controller responds by putting 61H in the transmit buffer and exits.
+2. If the byte is a 20H to 2FH the controller responds by putting 61H in the transmit buffer. The controller checks the command procedure and processes it accordingly. If the command procedure exists and all the data is proper, the controller puts 79H in the transmit buffer and exits. If the command procedure does not exist, the data is not acceptable, or consecutive bytes are not received within 100ms then the controller puts 6EH in the transmit buffer and exits.
+3. If the byte is not 01H, or 20H to 2FH, it is ignored.
+
+## Commands to the Controller
+
+There are two formats to transmit data:
+1. **Hex format**: A hex byte is transmitted without any change to it. 
+[xxH] will be used to denote this.
+All commands and some data are sent by using this format.
+
+2. **ASCII HEX format**: Each nibble of the byte is converted to ASCII code and sent as a byte. 
+[xxAH xxAH] will be used to denote this.
+For example, the hex byte 5AH is transmitted in two bytes, 35H and 41H. The ASCII value for 5 is 35H and the ASCII value for A is 41H.
+All addresses and most data are sent using this format.
+
+#### Command to Reboot the Controller  
+> This command reboots the controller to power-up state and upon completion reports 11H:
+
+|                  |         |
+| ---------------- | ------- |
+| Command format:  | **24H** |
+| Transmit format: | (xxH)   |
+
+#### Command to Check Communication
+> This command is used to check if the controller is on-line:  
+
+|                  |         |
+| ---------------- | ------- |
+| Command format:  | **01H** |
+| Transmit format: | (xxH)   |
+
+> The controller transmits 61H back to the host.
+
+#### Command to Download LED Brightness Level  
+> This command downloads the brightness level for backlight of both switches. The brightness level changes immediately and stays in effect for duration of the session.
+
+|                  |         |         |                    |
+| ---------------- | ------- | ------- | ------------------ |
+| Command format:  | **27H** | **4EH** | [Brightness level] |
+| Transmit format: | (xxH)   | (xxH)   | (xxAH xxAH)        |
+
+> [Brightness level] is one byte transmitted in ASCII HEX. The acceptable range is 00H to 07H, where 07H is the maximum brightness level.
+
+#### Command to Query the Controller for Mode, Controller, and Firmware Version  
+> This command queries the controller for the mode as set by the mode select switch, the controller name, and the firmware version installed:
+
+|                  |         |         |         |
+| ---------------- | ------- | ------- | ------- |
+| Command format:  | **26H** | **52H** | **58H** |
+| Transmit format: | (xxH)   | (xxH)   | (xxH)   |
+
+> Example: The command is sent. The controller responds with the following:
+
+|     |               |                   |           |     |
+| --- | ------------- | ----------------- | --------- | --- |
+| 61  | 52            | 53 30 32 47 31    | 31 30     | 79  |
+| 61H | [Switch code] | [Controller name] | [Version] | 79H |
+
+> [Switch code] is one byte. 52H indicates the LCD 64x32 module.  
+> [Controller name] is five bytes. 53H 30H 32H 47H 31H (S02G1)  
+> [Version] is two bytes. For example, 31h 30H would be version 1.0 (converted from ASCII hex).
+
+#### Command to Manually Set Images for Switch#1 and Switch#2		
+
+|                  |         |                        |                        |
+| ---------------- | ------- | ---------------------- | ---------------------- |
+| Command format:  | **2DH** | [Address for switch#1] | [Address for switch#2] |
+| Transmit format: | (xxH)   | (xxAH xxAH xxAH xxAH)  | (xxAH xxAH xxAH xxAH)  |
+
+> [Address for switch#1] is two bytes transmitted in ASCII HEX. The acceptable range is 0001H to 07FFH.  
+> [Address for switch#2] is two bytes transmitted in ASCII HEX. The acceptable range is 0001H to 07FFH.
+
+> The controller will assign the desired addresses to the switches.
+
+#### Command to Download Backlight Codes for Switch#1 and Switch#2		
+
+|                  |         |                               |                                |                               |                                |
+| ---------------- | ------- | ----------------------------- | ------------------------------ | ----------------------------- | ------------------------------ |
+| Command format:  | **2CH** | [ON cycle coded for switch#1] | [OFF cycle coded for switch#1] | [ON cycle coded for switch#2] | [OFF cycle coded for switch#2] |
+| Transmit format: | (xxH)   | (xxAH xxAH)                   | (xxAH xxAH)                    | (xxAH xxAH)                   | (xxAH xxAH)                    |
+| Number of bytes  | 1       | 1                             | 1                              | 1                             | 1                              |
+
+> [ON cycle for switch#1] is one byte transmitted in ASCII HEX.   
+> [OFF cycle for switch#1] is one byte transmitted in ASCII HEX.  
+> [ON cycle for switch#2] is one byte transmitted in ASCII HEX.   
+> [OFF cycle for switch#2] is one byte transmitted in ASCII HEX.   
+> This code is according to the [Firmware Overview](#firmware-overview) section.
+
+> The controller puts the desired backlight codes as the active backlight codes.
+
+#### Commands that Disable Switch and Timer Execution
+
+Upon transmitting any of the following commands, the timers stop running and attributes for the switches activity do not execute. However, the switches are still scanned and reported. The attributes execution is enabled upon reboot or power-up. The reason for disabling the attribute execution is to enable faster downloads of images and attributes.
+
+#### Command to Disable Switch and Timer Execution
+
+> This command disable switch and timer execution. 
+
+|                  |         |         |         |
+| ---------------- | ------- | ------- | ------- |
+| Command format:  | **26H** | **51H** | **5AH** |
+| Transmit format: | (xxH)   | (xxH)   | (xxH)   |
+
+#### Command to Erase the Flash Memory
+
+> This command erases the memory by turning all the cells ON. Before proceeding, the host needs to wait for the 79H to be received from the controller, indicating the memory is erased. The erase time for this flash memory is less than a second.
+
+|                  |         |         |         |         |         |
+| ---------------- | ------- | ------- | ------- | ------- | ------- |
+| Command format:  | **21H** | **55H** | **AAH** | **52H** | **52H** |
+| Transmit format: | (xxH)   | (xxH)   | (xxH)   | (xxH)   | (xxH)   |
+
+#### Command to Download Setup Data
+
+> This command downloads the setup data. The setup data is saved on the flash memory at address 0000H:
+
+|                  |         |         |                       |                          |                       |              |
+| ---------------- | ------- | ------- | --------------------- | ------------------------ | --------------------- | ------------ |
+| Command format:  | **2AH** | **52H** | [0000H]               | [Switch 2 start address] | [Brightness Level]    | [Reserved]   |
+| Transmit format: | (xxH)   | (xxH)   | (xxAH xxAH xxAH xxAH) | (xxAH xxAH xxAH xxAH)    | (xxAH xxAH xxAH xxAH) | (xxAH . . .) |
+| Number of bytes  | 1       | 1       | 2                     | 2                        | 1                     | 11           |
+	
+> [Brightness Level] is one byte sent in ASCII HEX format. Range 00H to 07H.  
+> [Switch 2 start address] is two bytes with the value of 0001H to 07FFH sent in ASCII HEX format. This is the address for the image that switch#2 displays upon power-up or reboot.  
+> [Reserved] is 11 bytes of 00H sent in ASCII HEX format. This is for future use. The customer can configure the last two bytes as needed for their application. The rest of the reserved bytes should be zero. The controller saves the setup to flash memory.
+
+> This setup data can be read using the attribute upload command.
+> On startup the controller checks if the setup attribute is valid, and if not, the setup is not used.
+
+#### Command to Download an Image
+
+> This command downloads an image from the host to the flash memory address:
+
+|                  |         |         |                       |              |
+| ---------------- | ------- | ------- | --------------------- | ------------ |
+| Command format:  | **28H** | **52H** | [Address]             | [Image]      |
+| Transmit format: | (xxH)   | (xxH)   | (xxAH xxAH xxAH xxAH) | (xxAH . . .) |
+
+> [Address] is two bytes with value of 0001H to FFFFH sent in ASCII HEX format.  
+> [Image] is 256 bytes transmitted in ASCII HEX format.
+
+| Byte  | Description                                |
+| ----- | ------------------------------------------ |
+| 1     | Bit 7 is top right pixel of the display    |
+| 8     | Bit 0 is top left pixel of the display     |
+| . . . | . . .                                      |
+| 249   | Bit 7 is bottom right pixel of the display |
+| 256   | Bit 0 is bottom left pixel of the display  |
+
+#### Command to Upload an Image
+
+> This command uploads an image from the flash memory location to the host:
+
+|                  |         |         |           |
+| ---------------- | ------- | ------- | --------- |
+| Command format:  | **29H** | **52H** | [Address] |
+| Transmit format: | (xxH)   | (xxH)   | (xxAH xxAH xxAH xxAH)    |
+
+> [Address] is two bytes with value of 0001H to FFFFH sent in ASCII HEX format.  
+
+> The controller transmits the image, 256 bytes, back in ASCII HEX format.
+
+#### Command to Download Attribute Block
+
+> This command downloads an Attribute Block from the host to the flash memory location:
+
+|                  |         |         |           |
+| ---------------- | ------- | ------- | --------- |
+| Command format:  | **2AH** | **52H** | [Attribute Block] |
+| Transmit format: | (xxH)   | (xxH)   | (xxAH . . .)    |
+
+> [Attribute Block] is 16 bytes transmitted in ASCII HEX format.  
+
+> The first two bytes of the Attribute Block are the desired address of the block. The Attribute Block is stored in flash memory according to these first two bytes.   
+> When the controller reads the Attribute Block, it compares the desired address to the saved address. If they do not match, all attributes are deemed invalid and do not get loaded.
+
+#### Command to Upload an Attribute Block
+
+> This command uploads an Attribute Block from the flash memory location to the host:
+
+|                  |         |         |           |
+| ---------------- | ------- | ------- | --------- |
+| Command format:  | **2BH** | **56H** | [Address] |
+| Transmit format: | (xxH)   | (xxH)   | (xxAH xxAH xxAH xxAH)    |
+
+> [Address] is two bytes with the value of 0000H to 07FFH sent in ASCII HEX format.  
+> The controller transmits the 16 bytes Attribute Block via RS232 in ASCII HEX format.
+
+## Hardware Considerations
+
+The power can be supplied to the Engineering Kits via USB port or the J2 header. The voltage range can be 4.5V to 5.5V. Maximum current consumption is 100mA. A fuse and a Zener diode are used for high voltage input protection.
+
+The PIC18F46K40 microcontroller is used in the Engineering Kits. The VDD for the microcontroller is 3.3V. 
+The 5V for the LCD 64x32 switches is provided using a charge pump. The reason for using a charge pump is because the USB power specification is from 4.5V to 5.5V, and because the LCD 64x32 voltage range is much tighter, from 4.9V to 5.1V.
+
+The auxiliary ports I/O are directly connected to microcontroller pins without any safety circuits. Care must be taken not to exceed the VDD voltage.
+
+## Programming Setup
+
+The Engineering Kits are designed to be easily programmed and have a 5-position SIP footprint for this purpose (JP1). They can be programed by a variety of different programmers. Our recommendation is to use the PICkit 3 with the IS-PA2 adaptor and a USB power source. The IS-PA2 is an adaptor with a 5-position SIP header on one side and a 5-position, spring-loaded header on the other side.
+
+<Aside type="caution" title="Caution">
+    Position 1 of the PICKIT3 must be at position 1 on the PCB or damage could occur. The 5V power must be supplied, usually through the USB cable although there are through-hole pads on the PCB for an alternative 5V power connection.
+</Aside>
+
+*Connector callout of the IS-PA2 and controller JP1*
+
+| J1  | J2  | JP1 | Name        |
+| --- | --- | --- | ----------- |
+| 1   | 1   | 1   | MCLR        |
+| 2   | 2   | 2   | VDD         |
+| 3   | 3   | 3   | GROUND      |
+| 4   | 4   | 4   | PGD (data)  |
+| 5   | 5   | 5   | PGC (clock) |
+
+*IS-PA2 on a control board*
+
+<div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
+    <img src="/src/assets/pickit3-eng-kit.png" width="200"/>
+    <img src="/src/assets/pickit3.png" width="200"/>
+</div>
+
+*IS-PA2 board photos*
+
+<img src="/src/assets/is-pa2.png" width="400"/>
+
+## Modifying the Firmware
+
+1. Download MPLAB-X from www.microchip.com.
+2. Install MPLAB-X to the default location with the default options.
+3. Download the MPLAB XC8 compiler from www.microchip.com.
+4. Install the MPLAB XC8 compiler to the default location with the default options
+5. Extract the firmware source code to a location of your choice.
+6. Open MPLAB-X IDE (Integrated Development Environment).
+7. Press the open project button and navigate to the directory the source code was extracted to, then click the directory and click “Open Project”.
+8. Click the “Production” menu at the top, and select “Clean and Build Project”. Wait for the build to complete.
+9. Attach a PICKIT3 (or equivalent) to the PCB board. This can be done using a IS-PA2 adapter (available for purchase on the NKK website) or by soldering a header into JP1 and attaching the PICKIT3.
+10. Press the debug project button and wait for the output window to say “Running”.
+11. Observe the program is now running on the board and images appear on the SmartDisplay.
+12. Press the stop button. You are now ready to start developing for the SmartDisplays.
+
+## Board Dimensions
+
+Typical dimensions. Sockets and components vary with kit type. 
+  
+<img src="/src/assets/s0205-dimensions.png" width="400"/>
+
+## Schematics 
+
+<img src="/src/assets/s02g1-schematics.png"/>
+
+## Key Terms & Definitions
+
+**Host**  
+Any computer, terminal, or other device that can communicate over the USB line.
+
+**Byte**  
+An eight-bit hex value ranging from 00H to FFH (Decimal 0 to 255). The bit format of a byte is: (B7 B6 B5 B4 B3 B2 B1 B0) where B7 is most significant and bit B0 is least significant bit.
+
+**Nibble/Hex Digit**  
+A four-bit value ranging from 0H to FH. A byte consists of two nibbles.
+
+**ASCII**  
+A byte value representing a symbol.
+
+**Communication Format**  
+There are two formats to transmit a byte:
+
+1. **Hex format** - A hex byte is transmitted without any change to it. [**xxH**] will be used to denote this.
+
+	All commands and some data are sent by using this format.
+
+2. **ASCII HEX format** - Each nibble of the byte is converted to ASCII code and sent as a byte. [**xxAH**] will be used to denote this.
+
+	For example, the hex byte 5AH is transmitted in two bytes, 35H and 41H. The ASCII value for 5 is 35H and the ASCII value for A is 41H.
+
+	All addresses and most data are sent using this format.
+
+**Address**  
+A two-byte value ranging from 0001H to 07FFH representing the 2,047 memory locations for pictures and attributes on the flash memory.
+
+## Warranty
+
+NKK SWITCHES LIMITED WARRANTY AND LIMITATION OF LIABILITY
+
+The following limits our liability.  Please read.  
+
+NKK Switches hereby warrants this product against any and all manufacturing defects for a period of one year from the date of sale of this product to the original end user.  NKK Switches’ liability in the event of such defect is limited to repair or replacement of the defective products.  NKK Switches disclaims any liability or warranty obligation with respect to any product that is misused, damaged by any user, or not used in conformity with all applicable product specifications.
+
+NKK SWITCHES HEREBY DISCLAIMS ANY WARRANTY, EXPRESS OR IMPLIED, OTHER THAN THAT CONTAINED HEREIN.  NKK SWITCHES EXPRESSLY DISCLAIMS THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, AND SHALL HAVE NO LIABILITY BASED ON OR ARISING FROM ANY CLAIM OF SUCH WARRANTY.
+
+NKK Switches shall have no liability to any person for any incidental, consequential, special, punitive, or other damages of any kind whatsoever relating to any use of this product.
+
+USE OF THIS PRODUCT IN CONNECTION WITH ANY LIFE CRITICAL APPLICATION IS NOT RECOMMENDED.

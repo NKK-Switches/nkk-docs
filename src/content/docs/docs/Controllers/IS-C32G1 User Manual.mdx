@@ -1,0 +1,468 @@
+---
+title: IS-C32G1
+description: IS-C32G1 manual.
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> IS-C32G1 Intelligent Controller User Manual </div>
+
+<img src="/src/assets/C3201-top.png" width="400"/>
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors, which may appear in this document, nor does it make a commitment to update the information contained herein.
+SmartDisplay is trademark of NKK Switches.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Controller Features](#general-controller-features)
+- [Electrical Specifications](#electrical-specifications)
+- [Compatible Logic Boards](#compatible-logic-boards)
+  - [Logic Boards](#logic-boards)
+  - [Signal Booster](#signal-booster)
+  - [Connectors](#connectors)
+  - [Ribbon Cables](#ribbon-cables)
+- [Operational Detail](#operational-detail)
+  - [Power-up Sequence](#power-up-sequence)
+  - [Main Operational Mode](#main-operational-mode)
+  - [LED Backlighting](#led-backlighting)
+  - [Attributes](#attributes)
+- [Communication Protocol](#communication-protocol)
+  - [Image Format](#image-format)
+  - [Images, Attributes, and Backlight Numbering](#images-attributes-and-backlight-numbering)
+  - [Switch Numbering](#switch-numbering)
+  - [Backlights](#backlights)
+  - [Flash Memory](#flash-memory)
+- [Command List](#command-list)
+- [Saving Images/Attributes using Engineering Kits Communicator](#saving-imagesattributes-using-engineering-kits-communicator)
+- [Updating with New Firmware](#updating-with-new-firmware)
+- [Hardware](#hardware)
+  - [Controller Dimensions](#controller-dimensions)
+  - [Logic Board Dimensions](#logic-board-dimensions)
+- [Schematics](#schematics)
+- [Key Terms \& Definitions](#key-terms--definitions)
+- [Warranty](#warranty)
+
+
+## General Controller Features
+
+The IS-C32G1 controls up to 32 LCD 64x32 switches/displays. The IS-C32G1 is designed to be used in many different applications. There is total flexibility with user-defined features that allow the controllers to be programmed for specific applications. The user defined data and set-up are stored in a non-volatile memory and specify the way the system behaves. The firmware can be customized based on customer requirements. Below are current features:
+
+**General features:**
+- Control up to 32 LCD 64x32 switches/displays. Two banks of 16.
+- USB, RS232, RS422/RS485 communication (115,200 baud).
+- User downloadable images and backlight colors.
+- Look up tables for fonts 5x7 and 7x10.
+- 8 brightness settings.
+- Memory for 16,000 images, backlights, and attributes.
+- Reports switch activities via serial port.
+- Stand-alone operation or real time control by host.
+- A 10-pin Auxiliary port with 7 MC pins for control or sense other devices.
+- User defined blinking durations.
+- Firmware upgradable via USB.
+
+**Switch-action report from the controller to the host:**
+- On switch press/release status change, the new statuses are sent over the last communication interface.
+
+**Real-time operation features:**
+- Download graphic image data to any switch.
+- Select any image from flash memory to display on any of switches.
+- Create 6x8 font string for a specified row on a specified switch.
+- Create 9x12 font string for a specified row on a specified switch.
+- Change backlight color on any switch.
+
+## Electrical Specifications
+
++6.5VDC to +12VDC power, maximum current is 170mA without switches and 900mA with 32 switches.
+
+<Aside type="danger" title="Warning">
+    These products are ESD sensitive. ESD handling procedures must be followed.
+</Aside>
+
+## Compatible Logic Boards
+
+### Logic Boards
+
+Logic boards are switch panels that have glue logic to convert addressing and switch scanning to serial. A logic board can be designed for any number of switches. Logic boards can be daisy-chained using a 14-pin ribbon cable allowing for a variable number of switches to be controlled from one port of a controller. The daisy-chain capability allows switches to be mounted at any desired location on a control panel. Switches/displays can be soldered directly to the logic boards or mounted on sockets for removability.
+
+The logic boards listed below are standard production parts. There are additional prototype boards that are not listed. NKK Switches will work with customers to design and build custom logic boards in any desired specification.
+
+| Item | Part# with Sockets and Switches | Part# with Sockets | Description                                                          |
+| ---- | ---------------------------- | ----------------- | -------------------------------------------------------------------- |
+| 1    | IS-L02A1-CS                  | IS-L02A1-C        | Logic Board, 1x2, Long Travel LCD 64x32, 2SW. Side by side stackable |
+| 2    | IS-L02G1-CS                  | IS-L02G1-C        | Logic Board, 1x2, LCD 64x32, 2SW. Side by side stackable             |
+| 3    | IS-L02H2-CS                  | IS-L02H2-C        | Logic Board, 1x2, Compact LCD 64x32, 2SW. Side by side stackable     |
+| 4    | IS-L04G1-CS                  | IS-L04G1-C        | Logic Board, 2x2, LCD 64x32, 4SW. Side by side stackable             |
+| 5    | IS-L16G2-CS                  | IS-L16G2-C        | Logic Board, 4x4, LCD 64x32, 16SW. Side by side stackable            |
+
+All the logic boards for IS15EBFP4RGB-09YN can be populated with the compact switch IS15ESBFP4RGB.
+
+<div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L02A1-C</div>
+    <img src="/src/assets/IS-L02A1-C.png" width="200"/>
+  </div>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L02A1-CS</div>
+    <img src="/src/assets/IS-L02A1-CS.png" width="200"/>
+  </div>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L02H2-CS</div>
+    <img src="/src/assets/IS-L02H2-CS.png" width="200"/>
+  </div>  
+</div>
+
+<Aside type="note" title="Note">
+    New Logic Boards can be designed based on customer requirements.
+</Aside>
+
+<Aside type="caution" title="Caution">
+    - Make sure the power is off when connecting or disconnecting the Logic Boards to or from the controller or each other.  
+    - Connecting the Logic Boards improperly could damage either/both the Logic Boards and controller.
+</Aside>
+
+
+### Signal Booster
+
+This Logic Board signal booster may be needed when more than 10 logic boards are daisy chained or for long cable lengths.
+
+| Item | Part#     | Description                     |
+| ---- | --------- | ------------------------------- |
+| 1    | IS-LBUF01 | Signal Booster for Logic Boards |
+
+<img src="/src/assets/IS-LBUF01.png" width="150"/>
+
+### Connectors 
+
+The IS-C32G1 controller connects to the J1 header of the first logic board via a 14-pin ribbon cable. The J2 header of the first logic board connects to the J1 header of the second logic board and so on. The switch numbering starts with switch one on the first logic board. The first switch of the next logic board will be one number higher than the last switch of the previous logic board and so on.
+
+<img src="/src/assets/logic-board-connectors.png" width="500"/>
+
+<Aside type="caution" title="Caution">
+    Attaching the ribbon cable without the red line on pin 1 on each of the headers may cause damage to the controller or the logic board.
+</Aside>
+
+### Ribbon Cables
+
+These cables are used for connecting logic boards and the controller. Custom length cables can be made to order.
+| Item | Part#     | Length | Description                               |
+| ---- | --------- | ------ | ----------------------------------------- |
+| 1    | ISDCB81.2 | 1.2”   | RIBBON CABLE, 14 CONDUCTORS, 28AWG, .050" |
+| 2    | ISDCB83   | 3”     | RIBBON CABLE, 14 CONDUCTORS, 28AWG, .050" |
+| 3    | ISDCB88   | 8”     | RIBBON CABLE, 14 CONDUCTORS, 28AWG, .050" |
+| 4    | ISDCB812  | 12”    | RIBBON CABLE, 14 CONDUCTORS, 28AWG, .050" |
+| 5    | ISDCB824  | 24”    | RIBBON CABLE, 14 CONDUCTORS, 28AWG, .050" |
+| 6    | ISDCB836  | 36”    | RIBBON CABLE, 14 CONDUCTORS, 28AWG, .050" |
+
+The logic boards have two connectors:
+
+**J1 Input port:** 7x2 male header with 0.1” x 0.1” spacing.  
+This connector connects to a controller port or J2 of the previous logic board in the daisy chain.
+
+| Pin | Function | Description                                      |
+|-----|----------|--------------------------------------------------|
+| 1   | Din      | Connected to Din of the first shift register     |
+| 2   | GND      | Ground                                           |
+| 3   | CLK      | Clock for all shift registers                    |
+| 4   | GND      | Ground                                           |
+| 5   | NC       | Not connected                                    |
+| 6   | Vsup     | 7V to 12V                                        |
+| 7   | LP       | Latch all shift register outputs to all drivers  |
+| 8   | NC       | Not connected                                    |
+| 9   | SCK      | Clock of all SmartDisplays                       |
+| 10  | NC       | Not connected                                    |
+| 11  | SDI      | Data of all SmartDisplays                        |
+| 12  | Vsup     | 7V to 12V                                        |
+| 13  | NC       | Not connected                                    |
+| 14  | SWRD     | Switch Read bus for all SmartDisplays            |
+
+
+
+**J2 Output port:** 7x2 male header with 0.1” x 0.1” spacing.  
+This connector connects to J1 of the next logic board in the daisy chain.
+
+| Pin | Function | Description                                 |
+|-----|----------|---------------------------------------------|
+| 1   | Dout     | Connected to Dout of the last shift register |
+| 2   | GND      | Ground                                      |
+| 3   | CLK      | Connected to CLK of J1                      |
+| 4   | GND      | Ground                                      |
+| 5   | GND      | Ground                                      |
+| 6   | Vsup     | 7V to 12V                                   |
+| 7   | LP       | Connected to LP of J1                       |
+| 8   | NC       | Not connected                               |
+| 9   | SCK      | Connected to SCK of J1                      |
+| 10  | GND      | Ground                                      |
+| 11  | SDI      | Connected to SDI of J1                      |
+| 12  | Vsup     | 7V to 12V                                   |
+| 13  | GND      | Ground                                      |
+| 14  | SWRD     | Connected to SWRD of J1                     |
+
+
+
+## Operational Detail
+
+### Power-up Sequence
+The system loads image, backlight, and attribute data from flash memory for 32 switches (even if the switches are not physically present). Switches 0-15 are connected to J4, and switches 16-31 are connected to J5. Images, attributes, and backlight addresses 1-32 are loaded to switches 0-31, respectively. The system then waits for a button press or host command while scanning for switch presses. Images, backlight, and attribute data are stored in separate sections of memory, so erasing the image data will not remove the other data. 
+
+When a switch is pressed, the system reports that back to the host software. The system only reports switch state changes (a press or release). More than one switch can be in the pressed position at the same time. Bits are set when the switch is pressed and cleared when the switch is released.
+
+### Main Operational Mode
+The controller waits for input or a host command. It will send the following bytes for a switch activity:  
+**50 AA AA AA AA AA AA AA AA**
+
+The 0x50 signifies a switch response. The **AA**s are the 32-bit switch number mask encoded in ASCII hex, and represent what switches are pressed. Each bit represents the corresponding switch, and a high bit is pressed while a low bit is not pressed. The number is (1 < < switch_press).
+
+Example response: 50 32 31 30 30 34 30 30 33
+
+32 31 30 30 34 30 30 33 converted from ASCIII hex is 0x21004003 (0b00100001 00000000 01000000 00000011) Bits 0, 1, 14, 23, and 29 are high, meaning switches 1, 2, 15, 24, and 30 are all pressed. (Switch numbers are 0-indexed). Examples of single switch presses are:
+
+| Hex Value | Switch Pressed    |
+| --------- | ----------------- |
+| 00000000  | No switch pressed |
+| 00000001  | Switch 0 pressed  |
+| 00000002  | Switch 1 pressed  |
+| 00000004  | Switch 2 pressed  |
+| 00000008  | Switch 3 pressed  |
+| 00000010  | Switch 4 pressed  |
+| . . .     | . . .             |
+| 10000000  | Switch 28 pressed |
+| 20000000  | Switch 29 pressed |
+| 40000000  | Switch 30 pressed |
+| 80000000  | Switch 31 pressed |
+
+### LED Backlighting
+
+An LED code is one byte. A low bit denotes OFF and a high bit denotes ON. Bits 0 and 1 must be high. There are 64 different colors available.
+
+|       |     |     |     |     |     |     |     |     |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Bit   | 7   | 6   | 5   | 4   | 3   | 2   | 1   | 0   |
+| Color | R   | R   | G   | G   | B   | B   | 1   | 1   |
+
+(B = Blue, G = Green, R = Red)
+
+The picture below shows the available backlight colors for LCD 64x32. The top 2 digits on each color are the codes for that backlight color.
+
+*Backlight Color Code Table*
+
+<img src="/src/assets/color-table-64x32.png" width="1000"/>
+
+The backlight brightness can be adjusted using the “change brightness” command. See the associated [command list](#command-list) for details.
+
+### Attributes
+
+Attributes determine system behavior when a button is pressed. Each switch is assigned an address on startup (1-32). Each address has image, backlight, and attribute information. The attribute determines what new address every switch in the system changes to (if any). When a switch is pressed, the attribute from the address of the image being displayed is executed.
+
+The attributes are user defined and downloaded either using Engineering Kits Communicator from an Excel file or manually using the command. See the associated [command list](#command-list) for attribute examples and formatting.
+
+## Communication Protocol
+
+The controller communicates with the host by USB, RS232 (115,200 baud), or R422. The commands and responses are the same regardless of protocol. One command should be transmitted at the time. If multiple commands sent at the same time only the first one gets executed and the rest are ignored. 
+- RS232/422: 115K, 8bit no parity, one stop bit.
+- The USB communicates over a virtual comm port with the same settings as RS232.
+
+The command behavior is:
+
+- If the byte is a command, the controller transmits a 61H and executes the subroutine for the command and upon completion of command the controller transmits 79H. One-byte commands do not transmit 79H. See the associated [command list](#command-list).
+- If the byte is not a command, it is ignored.
+
+When the controller expects additional information:
+
+- A timer is set. If the expected data bytes are not received, the controller transmits 6EH and terminates the routine.
+- If the byte value is not acceptable (invalid range, option, etc.), the controller transmits 6EH and terminates the routine.
+
+Commands are one byte in the range of 01H, 20H to 2FH and are transmitted in hex format. The controller transmits 61H upon receiving of any of the command byte stated above. When a command has more bytes associated as options or data then the controller transmits 79H upon completion of the command. If a command requires the controller to transmit information, the information will be transmitted after 61H and before 79H. The proper format for all command options and data is specified in the associated [command list](#command-list). 
+
+An ASCII Hex byte is a normal hex byte split in two halves and converted to their ASCII equivalent (www.asciitable.com). This is a safety measure so that all data sent is not accidentally interpreted as a command. Most data sent after commands and sub-commands are encoded in ASCII Hex. 
+
+<img src="/src/assets/ascii-hex.png" width="700"/>
+
+### Image Format
+
+Images are 36x24 monochrome .bmp files. They can be created in Microsoft Paint or any image software. Images should be sent using NKK’s Engineering Kits Communicator program. It extracts the 120-byte image data and encodes it in ASCII hex, so 240 bytes will be sent over USB/RS232/RS422 serial.
+
+If you want to download the image with different software the image format is described in the table below:
+
+|          | Left of Image |           |           |           | Right of Image |
+| -------- | ------------- | --------- | --------- | --------- | -------------- |
+| Line #1  | Byte# 1       | Byte# 2   | Byte# 3   | Byte# 4   | Byte# 5        |
+| Line #2  | Byte# 6       | Byte# 7   | Byte# 8   | Byte# 9   | Byte# 10       |
+| ...      | ...           | ...       | ...       | ...       | ...            |
+| Line #23 | Byte# 111     | Byte# 112 | Byte# 113 | Byte# 114 | Byte# 115      |
+| Line #24 | Byte# 116     | Byte# 117 | Byte# 118 | Byte# 119 | Byte# 120      |
+
+### Images, Attributes, and Backlight Numbering
+
+All images, attributes, and backlight numberings are inherently linked together. E.g., image 0001 corresponds with backlight 0001 and attribute 0001, image 0002 corresponds with backlight 0002 and attribute 0002, and so on. Care should be taken when ordering images, attributes, and backlights to send so that the desired behaviors are grouped together.
+
+### Switch Numbering
+
+Switch indexes are 0 based, 0-15 (0x00-0x0F) are connected to the J4 connector, 16-31 (0x10-0x1F) are connected to the J5 connector. Switch index 16 would equal switch 1 on the J5 connector.
+
+
+### Backlights
+
+Backlights by default are on the OFF cycle. If blinking is required, send the backlight duration command to set how long the ON and OFF cycles are. The system will switch between the two states at the designated time periods.
+
+### Flash Memory
+
+The flash memory holds up to 16k images, backlights, and attributes. The flash memory is NOR flash, which means that it needs to be erased before new data is written. Erasing flash memory sets all the bits high. Writing to flash memory only changes a high bit low. Writing the same information does not require erasing. However, if the information is changed the flash should be erased. The images, backlight, and attribute data are saved in different regions of flash memory. There are commands to erase the entire flash or individual regions.
+
+## Command List
+
+Refer to the IS-C32G1 Command List xlsx file for the full list of commands and examples. The command list as well as example images and attributes can be downloaded here: [IS-C32G1 Documents](https://www.nkkswitches.com/wp-content/uploads/2024/01/IS-C32G1-Documents-Rev-C.zip)
+
+## Saving Images/Attributes using Engineering Kits Communicator
+
+The Engineering Kits Communicator program is also compatible with IS-C3201. It can be downloaded from our website at: https://www.nkkswitches.com/download-software/  
+For more details, refer to the Engineering Kits Communicator user manual.
+
+The Engineering Kits Communicator loads images in alphanumeric order according to the image files names. It auto-assigns a sequential address to each image. Be sure to keep this in mind when naming images so that video images or animations are listed in the desired order. Avoid using symbols in the names as some symbols interfere with alphanumeric ordering. All images to be loaded should be saved in a single folder. The default starting address is 0001. This can be changed if needed.
+
+To save images to the system:
+1.	Open Engineering Kits Communicator.
+2.	From the drop-down menu at the top, select the COM port of the system (usually the last one).
+3.	Click the ‘Open Port’ button.
+4.	Press the call button and verify the system responds with ‘61’ in blue text in the left text box.
+5.	Select the image type from the drop-down in the ‘Loading Images’ section.
+6.	Click the ‘Import Images’ button.
+7.	Navigate to the directory with all the images and select one and click ‘Open’.
+8.	Observe that the images are loaded alphanumerically and automatically assigned addresses.
+    - If some/all images do not show up in the image list after selecting the directory, it is because the image is not in the proper resolution or file type (.bmp). Double-check the image size is correct before downloading. If an image was skipped, the images will load with one address off and will need to be erased before reloading.
+9.	If images were previously saved, click the ‘Erase Flash’ button.
+    - Note that this operation can take up to 2 minutes.
+10.	Click the ‘All selected images’ button at the bottom.
+11.	Wait for the ‘Success’ message. If the process fails, click the ‘All selected images’ button again.
+
+If writing custom software to save images, all data after the command must be sent in ASCII hex.
+
+To save attributes to the system:
+1.	Click the ‘Excel File’ button.
+2.	Select the Excel from your PC.
+3.	Wait for the upload to finish.
+
+Refer to the Engineering Kits Communicator user manual for a full list of features and more information on attributes and images.
+
+## Updating with New Firmware
+
+The IS-C32G1 firmware is field upgradable via USB and can be modified to meet customer specifications. The standard IS-C32G1 firmware will continue to receive firmware upgrades with added features and bug fixes. The latest command list document will show the latest firmware version available. Major firmware releases will also be shown in the change log at the bottom of this document. Each controller can display the latest firmware version applied with the associated command. See the [command list](#command-list) for more details. 
+
+If you would like a copy of the latest firmware, please email engineering@nkkswitches.com.
+
+The firmware is distributed as a .hex file. To update IS-C32G1 with a hex file, you will need the NKK Firmware Update Utility. To get a free download of the program, please email engineering@nkkswitches.com.
+
+Refer to the NKK Firmware Update Utility guide that comes with the download for instructions on how to update new firmware. A summary of the procedure is below:
+
+To update the firmware:
+1.	Connect IS-C32G1 to a PC via USB. 
+2.	Open the NKK Firmware Update Utility.
+3.	If ‘NOT IN BOOT MODE’ message is displayed at the top, click the ‘Reconnect’ button. 
+4.	The boot firmware version and COM connected messages should be displayed at the top.
+5.	Click the ‘Erase All Firmware’ button and wait for the ‘Complete’ message.
+6.	Click the ‘Load File’ button.
+7.	Select the hex file from your PC.
+8.	Click the ‘Send New Firmware’ button and wait for the ‘Complete’ message.
+
+Make sure the IS-C32G1 is not connected to Engineering Kits Communicator via COM port when using the NKK Firmware Update Utility and vice versa. The COM port can only be connected to one program at a time. 
+
+## Hardware
+
+### Controller Dimensions
+Board size: 3.6” x 3.0” (91.44 x 76.2 mm)   
+Mounting hole size: 0.125” (3.175 mm) 
+
+<img src="/src/assets/c3201-dimensions.png" width="700"/>
+
+**Board Photo:**
+
+<img src="/src/assets/C3201-top.png" width="400"/>
+
+**Connectors:**
+
+**Power Connector J8:** Molex 0430450200, top position power, bottom position ground.  
+Mating: Molex 0430250208
+
+**RS422 Connector J6:**  TE Connectivity 284392-4  
+Mating: Bare wire
+
+**RS485 Connector J6:**  TE Connectivity 284392-4 (R8&R9 have to be populated)  
+Mating: Bare wire
+
+**RS232 Connector J7:** TE Connectivity 5555165-1  
+Mating: RJ25 connector
+
+**USB J3:** TE Connectivity 1734035-2  
+Mating: USB Mini B
+
+### Logic Board Dimensions
+
+All dimensions are in inches. 
+
+Logic board dimensions for L02A1 and L02G1:
+
+<img src="/src/assets/l02g1-dimensions.png" width="600"/>
+
+Logic board dimensions for L02H2:
+
+<img src="/src/assets/l02h2-dimensions.png" width="600"/>
+
+Logic board dimensions for L04G2:
+
+<img src="/src/assets/l04g2-dimensions.png" width="600"/>
+
+Logic board dimensions for L16G2:
+
+<img src="/src/assets/l16g2-dimensions.png" width="600"/>
+
+Logic board dimensions for LBUF01:
+
+<img src="/src/assets/lbuf01-dimensions.png" width="600"/>
+
+## Schematics
+
+IS-C32G1 and IS-C3201 use the same PCB.
+
+<img src="/src/assets/c3201-schematics.png"/>
+
+## Key Terms & Definitions
+
+**Host:**  
+Any computer, terminal, or other device that sends commands over USB, RS232, or RS422.
+
+**Controller:**  
+A PCB with a microcontroller that controls one or more logic boards
+
+**Logic board:**  
+A PCB with one or more SmartDisplays that can be daisy chained
+
+**Byte:**  
+An eight-bit hex value ranging from 00H to FFH (Decimal 0 to 255). The bit format of a byte is: (B7 B6 B5 B4 B3 B2 B1 B0) where B7 is most significant and bit B0 is least significant bit.
+
+**Nibble/Hex digit:**  
+A four-bit value ranging from 0H to FH. A byte consists of two nibbles.
+
+**Communication format:**  
+There are two formats to transmit a byte:
+
+1. Hex format - A hex byte is transmitted without any change to it. [xxH] will be used to denote this. All commands and some data are sent by using this format.
+
+2. ASCII HEX format - Each nibble of the byte is converted to ASCII code and sent as a byte. [xxAH] will be used to denote this.
+
+For example, the hex byte 5AH is transmitted in two bytes, 35H and 41H. The ASCII value for 5 is 35H and the ASCII value for A is 41H.
+
+All addresses and most data are sent using this format.
+
+## Warranty
+
+NKK SWITCHES LIMITED WARRANTY AND LIMITATION OF LIABILITY
+
+The following limits our liability.  Please read.  
+
+NKK Switches hereby warrants this product against any and all manufacturing defects for a period of one year from the date of sale of this product to the original end user.  NKK Switches’ liability in the event of such defect is limited to repair or replacement of the defective products.  NKK Switches disclaims any liability or warranty obligation with respect to any product that is misused, damaged by any user, or not used in conformity with all applicable product specifications.
+
+NKK SWITCHES HEREBY DISCLAIMS ANY WARRANTY, EXPRESS OR IMPLIED, OTHER THAN THAT CONTAINED HEREIN.  NKK SWITCHES EXPRESSLY DISCLAIMS THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, AND SHALL HAVE NO LIABILITY BASED ON OR ARISING FROM ANY CLAIM OF SUCH WARRANTY.
+
+NKK Switches shall have no liability to any person for any incidental, consequential, special, punitive, or other damages of any kind whatsoever relating to any use of this product.
+
+USE OF THIS PRODUCT IN CONNECTION WITH ANY LIFE CRITICAL APPLICATION IS NOT RECOMMENDED.

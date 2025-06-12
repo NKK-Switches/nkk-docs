@@ -1,0 +1,568 @@
+---
+title: OLED
+description: OLED application notes.
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the OLED Color SmartDisplay </div>
+
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+  <img src="/src/assets/oled-frameless.png" width="200"/>
+  <img src="/src/assets/standard-oled.png" width="190"/>
+  <img src="/src/assets/oled-display.png" width="170"/>  
+</div>
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches. 
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Information](#general-information)
+- [Part Numbers](#part-numbers)
+  - [Switches](#switches)
+  - [Engineering Developments Kits](#engineering-developments-kits)
+- [Pin-outs](#pin-outs)
+- [Design Considerations](#design-considerations)
+  - [1. Power Requirements VCC (16V)](#1-power-requirements-vcc-16v)
+  - [2. Communication](#2-communication)
+  - [3. Hardware and Layout](#3-hardware-and-layout)
+  - [4. Controlling Many OLED Switches or Displays](#4-controlling-many-oled-switches-or-displays)
+  - [5. SCK Frequency](#5-sck-frequency)
+  - [6. Running Video](#6-running-video)
+- [Operating Life](#operating-life)
+- [Initialization](#initialization)
+- [Memory Format](#memory-format)
+- [Specifying a Memory Window for Downloading](#specifying-a-memory-window-for-downloading)
+- [Pixels and Image Format](#pixels-and-image-format)
+- [Display Commands Available](#display-commands-available)
+- [Additional Commands Available](#additional-commands-available)
+- [Scrolling (Screensaver)](#scrolling-screensaver)
+- [Graphic Commands](#graphic-commands)
+- [Initialization Options](#initialization-options)
+- [Sample Schematic for a Multi-switch Controller](#sample-schematic-for-a-multi-switch-controller)
+- [Frequently Asked Questions](#frequently-asked-questions)
+
+## General Information
+
+These application notes should be used in conjunction with the OLED [datasheets](/docs/datasheets) which have the timing diagrams for communication. The Frameless OLED switch is rated for 50,000 hours of screen life. The standard OLED switch and OLED display are rated for 30,000 hours of screen life. The same OLED controller is used for all the three OLED SmartDisplay. The initialization values are different for each product: OLED switch [Table 1](#table-1), OLED display [Table 2](#table-2), and Frameless OLED switch [Table 3](#table-3). The rest of the application notes apply to all OLED modules. The footprint and physical dimensions of the OLED switch and the Frameless OLED switch are the same. 
+
+## Part Numbers
+
+### Switches
+
+The OLED color family currently has three products (a frameless pushbutton, a standard pushbutton, and a display). All OLED modules incorporate the same OLED controller (SSD1331). For prototyping, it is recommended to use the relevant SmartDisplay socket accessory and charge pump. The charge pump produces 16V from the logic level voltage and has an enable pin. When the charge pump is disabled, the 16V is floating. The IS-CHPMP has up to 21mA current capability. The IS-CHPMPHP has up to 100mA current capability. 
+
+| Switch                                                                           | PN        | Pixels | Socket      |
+| -------------------------------------------------------------------------------- | --------- | ------ | ----------- |
+| Frameless OLED Pushbutton <img src="/src/assets/oled-frameless.png" width="50"/> | ISF15ACP4 | 96x64  | AT9704-085L |
+| OLED Pushbutton <img src="/src/assets/standard-oled.png" width="50"/>            | ISC15ANP4 | 64x48  | AT9704-085L |
+| OLED Display <img src="/src/assets/oled-display.png" width="43"/>                | ISC01P    | 52x36  | AT9704-085M |
+
+### Engineering Developments Kits
+
+Engineering Development Kits are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by not only familiarizing design engineers to SmartDisplay products, but also as a development platform for experimentation and design viability testing. The schematic and source codes in C language are provided. Please refer to the [Engineering Kits for OLED](/docs/engineering-kits/oled-engineering-kits-user-manual) documentation for more information.
+
+<img src="/src/assets/IS-ENG-KIT-7-FF.png" width="300"/>
+
+## Pin-outs
+
+The pin functions are the same for all OLED switches. The OLED display does not have switch pins.
+
+| Pin | Symbol | Pin Name        | Function                                                             |
+| --- | ------ | --------------- | -------------------------------------------------------------------- |
+| 1   | SW     | Switch terminal | Normally open switch                                                 |
+| 2   | SW     | Switch terminal | Normally open switch                                                 |
+| 3   | VDD    | Power           | Power source for the logic circuit                                   |
+| 4   | SS     | Slave select    | Select the OLED module                                               |
+| 5   | RES    | Reset           | Reset the OLED module                                                |
+| 6   | D/C    | Data/Command    | Indicates image data or command and the associated data transmission |
+| 7   | SCK    | Clock           | SPI clock                                                            |
+| 8   | SDI    | Data            | SPI data                                                             |
+| 9   | VCC    | Power           | Power source for the OLED                                            |
+| 10  | GND    | Ground          |                                                                      |
+
+**Switch terminals (SW, SW)**: The switch is normally open. The switch can be scanned by connecting one pin to ground and the other pin to a micro-controller pin with a pull-up resistor. For a matrix of switches, many different methods can be used for switch scanning.
+
+**Ground**: Ground for the logic circuit and OLED.
+
+**VDD**: Power source for the logic circuit (2.4V to 3.5V).
+
+**VCC**: Supply voltage for the OLED (15V to 17V).
+
+**SCK**: Clock for serial communication. The maximum is 6.66 MHz.
+
+**SDI**: Data for serial communication.
+
+**D/C**: Data/command select. When this pin is pulled low, the transmitted bytes are treated as a command along with the associated data. When this pin is pulled high, the transmitted bytes are treated as image data.
+
+**RES**: Reset.
+
+**SS**: Select the OLED module. This pin should be pulled down for the duration of the data/command communication.
+
+## Design Considerations
+
+### 1. Power Requirements VCC (16V)
+
+There are two voltages required for controlling the OLED switch or display. The internal controller must be ready before the VCC (16V) is supplied. This means that VCC must be supplied with a delay after VDD (please refer to the [datasheet](/docs/datasheets) for power up timing). Additionally, VCC cannot be less than VDD at any time due to the internal ESD circuit. You can assume the ESD circuit connects VDD to VCC via a diode. These requirements leave two options for the designer of a controller:
+
+- When VCC is disabled, its voltage is to be the same as VDD.
+- When VCC is disabled, it is float.
+
+Many manufacturers have introduced a charge pump IC chip for the OLED. The charge pump produces the required voltage (16V) for the OLED from a 2.4 to 5.5 V input, and the SHTDN pin for the voltage output to be float. Charge pump manufacturers should provide the schematic, parts list, and suggested layout to be incorporated in the design.
+
+NKK has designed two charge pumps that can provide up to 21mA or 100mA at 16V output with a 2.4 to 5.5V input. They have a shut-down pin to activate/float the output voltage. The charge pump part numbers are IS-CHPMP and IS-CHPMPHP.
+
+Care must be taken in the design so that VCC is disabled upon power-up. While power-up is completely under the designer’s control, powering off can happen at any time when the user does not follow the turn off procedure. The designer should have VCC capacitance less than VDD capacitance, or have a pull-down resistor for VCC. This is to ensure that VCC is not present after VDD when powering off.
+
+The OLED current consumption is proportional to the number of pixels on. The maximum current consumption is when all pixels are at full brightness (white image).
+
+### 2. Communication
+
+The OLEDs accept serial communication. There are four control lines (Clock, Data, C/D, and SS). The communication is byte oriented, and the first bit is taken as the highest bit of the byte. A data bit is taken on the rising edge of each clock. The two pins of microcontroller I/O with output capabilities, SPI pins MOSI and SCLK, or any other serial pins that can comply with clock and data requirements can be used.
+
+C/D determines whether the received transmission is image data or a command along with associated data. Please note, there is no command for image data. Any bytes received while C/D is high will be considered image data. Once the image data for a pixel is received, the cursor address increments to the next pixel. Once it reaches the end of a specified window, it starts from the beginning. The reason for this feature is no command is required when displaying video. It is good practice to have C/D normally high so any mistake in firmware affects only the image rather than the setup, which could possibly damage the OLED. Any microcontroller I/O with output capability can be used as C/D.
+
+SS determines if the OLED accepts the transmission from the clock and data lines or ignores them. When SS is high, all activity from the clock or data lines are ignored. A command and its associated data must be completed in one session when SS is pulled low. If SS is pulled high before a command, and its associated data are completed, that command is ignored. If SS is pulled high in the middle of a byte, that byte is ignored, and in the next session when SS is pulled down, a new byte is started. Multiple commands can be transmitted in one session. A common mistake is not waiting for SPI transmission to finish before pulling SS high. Any microcontroller I/O with output capability can be used as SS.
+
+### 3. Hardware and Layout
+
+To avoid noise on the display, these steps are recommended:  
+1. Add a serial resistor (22 ohm to 27 ohm) in series close to the OLED pin for the SCK line.
+2. Add a 0.1µF capacitor close to the VDD pin.
+3. Ensure good ground routing to avoid potential ground differences on the board.
+4. Add a serial resistor for each other signal.
+
+### 4. Controlling Many OLED Switches or Displays
+
+When controlling many OLED switches, it is suggested to divide the signals via a driver. For example, NKK designed a 16-switch logic board which connects to the controller via a ribbon cable. Using a 74HC4050, we split the SCK signal to four signals and all other signals were split to two signals. The result is every four switches share one clock signal and every eight switches share all other signals. NKK tested the 16-switch logic board with various cable lengths up to 180 inches (the longest cable we had) without any problem.
+
+### 5. SCK Frequency
+
+The specification states the maximum frequency is 6.6MHz. However, the Engineering Kits SCK is 8 MHz. Some customers have reported using a SCK as high as 16 MHz. Possibly, there is a two-byte buffer in the OLED communication, and throughput maximum is 6.6MHz. Since it takes time for a microcontroller to retrieve/convert the data, the throughput is always less than SCK frequency. If a higher frequency is used, NKK recommends experimenting with the timing between bytes or calculating so 6.6MHz throughput is not exceeded.
+
+### 6. Running Video
+
+Displaying video is achieved by sequentially sending video frames at the desired speed. The theoretical maximum frames per second for the Frameless OLED is about 67. If multiple OLEDs need to run video at the same time, the design may need to have multiple clocks and data lines. Running 9 Frameless OLED with the same clock and data line will yield about 7.5 fps. Having clocks and data lines for every three switches will improve to about 22 fps at 6.6MHz. For example, for one Frameless OLED:
+
+<img src="/src/assets/equation-oled-fps.png" width="300"/>
+
+## Operating Life
+
+The OLED life for the standard pushbutton and display is rated for 30,000 hours (40% pixels on). The OLED life for the Frameless pushbutton is rated for 50,000 hours (40% pixels on). This means the white color will be at half brightness after 30,000/50,000 hours. The OLED life rating is based on displaying moving images such as videos. It is determined that when a display is showing a video, on average, each pixel of the display is on 40 percent of the time.
+
+Brightness has an inverse effect on life. For example, using a 30,000-hour rated OLED at half brightness increases the life of the display to 60,000 hours.
+
+When a still image or text is displayed for an extended period, the pixels used for the image will become dimmer than the surrounding pixels that have not been used. For example, if a blue color is used in one area most of the time, and then white is displayed in that area, the white will have a tint of yellow. It is yellow because the red and green colors are now stronger than the blue. By properly designing the image colors, and by anticipating the amount of time they will be displayed, this problem can be avoided. For still images, longer life can be achieved if all the colors are used and still images are alternated.
+
+As a reference for the 30,000-hour rated OLED, the half-life of individual colors at 100 percent brightness are as follows:
+- Green is over 20,000 hours.
+- Blue is over 10,000 hours.
+- Red is over 10,000 hours.
+
+The creativity of the software engineer can drastically improve the life expectancy of the OLED. It is possible to get a much higher than indicated 30,000/50,000 hours of life through image positioning, incorporating dimming, or using screen savers and/or moving images.
+
+## Initialization
+
+The initialization procedure upon power up for the OLED Pushbutton (64x48), OLED Display (52x36), and Frameless OLED Pushbutton (96x64) are stated in tables [1](#table-1), [2](#table-2), and [3](#table-3).
+
+By design, VCC should be disabled upon power up. The Reset pin should be set low for a minimum of 3 μs and then set high. VCC can be enabled any time from this point to before the display is turned ON at the end of initialization. Initialize the OLED controller by transmitting the commands and data from the appropriate table below. Each command is one byte and has 0 to 10 associated data bytes. The D/C pin should be set low for the entire command and its associated data. To transmit each command, set the select pin to low, transmit the command and its associated data, and then set the select pin to high.
+
+<div id="table-1" style={{ textAlign: "left" }}>
+  <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Table 1: Initialization for the OLED Pushbutton (64x48), 30,000-hour life</div>  
+</div>
+
+| Step | Command                 | Function                                   | Remark |
+| ---- | ----------------------- | ------------------------------------------ | ------ |
+| 4.1  | 81H 15H                 | Contrast for color A                       | Note 1 |
+| 4.2  | 82H 1AH                 | Contrast for color B                       | Note 1 |
+| 4.3  | 83H 17H                 | Contrast for color C                       | Note 1 |
+| 4.4  | 87H 0FH                 | Master current control                     |        |
+| 4.5  | A0H 70H                 | Remap and color depth setting              |        |
+| 4.6  | A1H 00H                 | Set display start line                     |        |
+| 4.7  | A2H 10H                 | Set display offset                         | Note 1 |
+| 4.8  | A4H                     | Normal display                             |        |
+| 4.9  | A8H 2FH                 | Multiplex ratio                            | Note 1 |
+| 4.10 | ABH 00H 12H 0CH 14H 12H | Dim mode setting for color A, B and C      |        |
+| 4.11 | ADH 8EH                 | Master configuration                       | Note 1 |
+| 4.12 | B0H 0BH                 | Power save mode                            |        |
+| 4.13 | B1H 44H                 | Phase 1 and 2 period adjustment            | Note 1 |
+| 4.14 | B3H A0H                 | Display clock divider/oscillator frequency | Note 1 |
+| 4.15 | B9H                     | Enable linear gray scale                   | Note 1 |
+| 4.16 | BBH 12H                 | Pre-charge level                           | Note 1 |
+| 4.17 | BEH 3EH                 | Set Vcomh                                  | Note 1 |
+| 4.18 | AFH                     | Display on in normal mode                  |        |
+
+<Aside type="caution" title="Note 1">
+  Changing the set-up values may cause damage to the OLED modules.
+</Aside>
+
+
+<div id="table-2" style={{ textAlign: "left" }}>
+    <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Table 2: Initialization for the OLED Display (52x36), 30,000-hour life</div>
+</div>
+
+| Step | Command                 | Function                                   | Remark |
+| ---- | ----------------------- | ------------------------------------------ | ------ |
+| 4.1  | 81H 0EH                 | Contrast for color A                       | Note 1 |
+| 4.2  | 82H 13H                 | Contrast for color B                       | Note 1 |
+| 4.3  | 83H 12H                 | Contrast for color C                       | Note 1 |
+| 4.4  | 87H 0FH                 | Master current control                     |        |
+| 4.5  | A0H 70H                 | Remap and color depth setting              |        |
+| 4.6  | A1H 00H                 | Set display start line                     |        |
+| 4.7  | A2H 1CH                 | Set display offset                         | Note 1 |
+| 4.8  | A4H                     | Normal display                             |        |
+| 4.9  | A8H 23H                 | Multiplex ratio                            | Note 1 |
+| 4.10 | ABH 00H 07H 0AH 09H 12H | Dim mode setting for color A, B and C      |        |
+| 4.11 | ADH 8EH                 | Master configuration                       | Note 1 |
+| 4.12 | B0H 0BH                 | Power save mode                            |        |
+| 4.13 | B1H 44H                 | Phase 1 and 2 period adjustment            | Note 1 |
+| 4.14 | B3H 30H                 | Display clock divider/oscillator frequency | Note 1 |
+| 4.15 | B9H                     | Enable linear gray scale                   | Note 1 |
+| 4.16 | BBH 12H                 | Pre-charge level                           | Note 1 |
+| 4.17 | BEH 3CH                 | Set Vcomh                                  | Note 1 |
+| 4.18 | AFH                     | Display on                                 |        |
+
+<Aside type="caution" title="Note 1">
+  Changing the set-up values may cause damage to the OLED modules.
+</Aside>
+
+<div id="table-3" style={{ textAlign: "left" }}>
+    <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Table 3: Initialization for Frameless OLED Pushbutton (96x64), 50,000-hour life</div>
+</div>
+
+| Step | Command                 | Function                                   | Remark |
+| ---- | ----------------------- | ------------------------------------------ | ------ |
+| 4.1  | 81H 1CH                 | Contrast for color A                       | Note 1 |
+| 4.2  | 82H 2EH                 | Contrast for color B                       | Note 1 |
+| 4.3  | 83H 2CH                 | Contrast for color C                       | Note 1 |
+| 4.31 | 8AH 4FH                 | Second pre charge speed for color A        | Note 2 |
+| 4.32 | 8BH 74H                 | Second pre charge speed for color B        | Note 2 |
+| 4.33 | 8CH 88H                 | Second pre charge speed for color C        | Note 2 |
+| 4.4  | 87H 0FH                 | Master current control                     |        |
+| 4.5  | A0H 68H                 | Remap and color depth setting              |        |
+| 4.6  | A1H 00H                 | Set display start line                     |        |
+| 4.7  | A2H 00H                 | Set display offset                         | Note 1 |
+| 4.8  | A4H                     | Normal display                             |        |
+| 4.9  | A8H 3FH                 | Multiplex ratio                            | Note 1 |
+| 4.10 | ABH 00H 0EH 17H 16H 12H | Dim mode setting for color A, B and C      |        |
+| 4.11 | ADH 8EH                 | Master configuration                       | Note 1 |
+| 4.12 | B0H 0BH                 | Power save mode                            |        |
+| 4.13 | B1H 17H                 | Phase 1 and 2 period adjustment            | Note 1 |
+| 4.14 | B3H F0H                 | Display clock divider/oscillator frequency | Note 1 |
+| 4.15 | B9H                     | Enable linear gray scale                   | Note 1 |
+| 4.16 | BBH 1DH                 | Pre-charge level                           | Note 1 |
+| 4.17 | BEH 20H                 | Set Vcomh                                  | Note 1 |
+| 4.18 | AFH                     | Display on in normal mode                  |        |
+
+<Aside type="caution" title="Note 1">
+  Changing the set-up values may cause damage to the OLED modules.
+</Aside>
+
+<Aside type="note" title="Note 2">
+  All three commands must be transmitted in one session.
+</Aside>
+
+Upon finishing initialization, the OLED module displays the content of whatever is in the memory.
+
+## Memory Format
+
+The onboard OLED controller can control up to 96x64 pixels. The controller memory size is 96x2 bytes per pixel x64. The OLED on-board memory map is as follows:
+
+<img src="/src/assets/oled-memory-map.png" width="500"/>
+
+The memory data specified by yellow will be displayed on the OLED Display (52x36).
+
+The memory data specified by yellow and blue will be displayed on the OLED Pushbutton (64x48).
+
+All the 96x64 memory (specified by yellow, blue, and green) will be displayed on the Frameless OLED Pushbutton (96x64).
+
+## Specifying a Memory Window for Downloading
+
+A memory window is specified by a beginning and end column and a beginning and end row. These boundaries are set by commands 15H and 75H.
+
+The two bytes following the 15H command specify the beginning and end columns (range 00H to 5FH) and the cursor moves to the beginning column.
+
+The two bytes following the 75H command specify the beginning and end rows (range 00H to 3FH) and the cursor moves to the beginning row.
+
+The boundaries of the memory window can be changed at any time to any size and location of the memory.
+
+The table below shows the commands to specify the size and location of memory corresponding to the OLED Pushbutton (64x48).
+
+**Setting the columns and rows and putting the cursor at top left:**
+
+    | Commands    | Function             |
+    | ----------- | -------------------- |
+    | 15H 10H 4FH | Set the column range |
+    | 75H 00H 2FH | Set the row range    |
+
+The table below shows the commands to specify the size and location of memory corresponding to the OLED Display (52x36).
+
+**Setting the columns and rows and putting the cursor at top left:**
+
+    | Commands    | Function             |
+    | ----------- | -------------------- |
+    | 15H 16H 49H | Set the column range |
+    | 75H 00H 23H | Set the row range    |
+
+The table below shows the commands to specify the size and location of memory corresponding to Frameless OLED Pushbutton (96x64).
+
+**Setting the columns and rows and putting the cursor at top left:**
+
+    | Commands    | Function             |
+    | ----------- | -------------------- |
+    | 15H 00H 5FH | Set the column range |
+    | 75H 00H 3FH | Set the row range    |
+
+With the suggested initialization of tables [1](#table-1), [2](#table-2) and [3](#table-3), the cursor starts at the upper left-hand pixel of the specified memory window. The cursor increments to the next pixel to the right after two bytes of data for a pixel are received. After receiving data for the right most pixel of a row, the cursor moves to the left-hand pixel of the next row. Once the last row is completed, the cursor returns to the left hand pixel of the first row. There are other cursor movement options explained in the section: [Scrolling (Screensaver)](#scrolling-screensaver).
+
+Any data transmitted when the D/C pin is high is considered image data. The OLED onboard controller continuously refreshes the OLED from the memory. Any changes to the memory will be displayed immediately.
+
+## Pixels and Image Format
+
+Each pixel requires two bytes in the 565 format as shown below:
+
+<img src="/src/assets/oled-bgr.png" width="500"/>
+
+It may be best to create the images in a computer as 24-bit bitmap (.bmp) images, which is standard, then extract the 16 bits from the three bytes of the 24-bit bitmap. The Engineering Kits Communicator converts the three bytes to two bytes as shown in the image below:
+
+<img src="/src/assets/oled-bgr-565.png" width="500"/>
+
+When resizing an image to fit the size of the OLED switch or display, consider compressing the image to compensate for the fact that the pixels are not square. It is best to compress before resizing.
+
+| PN        | Pixels | Vertical Compression | Horizontal Compression |
+| --------- | ------ | -------------------- | ---------------------- |
+| ISF15ACP4 | 96x64  | 75%                  | None                   |
+| ISC15ANP4 | 64x48  | None                 | 5%                     |
+| ISC01P    | 52x36  | 5%                   | None                   |
+
+**Image size for the OLED Pushbutton 64x48 (6,144 bytes):**
+
+| Byte        | Description          |
+| ----------- | -------------------- |
+| 1–128       | First line of image  |
+| 129–256     | Second line of image |
+| . . .       | . . .                |
+| 5,889–6,016 | 47th line of image   |
+| 6,017–6,144 | 48th line of image   |
+
+**Image size for the OLED Display 52x36 (3,744 bytes):**
+| Byte        | Description          |
+| ----------- | -------------------- |
+| 1–104       | First line of image  |
+| 105–208     | Second line of image |
+| . . .       | . . .                |
+| 3,537–3,640 | 35th line of image   |
+| 3,641–3,744 | 36th line of image   |
+
+**Image size for the Frameless OLED Pushbutton 96x64 (12,288 bytes):**
+| Byte          | Description          |
+| ------------- | -------------------- |
+| 1–192         | First line of image  |
+| 193–384       | Second line of image |
+| . . .         | . . .                |
+| 11,905–12,096 | 63rd line of image   |
+| 12,097–12,288 | 64th line of image   |
+
+## Display Commands Available
+
+**Display On/Off**
+
+The following three commands can be used at any time. They do not affect the content of the memory:
+
+1. ACH - Dim display
+2. AEH - Display off (sleep mode)
+3. AFH - Display on
+
+Transmitting the AEH command turns the display off. Transmitting the AFH command turns the display on in normal mode.
+
+Transmitting the ACH command turns the display on in dim mode. The dim mode level corresponds to initialization step 4.10. The last three bytes are the contrast for colors A, B, and C. The values cannot exceed the maximum level for each color of initialization as noted in steps 4.1, 4.2, and 4.3, respectively.
+
+**Powering Down Sequences**
+
+The following procedure is recommended to be followed for turning the OLED switch or display off:
+
+1.	Transmit the command to turn the OLED display off (AEH).
+2.	Disable the VCC.
+3.	Turn off the VDD power.
+
+## Additional Commands Available
+
+**No Operation**
+
+- E3H (NOP)
+- BCH (NOP)
+- BDH (NOP)
+
+**Display Mode**
+
+These are one-byte commands. They do not affect memory data.
+
+- A4H - Normal operation
+- A5H - All pixels on at the highest brightness
+- A6H -	All pixels on at lowest brightness
+- A7H -	Inverse display
+
+Command A4H is for normal operation. Commands A5H/A6H force all pixels to their highest/lowest intensity regardless of the contents of the memory. The A7H command causes the complement of the pixels’ data from memory to be displayed.
+
+**Master Current Control**
+
+- 87H 0FH -Master current control
+
+This command should be used while the display is off (after command AEH).
+
+There are 16 steps for the current level (00H to 0FH). 0FH is the maximum brightness and 00H is the minimum brightness. The OLED life of 30,000/50,000 hours is based on 0FH brightness. The dimmer the OLEDs are while in use, the longer their life expectancy.
+
+## Scrolling (Screensaver)
+
+Command 27H is used to set up the parameter for scrolling. This command can only be transmitted during initialization or when the display is off, and scrolling is deactivated (commands AEH and 2EH). The sequence of use is as follows: 
+
+1. Turn off the display and deactivate scrolling and send data for an image.
+2. Send the command 27H. 
+3. Turn the display on and activate the scrolling (commands AFH and 2FH).
+
+Command 27H has five bytes of data; A, B, C, D, and E.
+
+> Byte A sets the number of columns shifted horizontally to the right each time. For example, the value 01H will make the image appear to be shifting from the right to left. The value 5FH will make the image appear to be shifting from the left to right. Byte A should not be set to 00H or it will deactivate the scrolling for the rest of the session. Scrolling cannot be reactivated. Therefore, the value of Byte A should be set between 01H and 5FH.
+
+> Byte B sets the offset or starting row.
+
+> Byte C sets the number of rows that get shifted horizontally.
+
+> Byte D sets the number of rows that are vertically shifted up each time. For example, the value 01H will make the image appear to be shifting from bottom to top. The value 3FH will make the image appear to be shifting from top to bottom. A zero value for byte D indicates no vertical shift.
+
+> Byte E sets the interval between each shift.
+
+The horizontal speed of scrolling is determined by the value of bytes A and E. The vertical speed of scrolling is determined by the value of bytes D and E. The portion of the image that is horizontally shifted is determined by the values of bytes B and C.
+
+For the horizontal scroll, rows selected will shift using the 96 columns. For vertical scroll, all 96 columns will be shifted using all 64 rows.
+
+After deactivation, the position of the contents of the memory has been changed due to the shifts. To restore the original image, the image data should be downloaded again. Refer to the table below.
+
+<div id="table-4" style={{ textAlign: "left" }}>
+  <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Table 4: Scrolling commands</div>  
+</div>
+
+| Hex    | D7  | D6  | D5  | D4  | D3  | D2  | D1  | D0  | Command                                            | Description                                                                                                                                                    |
+| ------ | --- | --- | --- | --- | --- | --- | --- | --- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 27     | 0   | 0   | 1   | 0   | 0   | 1   | 1   | 1   | Continuous Horizontal and Vertical Scrolling Setup | **Note:** <br /> 1) Vertical scroll is run with 64MUX setting only. <br /> 2) The parameters should not be changed after scrolling is activated.               |
+| A[6:0] | *   | A6  | A5  | A4  | A3  | A2  | A1  | A0  |                                                    | A[6-0]: Sets number of columns as horizontal scroll offset. Range: 0–95 (0 = no horizontal scroll).                                                            |
+| B[5:0] | *   | *   | B5  | B4  | B3  | B2  | B1  | B0  |                                                    | B[5:0]: Sets start row address.                                                                                                                                |
+| C[6:0] | *   | C6  | C5  | C4  | C3  | C2  | C1  | C0  |                                                    | C[6:0]: Sets number of rows to be horizontally scrolled.                                                                                                       |
+| D[5:0] | *   | *   | D5  | D4  | D3  | D2  | D1  | D0  |                                                    | D[5:0]: Sets number of rows as vertical scroll offset. Range: 0D-63D (0 equals no vertical scroll)                                                             |
+| E[1:0] | *   | *   | *   | *   | *   | *   | E1  | E0  |                                                    | E[1:0]: Sets time interval between each scroll step. <br /> 00B = 6 frames. <br /> 01B = 10 frames. <br /> 10B = 100 frames. <br /> 11B = 200 frames.          |
+| 2E     | 0   | 0   | 1   | 0   | 1   | 1   | 1   | 0   | Deactivate scrolling                               | This command deactivates the scrolling action. **Note:** After sending the 2EH command to deactivate the scrolling action, the RAM data needs to be rewritten. |
+| 2F     | 0   | 0   | 1   | 0   | 1   | 1   | 1   | 1   | Activate scrolling                                 | This command activates the scrolling function according to the setting done by Continuous Horizontal and Vertical Scrolling Setup command 27H.                 |
+
+## Graphic Commands 
+
+Tables [5](#table-5) and [6](#table-6) have the graphic commands. Please note the command 26H is the set-up which effects the operation of commands 22H and 23H. Graphic commands modify the content of memory.
+
+<div id="table-5" style={{ textAlign: "left" }}>
+  <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Table 5: Graphic commands</div>  
+</div>
+
+| Hex    | D7  | D6  | D5  | D4  | D3  | D2  | D1  | D0  | Command      | Description                                                                                                                                                        |
+| ------ | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 21     | 0   | 0   | 1   | 0   | 0   | 0   | 0   | 1   | Draw Line    |                                                                                                                                                                    |
+| A[6:0] | *   | A6  | A5  | A4  | A3  | A2  | A1  | A0  |              | A[6:0]: Column address of start                                                                                                                                    |
+| B[5:0] | *   | *   | B5  | B4  | B3  | B2  | B1  | B0  |              | B[5:0]: Row address of start                                                                                                                                       |
+| C[6:0] | *   | C6  | C5  | C4  | C3  | C2  | C1  | C0  |              | C[6:0]: Column address of end                                                                                                                                      |
+| D[5:0] | *   | *   | D5  | D4  | D3  | D2  | D1  | D0  |              | D[5:0]: Row address of end                                                                                                                                         |
+| E[5:1] | *   | *   | E5  | E4  | E3  | E2  | E1  | *   |              | E[5:1]: Color C of the line                                                                                                                                        |
+| F[5:0] | *   | *   | F5  | F4  | F3  | F2  | F1  | F0  |              | F[5:0]: Color B of the line                                                                                                                                        |
+| G[5:1] | *   | *   | G5  | G4  | G3  | G2  | G1  | *   |              | G[5:1]: Color A of the line                                                                                                                                        |
+| 24     | 0   | 0   | 1   | 0   | 0   | 1   | 0   | 0   | Dim Window   | The effect of dim window: <br /> GS15 ~ GS0 no change. <br /> GS19 ~ GS16 becomes GS4. <br /> GS23 ~ GS20 becomes GS5<br /> . . . <br /> GS62 ~ GS60 becomes GS15. |
+| A[6:0] | *   | A6  | A5  | A4  | A3  | A2  | A1  | A0  |              | A[6:0]: Column address of start                                                                                                                                    |
+| B[5:0] | *   | *   | B5  | B4  | B3  | B2  | B1  | B0  |              | B[5:0]: Row address of start                                                                                                                                       |
+| C[6:0] | *   | C6  | C5  | C4  | C3  | C2  | C1  | C0  |              | C[6:0]: Column address of end                                                                                                                                      |
+| D[5:0] | *   | *   | D5  | D4  | D3  | D2  | D1  | D0  |              | D[5:0]: Row address of end                                                                                                                                         |
+| 25     | 0   | 0   | 1   | 0   | 0   | 1   | 0   | 1   | Clear Window |                                                                                                                                                                    |
+| A[6:0] | *   | A6  | A5  | A4  | A3  | A2  | A1  | A0  |              | A[6:0]: Column address of start                                                                                                                                    |
+| B[5:0] | *   | *   | B5  | B4  | B3  | B2  | B1  | B0  |              | B[5:0]: Row address of start                                                                                                                                       |
+| C[6:0] | *   | C6  | C5  | C4  | C3  | C2  | C1  | C0  |              | C[6:0]: Column address of end                                                                                                                                      |
+| D[5:0] | *   | *   | D5  | D4  | D3  | D2  | D1  | D0  |              | D[5:0]: Row address of end                                                                                                                                         |
+
+
+<div id="table-6" style={{ textAlign: "left" }}>
+  <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Table 6: Graphic commands and set up</div>  
+</div>
+
+| Hex    | D7  | D6  | D5  | D4  | D3  | D2  | D1  | D0  | Command             | Description                                                                                                                                                                                                                   |
+| ------ | --- | --- | --- | --- | --- | --- | --- | --- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 22     | 0   | 0   | 1   | 0   | 0   | 0   | 1   | 0   | Draw Rectangle      |                                                                                                                                                                                                                               |
+| A[6:0] | *   | A6  | A5  | A4  | A3  | A2  | A1  | A0  |                     | A[6:0]: Column address of start                                                                                                                                                                                               |
+| B[5:0] | *   | *   | B5  | B4  | B3  | B2  | B1  | B0  |                     | B[5:0]: Row address of start                                                                                                                                                                                                  |
+| C[6:0] | *   | C6  | C5  | C4  | C3  | C2  | C1  | C0  |                     | C[6:0]: Column address of end                                                                                                                                                                                                 |
+| D[5:0] | *   | *   | D5  | D4  | D3  | D2  | D1  | D0  |                     | D[5:0]: Row address of end                                                                                                                                                                                                    |
+| E[5:1] | *   | *   | E5  | E4  | E3  | E2  | E1  | *   |                     | E[5:1]: Color C of the line                                                                                                                                                                                                   |
+| F[5:0] | *   | *   | F5  | F4  | F3  | F2  | F1  | F0  |                     | F[5:0]: Color B of the line                                                                                                                                                                                                   |
+| G[5:1] | *   | *   | G5  | G4  | G3  | G2  | G1  | *   |                     | G[5:1]: Color A of the line                                                                                                                                                                                                   |
+| H[5:1] | *   | *   | H5  | H4  | H3  | H2  | H1  | *   |                     | H[5:1]: Color C of the fill area                                                                                                                                                                                              |
+| I[5:0] | *   | *   | I5  | I4  | I3  | I2  | I1  | I0  |                     | I[5:0]: Color B of the fill area                                                                                                                                                                                              |
+| J[5:1] | *   | *   | J5  | J4  | J3  | J2  | J1  | *   |                     | J[5:1]: Color A of the fill area                                                                                                                                                                                              |
+| 23     | 0   | 0   | 1   | 0   | 0   | 0   | 1   | 1   | Copy                |                                                                                                                                                                                                                               |
+| A[6:0] | *   | A6  | A5  | A4  | A3  | A2  | A1  | A0  |                     | A[6:0]: Column address of start                                                                                                                                                                                               |
+| B[5:0] | *   | *   | B5  | B4  | B3  | B2  | B1  | B0  |                     | B[5:0]: Row address of start                                                                                                                                                                                                  |
+| C[6:0] | *   | C6  | C5  | C4  | C3  | C2  | C1  | C0  |                     | C[6:0]: Column address of end                                                                                                                                                                                                 |
+| D[5:0] | *   | *   | D5  | D4  | D3  | D2  | D1  | D0  |                     | D[5:0]: Row address of end                                                                                                                                                                                                    |
+| E[6:0] | *   | E6  | E5  | E4  | E3  | E2  | E1  | E0  |                     | E[6:0]: Column address of new start                                                                                                                                                                                           |
+| F[5:0] | *   | *   | F5  | F4  | F3  | F2  | F1  | F0  |                     | F[5:0]: Row address of new start                                                                                                                                                                                              |
+| 26     | 0   | 0   | 1   | 0   | 0   | 1   | 1   | 0   | Fill Enable/Disable |                                                                                                                                                                                                                               |
+| A[4:0] | *   | *   | *   | A4  | 0   | 0   | 0   | A0  |                     | **A0:** <br/> 0 = Disable fill for draw rectangle command (RESET). <br /> 1 = Enable fill for draw rectangle command. <br /> **A4:**  <br /> 0 = Disable reverse copy (RESET). <br /> 1 = Enable reverse during copy command. |
+
+## Initialization Options
+
+This command is step 4.5 of initialization. There are many options for the format of the image data as well as selecting the 256 color instead of 65K. For 256 colors, each pixel has one byte of data in the format of BBBGGGRR. However, the on-board controller translates it to two bytes upon receiving the byte.
+
+| Hex    | D7  | D6  | D5  | D4  | D3  | D2  | D1  | D0  | Command                       |
+| ------ | --- | --- | --- | --- | --- | --- | --- | --- | ----------------------------- |
+| A0     | 1   | 0   | 1   | 0   | 0   | 0   | 0   | 0   | Remap and Color/Depth Setting |
+| A[7:0] | A7  | A6  | A5  | A4  | A3  | A2  | A1  | A0  |                               |
+
+Description:
+
+|         |                                                                                                     |
+| ------- | --------------------------------------------------------------------------------------------------- |
+| A[0]:   | 0 = Horizontal address increment <br/> 1 = Vertical address increment                               |
+| A[1]:   | 0 = RAM column 0 to 95 maps to pin seg 0 to 95 <br/> 1 = RAM column 0 to 95 maps to pin seg 95 to 0 |
+| A[2]:   | 0 = Normal order SA, SB, SC (eg. BGR) <br/> 1 = Reverse order SC, SB, SA (eg. RGB)                  |
+| A[3]:   | 0 = Disable left-right swapping on COM <br/> 1 = Set left-right swapping on COM                     |
+| A[4]:   | 0 = Row 0 to Row (n-1) <br/> 1 = Row (n-1) to Row 0                                                 |
+| A[5]:   | Must be set to 1                                                                                    |
+| A[7,6]: | 00 = 256 color <br/> 01 = 65k color <br/> 10 = reserved <br/> 11 = reserved                         |
+
+## Sample Schematic for a Multi-switch Controller
+
+Below is a sample schematic to control two OLED modules. With the theoretical maximum clock frequency of 6.6MHz, 134 images per second can be transmitted via SPI. However, realistically, 84 images per second is possible. There are 6144 bytes for each image in the 65k color mode. One image takes 6144 bytes * 8 bits/byte = 49152 bits. Dividing the SPI frequency by 49152 provides the maximum number of images that can be transmitted per second. The preceding calculation does not consider overhead and data retrieving time.
+
+*Sample schematic for control of two OLED modules*
+<img src="/src/assets/schematic-oled.png" width="500"/>
+
+Additionally, please see the [Engineering Kits for OLED](/docs/engineering-kits/oled-engineering-kits-user-manual) for an example schematic on how to control two switches.
+
+## Frequently Asked Questions
+
+**How many different colors can each pixel display?**  
+65,536 different colors. OLEDs have the most vivid and sharp display among all the technologies.
+
+**Is the OLED SmartDisplay capable of displaying movies?**  
+**Yes**. The OLED response time is 0.2 ms, which is the best among all the display technologies. The bottle neck is normally the communication speed. Over 100 frames per second (60 fps for the Frameless OLED) of data can be transmitted to the OLED SmartDisplay. Most videos are 24 to 30 frames per second.
+
+**Can the OLED SmartDisplay display live video?**  
+**Yes**. However, the controller must be fast enough to resize and transmit the data in the right format to the OLED SmartDisplay.
+
+**What is aging?**  
+Aging for OLEDs refers to the reduction in brightness over time. Specifically, the OLED life is defined as the time it takes for the brightness to reach half the original state. Since the OLED is intended to display movies or frequently changing images, it is assumed that each pixel will be on 40% of the time at full brightness.
+
+**How does aging affect colors?**  
+When displaying movies, the OLED color pixels age proportionally, and the combined colors stay relatively consistent. However, when a still image or text is displayed for an extended period, the pixels used for the image/text will get dimmer than the surrounding pixels that have not been used. For example, if a blue color is used in one area most of the time, then when white is displayed in that area, the white will have a tint of yellow. The yellow is because the red and green color is now stronger than the blue. However, by properly designing the image colors and by anticipating the amount of time they will be displayed, this problem can be avoided.
+
+**Does the power up/down sequence have to be followed?**  
+**Yes**. The power up sequence must be observed. If VCC powers the circuit before VDD is activated, the circuit could latch and damage the OLED. For the power down sequence, VCC cannot be present after VDD is off. Simultaneous turn off is possible if VCC does not have too much capacitance charge after turning off.
+
+**Are subassemblies of SmartDisplays available?**  
+**Yes**. NKK Switches has many development kits and supports custom designs.
+
+**Is NKK Switches planning to develop other sizes of the OLED SmartDisplay?**  
+NKK Switches continuously improves existing products as well as develops new ones. Customer feedback is considered when deciding what new products to develop. Feedback and/or application requirements are welcomed.

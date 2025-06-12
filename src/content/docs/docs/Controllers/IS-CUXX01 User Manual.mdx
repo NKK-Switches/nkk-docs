@@ -1,0 +1,426 @@
+---
+title: IS-CUXX01
+description: IS-CUXX01 manual.
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> IS-CUXX01 Intelligent Controller User Manual </div>
+
+<img src="/src/assets/cuxx01-top.png" width="400"/>
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors, which may appear in this document, nor does it make a commitment to update the information contained herein.
+SmartDisplay is trademark of NKK Switches.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Controller Features](#general-controller-features)
+- [Electrical Specifications](#electrical-specifications)
+
+
+## General Controller Features
+
+The IS-CUXX01 SmartDisplay Controller is a versatile embedded controller for use in almost any application. It controls up to 64 Frameless 96x64 OLED SmartDisplays and supports multiple communication methods and several different ways of displaying images and information. In addition, custom firmware can be requested to support reading/writing to other devices. Any number of switches (up to 64) can be controlled. NKK is willing to work with customers to design a new controller or modify the CUXX01 based on customer requirements. Below are current features:
+
+**General features:**
+- Control up to 64 Frameless 96x64 OLED SmartDisplays. Four banks of 16.
+    - The Frameless OLED SmartDisplay switch is a graphic 96x64 OLED display mounted in the key cap of a momentary pushbutton. The display has a thin enough border such that an image can be displayed in a matrix of several switches. Each pixel has 65k color options.
+- USB and ethernet communication that supports TCP or UDP protocols.
+- User downloadable images and ethernet settings.
+- Look up tables for fonts 8x10 and 16x20 in size.
+    - Write text with a specific foreground/background color.
+- Draw colored lines of varying length and row count.
+- 16 levels of switch brightness.
+- 16Mbits of on-board memory standard (1000 frameless OLED Images).
+    - Any switch can display any image in memory.
+- Real-time control by host.
+    - Save images to flash memory.
+    - Load any image from flash memory to any switch.
+    - Ability to send images directly to switches without saving to the memory.
+    - Reports switch activity to host.
+- Can change all images at 4 frames per second (fps). Individual OLED can have up to 80 frames per second.
+    - The formula for determining framerate is 76/N, where N is the number of switches changing simultaneously (per bank). The maximum framerate is achieved when sending an image to each bank sequentially. For 16 frameless OLED switches, this works out to 4.75 frames per second, or one set of images every 210 milliseconds.
+- Controller board firmware can be customized based on customer requirements.
+- Firmware field upgradable via USB.
+- A 10-pin auxiliary port with 4 microcontroller pins for control or sense applications.
+- 4x4 standard logic board configuration available. 
+- NKK can design custom switch board configurations to customer specifications.
+
+## Electrical Specifications
+
+<Aside type="danger" title="Warning">
+    These products are ESD sensitive. ESD handling procedures must be followed.
+</Aside>
+
+- 1.2A maximum (All switches changing simultaneously)
+- Two options for input voltage:
+    1. +5VDC
+    2. +9VDC to +24VDC
+
+When the 0-ohm resistor labeled “Jump” is populated, the controller is configured to only accept +5VDC input voltage. If the resistor is removed, the input voltage range will be +9VDC to +24VDC. The controller is shipped with the “Jump” resistor populated by default. 
+
+<img src="/src/assets/cuxx01-power.png" width="200"/>
+
+## Compatible Logic Boards
+
+### Logic Boards
+
+Logic boards are switch panels that have glue logic to convert addressing and switch scanning to serial. A logic board can be designed for any number of switches. Logic boards for CUXX controllers can be connected to any of its four banks via a 20-pin ribbon cable, allowing for a variable number of switches to be controlled from one controller. This also allows logic boards to be mounted at any desired location on a control panel. Switches can be soldered directly to the logic boards or mounted on sockets for removability. OLED logic boards for CUXX controllers can support Frameless 96x64 OLED or Standard 64x48 OLED SmartDisplays.
+
+The logic boards listed below are standard production parts. There are additional prototype boards that are not listed. NKK Switches will work with customers to design and build custom logic boards in any desired specification.
+
+| Item | Part# with Sockets and Switches | Part# with Sockets | Description                                                                                       |
+| ---- | -------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------- |
+| 1    | IS-LB16L1-CS                     | IS-LB16L1-C        | LOGIC BOARD, 4x4, FRAMELESS OLED 96x64 COLOR, 16SW, SOCKETS AND SWITCHES. Side by side stackable. |
+
+
+
+<div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
+  <div style={{ textAlign: "center" }}>
+    <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-LB16L1-C</div>
+    <img src="/src/assets/IS-LB16L1-C.png" width="200"/>
+  </div>
+
+</div>
+
+<Aside type="note" title="Note">
+    New Logic Boards can be designed based on customer requirements.
+</Aside>
+
+<Aside type="caution" title="Caution">
+    - Make sure the power is off when connecting or disconnecting the Logic Boards to or from the controller or each other.  
+    - Connecting the Logic Boards improperly could damage either/both the Logic Boards and controller.
+</Aside>
+
+
+### Connectors 
+
+The controller connects to the J1 header of the logic board via a 20-pin ribbon cable. The switch numbering starts with switch one on the logic board.
+
+<Aside type="note" title="Note">
+    - NKK logic boards for IS-CUXX01 controllers use 20-pin headers and ribbon cables. Logic boards for IS-C3201 and IS-C32G1 controllers use 14-pin headers and ribbon cables.  
+    - NKK 14-pin logic boards are not compatible with CUXX controllers. 20-pin logic boards are not compatible with C32 controllers.
+</Aside>
+
+<img src="/src/assets/cuxx01-connector.png" width="500"/>
+
+<Aside type="caution" title="Caution">
+    Attaching the ribbon cable without the red line on pin 1 on each of the headers may cause damage to the controller or the logic board.
+</Aside>
+
+### Ribbon Cables
+
+These cables are used for connecting 20-pin logic boards and the controller. Custom length cables can be made to order.
+
+| Item | Part#      | Length | Description                                        |
+| ---- | ---------- | ------ | -------------------------------------------------- |
+| 1    | IS-RC20-6  | 6”     | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", 6” LNTH  |
+| 2    | IS-RC20-9  | 9”     | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", 9” LNTH  |
+| 3    | IS-RC20-12 | 12”    | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", 12” LNTH |
+| 4    | IS-RC20-14 | 14”    | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", 14” LNTH |
+| 5    | IS-RC20-16 | 16”    | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", 16” LNTH |
+| 6    | IS-RC20-24 | 24”    | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", 24” LNTH |
+| 7    | IS-RC20-XX | XX”    | RIBBON CABLE, 20 CONDUCTOR, 28AWG, .050", XX” LNTH |
+
+
+Logic boards have the following input connector:
+
+J1 Input port: 10x2 male header with 0.1” x 0.1” spacing.
+This connector connects to a controller bank port.
+
+| Pin | Name    | Description                                     |
+| --- | ------- | ----------------------------------------------- |
+| 1   | GND     | Ground                                          |
+| 2   | SCK     | Clock of all SmartDisplays                      |
+| 3   | VDD     | 3.3V                                            |
+| 4   | SDI     | Data of all SmartDisplays                       |
+| 5   | Vin     | 5V                                              |
+| 6   | SCKsel  | Clock for all shift registers                   |
+| 7   | Vin     | 5V                                              |
+| 8   | DATAsel | Din of the first shift register                 |
+| 9   | GND     | Ground                                          |
+| 10  | DCO     | Data/Command control                            |
+| 11  | NC      |                                                 |
+| 12  | RES     | Reset signal                                    |
+| 13  | NC      |                                                 |
+| 14  | Pen     | Switch power enable                             |
+| 15  | LPsel   | Latch all shift register outputs to all drivers |
+| 16  | LPSWRD  | Switch read latch out                           |
+| 17  | SWREAD  | Switch read bus for all SmartDisplays           |
+| 18  | NC      |                                                 |
+| 19  | NC      |                                                 |
+| 20  | NC      |                                                 |
+
+
+
+
+## Operational Detail
+
+Upon power-up the controller configures and turns on the switches. The system then waits for a command from the host. The only action the system performs automatically is reporting switch presses. All other actions must be sent by the host.
+
+The flash memory stores both ethernet settings and images. They are stored in separate sections of memory, so erasing the images will not remove the ethernet settings and vice versa. Each image is assigned a sequential address when saved into flash memory. A list of which image is stored at which address must be kept on the host software to know which image to display at which location.
+
+When a switch is pressed, the system reports that back to the host software. The system only reports switch state changes (a press or release). More than one switch can be in the pressed position at the same time. Bits are set when the switch is pressed and cleared when the switch is released. 
+
+The format for the switch response is **50 AA BB BB BB BB**. The 0x50 signifies a switch press response. AA represents the bank number identifier from 0x71 to 0x74. Each bank has a 0 to 15 switch index range. The BBs are a 16-bit number encoded in ASCII hex, and represent what switches are pressed. Each bit represents the corresponding switch, and a high bit is pressed while a low bit is not pressed. The number is (1 < < switch_press).
+
+Example response: 74 31 34 36 41
+
+31 34 36 41 converted from ASCIII hex is 0x146A (00010100 01101010 b). Bits 12, 10, 6, 5, 3, and 1 are high, meaning switches 13, 11 ,7, 6 ,4, and 2 on bank 4 are all pressed. (Switch numbers are 0-indexed).
+
+<img src="/src/assets/cuxx01-presses.png" width="700"/>
+
+An example table of single switch press responses is:
+
+| Hex Value | Switch Pressed    |
+| --------- | ----------------- |
+| 0000      | No switch pressed |
+| 0001      | Switch 1 pressed  |
+| 0002      | Switch 2 pressed  |
+| 0004      | Switch 3 pressed  |
+| 0008      | Switch 4 pressed  |
+| 0010      | Switch 5 pressed  |
+| . . .     | . . .             |
+| 1000      | Switch 13 pressed |
+| 2000      | Switch 14 pressed |
+| 4000      | Switch 15 pressed |
+| 8000      | Switch 16 pressed |
+
+## Communication Protocol
+
+The system can communicate over USB and ethernet. If using ethernet, the system must be configured over USB first. The protocol is the same regardless of the communication method. Ethernet can be configured for TCP or UDP. Both DHCP and static IP addresses are supported.
+
+The USB connection automatically shows up as a COM device in Windows 10. This allows quick testing, loading of images, and integration with customer software.  Earlier versions of windows may require a driver. The communication is done using serial over USB and is baud-rate agnostic. For testing, the NKK Engineering Kits Communicator, or a standard terminal program such as Putty, can be used. 
+
+All commands and responses are detailed in the associated (command list)(#command-list). A non-inclusive list of commands is as follows:
+
+- Acknowledge.
+- Erase flash memory.
+- Get/Set ethernet settings.
+- Reset system.
+- Query version.
+- Save image to flash memory.
+- Send image directly to switch.
+- Set image from flash memory on specific switch.
+- Write font with specific foreground and background color.
+- Draw a colored line on a selected number of rows for a selected length.
+
+One command should be transmitted at the time. If multiple commands are sent at the same time only the first one gets executed and the rest are ignored. The command behavior is:
+
+- If the byte is a command, the controller transmits a 61H and executes the subroutine for the command, and upon completion of the command the controller transmits 79H. One-byte commands do not transmit 79H. See the associated [command list](#command-list).
+- If the byte is not a command, it is ignored.
+
+When the controller expects additional information:
+
+- A timer is set. If the expected data bytes are not received, the controller transmits 6EH and terminates the routine.
+- If the byte value is not acceptable (invalid range, option, etc.), the controller transmits 6EH and terminates the routine.
+
+Commands are one byte in the range of 01H, 20H to 2FH and are transmitted in hex format. The controller transmits 61H upon receiving any of the command bytes stated above. When a command has more bytes associated as options or data then the controller transmits 79H upon completion of the command. If a command requires the controller to transmit information, the information will be transmitted after 61H and before 79H. The proper format for all command options and data is specified in the associated [Command list](#command-list). 
+
+An ASCII Hex byte is a normal hex byte split in two halves and converted to their ASCII equivalent (www.asciitable.com). This is a safety measure so that all data sent is not accidentally interpreted as a command. Most data sent after commands and sub-commands are encoded in ASCII Hex. An exception is when sending live images (images not saved in memory and sent directly to the switches).
+
+<img src="/src/assets/ascii-hex.png" width="700"/>
+
+## Command List
+
+Refer to the IS-CUXX01 Command List xlsx file for the full list of commands and examples. Please email engineering@nkkswitches.com.
+
+## Images
+
+Images can be created in any graphics software such as Paint, Photoshop, etc., or even user-created software. All images can be saved onto the system by using the Engineering Kits Communicator which can be found on the NKK website.
+
+(Images can also be loaded onto the system with user-created software if the rules for the images and communications are followed.)
+
+To use this software, images must be saved in the proper format:
+
+Frameless OLED 96x64 - 24-bit bitmap (.bmp) 96x64 pixels
+
+The best results for the Frameless OLED SmartDisplay are achieved by compressing the image vertically 75% (to compensate for the rectangular pixels) before re-sizing to 96x64 size.
+
+Please note that the **flash memory must be erased before new images are loaded**, or images will not display properly. Erasing can take up to 2 minutes depending on the size of the flash memory.
+
+The Engineering Kits Communicator will auto-convert the 24-bit .bmp file to 16-bit 565 BGR and send the data. If writing custom software, be aware bitmap format specifies the bottom-left corner as the “top”. Therefore, to send images properly to the switches the data needs to be sent to the last row first, followed by next to last, etc.
+
+The system expects OLED image pixels to be 16-bit using 565 BGR format. That’s 2 bytes for every pixel to support 65k colors.
+
+<img src="/src/assets/bgr.png" width="500"/>
+
+When saving images to flash, the data needs to be converted to ASCII hex for 24,576 bytes of data. If streaming live images, data should be sent as-is for 12,288 bytes of data.
+
+565 BGR (16-bit) 96x64 pixels - 2 bytes per pixel - 12288 bytes per image
+
+## Saving Images using Engineering Kits Communicator
+
+The Engineering Kits Communicator program is also compatible with IS-CUXX01. It can be downloaded from our website at: https://www.nkkswitches.com/download-software/
+For more details, refer to the Engineering Kits Communicator user manual.
+
+The Engineering Kits Communicator loads images in alphanumeric order according to the image files names. It auto-assigns a sequential address to each image. Be sure to keep this in mind when naming images so that video images or animations are listed in the desired order. Avoid using symbols in the names as some symbols interfere with alphanumeric ordering. All images to be loaded should be saved in a single folder. The default starting address is 0001. This can be changed if needed.
+
+To save images to the system:
+1.	Open Engineering Kits Communicator.
+2.	From the drop-down menu at the top, select the COM port of the system (usually the last one).
+3.	Click the "Open Port" button.
+4.	Press the call button and verify the system responds with ‘61’ in blue text in the left text box.
+5.	Select the image type from the drop-down in the ‘Loading Images’ section.
+6.	Click the ‘Import Images’ button.
+7.	Navigate to the directory with all the images and select one and click ‘Open’.
+8.	Observe that the images are loaded alphanumerically and automatically assigned addresses.
+    - If some/all images do not show up in the image list after selecting the directory, it is because the image is not in the proper resolution or file type (.bmp). Double-check the image size is correct before downloading. If an image was skipped, the images will load with one address off and will need to be erased before reloading.
+9.	If images were previously saved, click the ‘Erase Flash’ button.
+    - Note that this operation can take up to **2 minutes**.
+10.	Click the ‘All selected images’ button at the bottom.
+11.	Wait for the ‘Success’ message. If the process fails, click the ‘All selected images’ button again.
+
+If writing custom software to save images, all data after the command must be sent in ASCII hex.
+
+## Live Images
+
+A “live image” is an image that is sent to a switch to be displayed but not saved in flash memory. Live images have a setup command followed by image data (see [command list](#command-list)). **Live image data is NOT sent as ASCII hex but as the raw data bytes.**
+
+To achieve maximum framerate, images should be sent to different banks instead of the same bank sequentially. This allows the system to maximize throughput. For example:
+
+Optimized:
+Send image to bank 1 switch 1
+Send image to bank 2 switch 1
+Send image to bank 3 switch 1
+Send image to bank 4 switch 1
+Send image to bank 1 switch 2
+Send image to bank 2 switch 2
+Send image to bank 3 switch 2
+Send image to bank 4 switch 2
+Send image to bank 1 switch 3
+. . .
+
+Not optimized:
+Send image to bank 1 switch 1
+Send image to bank 1 switch 2
+Send image to bank 1 switch 3
+Send image to bank 1 switch 4
+Send image to bank 2 switch 1
+Send image to bank 2 switch 2
+Send image to bank 2 switch 3
+Send image to bank 2 switch 4
+Send image to bank 3 switch 1
+. . .
+
+If a bank is still busy processing the previous image data, after another command is sent the system will respond with 0x65 (busy). This means either retry the command until ready (0x61) is received or send a command for a different bank.
+
+<img src="/src/assets/cuxx01-banks.png" width="1000"/>
+
+
+## Updating with New Firmware
+
+The IS-CUXX01 firmware is field upgradable via USB and can be modified to meet customer specifications. The IS-CUXX01 firmware will continue to receive firmware upgrades with added features and bug fixes. The latest command list document will show the latest firmware version available. Each controller can display the latest firmware version applied with the associated command. See the [command list](#command-list) for more details. 
+
+If you would like a copy of the latest firmware, please email engineering@nkkswitches.com.
+
+The firmware is distributed as a .hex file. To update IS- CUXX01 with a hex file, you will need the NKK Firmware Update Utility. To get a free download of the program, please email engineering@nkkswitches.com.
+
+Refer to the NKK Firmware Update Utility guide that comes with the download for instructions on how to update new firmware. A summary of the procedure is below:
+
+To update the firmware:
+1.	Connect IS-CUXX01 to a PC via USB. 
+2.	Hold down the S1 push button on the controller while plugging in power.
+3.	Open the NKK Firmware Update Utility.
+4.	If ‘NOT IN BOOT MODE’ message is displayed at the top, click the ‘Reconnect’ or ‘Return to Bootloader’ button. 
+5.	The boot firmware version and COM connected messages should be displayed at the top.
+6.	Click the ‘Erase All Firmware’ button and wait for the ‘Complete’ message.
+7.	Click the ‘Load File’ button.
+8.	Select the hex file from your PC.
+9.	Click the ‘Send New Firmware’ button and wait for the ‘Complete’ message.
+
+Make sure the IS-CUXX01 is not connected to Engineering Kits Communicator via COM port when using the NKK Firmware Update Utility and vice versa. The COM port can only be connected to one program at a time.
+
+## Hardware
+
+### Controller Dimensions
+Board size: 4.5” x 2.955” (114.3 x 75.057 mm) 
+Mounting hole size: 0.125” (3.175 mm) 
+
+<img src="/src/assets/cuxx01-dimensions.png" width="600"/>
+
+**Board Photo:**
+
+<img src="/src/assets/cuxx01-top.png" width="400"/>
+
+**Connectors:**
+
+**Power Connector J4:** Molex 0430450200, top position power, bottom position ground.  
+Mating: Molex 0430250208
+
+**USB J3:** TE Connectivity 1734035-2  
+Mating: USB Mini B
+
+**Ethernet J9:** Pulse Electronics J0026D21BNL  
+Mating: RJ45
+
+
+**Connectors:**
+
+**Power Connector J8:** Molex 0430450200, top position power, bottom position ground.  
+Mating: Molex 0430250208
+
+**RS422 Connector J6:**  TE Connectivity 284392-4  
+Mating: Bare wire
+
+**RS485 Connector J6:**  TE Connectivity 284392-4 (R8&R9 have to be populated)  
+Mating: Bare wire
+
+**RS232 Connector J7:** TE Connectivity 5555165-1  
+Mating: RJ25 connector
+
+**USB J3:** TE Connectivity 1734035-2  
+Mating: USB Mini B
+
+### Logic Board Dimensions
+
+All dimensions in mm.
+
+Logic board dimensions for LB16L1:
+
+<img src="/src/assets/lb16l1-dimensions.png" width="600"/>
+
+
+
+## Key Terms & Definitions
+
+**Host:**  
+Any computer, terminal, or other device that sends commands over USB, RS232, or RS422.
+
+**Controller:**  
+A PCB with a microcontroller that controls one or more logic boards
+
+**Logic board:**  
+A PCB with one or more SmartDisplays that can be daisy chained
+
+**Byte:**  
+An eight-bit hex value ranging from 00H to FFH (Decimal 0 to 255). The bit format of a byte is: (B7 B6 B5 B4 B3 B2 B1 B0) where B7 is most significant and bit B0 is least significant bit.
+
+**Nibble/Hex digit:**  
+A four-bit value ranging from 0H to FH. A byte consists of two nibbles.
+
+**Communication format:**  
+There are two formats to transmit a byte:
+
+1. Hex format - A hex byte is transmitted without any change to it. [xxH] will be used to denote this. All commands and some data are sent by using this format.
+
+2. ASCII HEX format - Each nibble of the byte is converted to ASCII code and sent as a byte. [xxAH] will be used to denote this.
+
+For example, the hex byte 5AH is transmitted in two bytes, 35H and 41H. The ASCII value for 5 is 35H and the ASCII value for A is 41H.
+
+All addresses and most data are sent using this format.
+
+## Warranty
+
+NKK SWITCHES LIMITED WARRANTY AND LIMITATION OF LIABILITY
+
+The following limits our liability.  Please read.  
+
+NKK Switches hereby warrants this product against any and all manufacturing defects for a period of one year from the date of sale of this product to the original end user.  NKK Switches’ liability in the event of such defect is limited to repair or replacement of the defective products.  NKK Switches disclaims any liability or warranty obligation with respect to any product that is misused, damaged by any user, or not used in conformity with all applicable product specifications.
+
+NKK SWITCHES HEREBY DISCLAIMS ANY WARRANTY, EXPRESS OR IMPLIED, OTHER THAN THAT CONTAINED HEREIN.  NKK SWITCHES EXPRESSLY DISCLAIMS THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, AND SHALL HAVE NO LIABILITY BASED ON OR ARISING FROM ANY CLAIM OF SUCH WARRANTY.
+
+NKK Switches shall have no liability to any person for any incidental, consequential, special, punitive, or other damages of any kind whatsoever relating to any use of this product.
+
+USE OF THIS PRODUCT IN CONNECTION WITH ANY LIFE CRITICAL APPLICATION IS NOT RECOMMENDED.
