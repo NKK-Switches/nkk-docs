@@ -1,0 +1,371 @@
+---
+title: LCD 64x32
+description: LCDx 64x32 application notes.
+---
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the LCD 64x32 SmartDisplay </div>
+
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+  <img src="/src/assets/64x32.png" width="200"/>
+  <img src="/src/assets/64x32-compact.png" width="170"/>
+  <img src="/src/assets/64x32-long-travel.png" width="200"/>
+  <img src="/src/assets/64x32-display.png" width="170"/>
+</div>
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Information](#general-information)
+- [Part Numbers](#part-numbers)
+  - [Switches](#switches)
+  - [Engineering Development Kits](#engineering-development-kits)
+  - [IS-C32G1 Controller](#is-c32g1-controller)
+- [Pin-outs](#pin-outs)
+- [Connection Options](#connection-options)
+    - [Controlling the LCD 64x32 SmartDisplays with 3 pins:](#controlling-the-lcd-64x32-smartdisplays-with-3-pins)
+    - [Controlling the LCD 64x32 SmartDisplays with 2 pins:](#controlling-the-lcd-64x32-smartdisplays-with-2-pins)
+- [Controlling the LCD 64x32 SmartDisplays](#controlling-the-lcd-64x32-smartdisplays)
+- [Communication with Most Significant Bit First (SPI)](#communication-with-most-significant-bit-first-spi)
+    - [SPI Set Up](#spi-set-up)
+    - [Command to Reset](#command-to-reset)
+    - [Command to Set the LED Backlight Master Brightness](#command-to-set-the-led-backlight-master-brightness)
+    - [Command to Set the LED Backlight Color](#command-to-set-the-led-backlight-color)
+    - [Command to Download an Image](#command-to-download-an-image)
+    - [Bitmap format for LCD 64x32 SmartDisplay](#bitmap-format-for-lcd-64x32-smartdisplay)
+- [Communication with Least Significant Bit First (SPI)](#communication-with-least-significant-bit-first-spi)
+    - [SPI Set Up](#spi-set-up-1)
+    - [Command to Reset](#command-to-reset-1)
+    - [Command to Set the LED Backlight Master Brightness](#command-to-set-the-led-backlight-master-brightness-1)
+    - [Command to Set the LED Backlight Color](#command-to-set-the-led-backlight-color-1)
+    - [Command to Download an Image](#command-to-download-an-image-1)
+    - [Bitmap format for LCD 64x32 SmartDisplay](#bitmap-format-for-lcd-64x32-smartdisplay-1)
+- [Sample Schematics](#sample-schematics)
+- [Frequently Asked Questions](#frequently-asked-questions)
+
+## General Information
+
+The application notes should be used in conjunction with the LCD 64x32 [datasheets](/docs/datasheets) which has the LED, LCD, and other specifications as well as the timing diagram for the communication.
+
+## Part Numbers
+
+### Switches
+
+The LCD 64x32 family has four products (two standard size pushbuttons, a compact pushbutton, and a display). For prototyping, it is recommended to use the relevant SmartDisplay socket accessory.
+
+| Switch                                                                          | PN                | Socket                       | Description                               |
+| ------------------------------------------------------------------------------- | ----------------- | ---------------------------- | ----------------------------------------- |
+| LCD 64x32 Pushbutton <img src="/src/assets/64x32.png" width="50"/>                         | IS15EBFP4RGB-09YN | *AT9704-065FH                | Standard size, tactile travel             |
+| Compact LCD 64x32 Pushbutton <img src="/src/assets/64x32-compact.png" width="43"/>         | IS15ESBFP4RGB     | *AT9704-065FH                | Compact size, tactile travel              |
+| Long Travel LCD 64x32 Pushbutton <img src="/src/assets/64x32-long-travel.png" width="50"/> | IS15EBFP4RGB      | AT9704-085K                  | Standard size, long travel, unique socket |
+| LCD 64x32 Display <img src="/src/assets/64x32-display.png" width="42"/>                    | IS01EBFRGB        | Industry standard, 2mm x 2mm | Display only                              |
+
+*AT9704-065FH is AT9704-065F with pins 3, 4, 11, 12, 13, and 14 removed.
+
+### Engineering Development Kits
+
+Engineering Development Kits are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by not only familiarizing design engineers to SmartDisplay products, but also as a development platform for experimentation and design viability testing. The schematic and source codes in C language are provided. Please refer to the [Engineering Kits for LCD 64x32](/docs/engineering-kits/lcd-64x32-engineering-kits-user-manual) documentation for more information.
+
+<img src="/src/assets/IS-ENG-KIT-6-DH.png" width="300"/>
+
+### IS-C32G1 Controller
+
+NKK offers predesigned controllers for SmartDisplay. The IS-C32G1 Intelligent Controller controls up to 32 LCD 64x32 switches. It is designed to be used in many different applications. There is total flexibility with user-defined features that allow the controllers to be programmed for specific applications. Please refer to the [IS-C32G1](/docs/controllers/is-c32g1-user-manual) documentation for more information.
+
+<img src="/src/assets/c32g1-top.png" width="300"/>
+
+## Pin-outs
+
+The footprints for IS15ESBFP4RGB and IS15EBFP4RGB-09YN are the same even though IS15EBFP4RGB-09YN has an extra NC pin. IS15EBFP4RGB and IS01EBFRGB have different footprints. Controlling all the LCD 64x32 products are the same.
+
+| Pin | Symbol | Pin Name        | Function                                 |
+| --- | ------ | --------------- | ---------------------------------------- |
+| 1   | SW     | Switch Terminal | Normally open switch                     |
+| 2   | SW     | Switch Terminal | Normally open switch                     |
+| 3   | GND    | Ground          |                                          |
+| 4   | Power  | Power           | 5V power source for logic, LCD, and LEDs |
+| 5   | SDO    | Data Out        | Data output line for SPI                 |
+| 6   | SDI    | Data In         | Data input line for SPI                  |
+| 7   | SCK    | CLock           | SPI Clock                                |
+| 8   | SS     | Slave Select    | Chip select for SPI; line is active low  |
+| 9   | NC     | None            | No Connection                            |
+
+**Switch terminals (SW, SW)**: The switch is normally open. The switch can be scanned by connecting one pin to ground and the other pin to a micro-controller pin with a pull up resistor. For a matrix of switches, many different methods can be used for switch scanning.
+
+**Ground**: The ground for logic, LCD, and LEDs.
+
+**VDD**: Power source for logic, LCD, and LEDs. The voltage must be 5V. The voltage for the LCD is produced from this voltage. Deviation of VDD beyond the stated range in the datasheet will affect the LCD's contrast. The tight voltage range is to assure acceptable LCD display contrast for the entire operating temperature range.
+
+**SDO**: Data out for communication. The SDO status lags 16 clock cycles from the SDI status. This pin is not used for controlling the LCD display. It can be used for fault tolerance. However, it does not go to high impedance when the LCD 64x32 is not selected, so SDO of the switches must not be connected together. For most applications this pin is not connected.
+
+**SDI**: Data in for serial communication. This pin has a 50K ohm internal pull up resistor to VDD.
+
+**SCK**: Clock for serial communication, maximum 8 MHZ. This pin has a 50K ohm internal pull up resistor to VDD. The data is taken on the falling edge of the clock.
+
+**SS**: LCD 64x32 SmartDisplay selector. This pin has a 50K ohm pull up resistor to VDD. The SS pin must be pulled low for the duration of the command/data package. If the SS line pulled high before the command and its associated data are finished, the command will be ignored. Multiple commands can be transmitted while the SS line is low. When SS is high, the clock and data line are ignored.
+
+## Connection Options
+
+The LCD 64x32 SmartDisplays can be controlled with 3 pins (SCK, SDI, SS) or with two pins (SCK, SDI).
+
+#### Controlling the LCD 64x32 SmartDisplays with 3 pins:
+
+Chip select (SS) is used for addressing individual LCD 64x32 SmartDisplays. For each session, the SS line should be pulled low, then a command and its associated data is transmitted, then the SS line should be pulled high. Many commands can be transmitted in one session.
+
+**Example**: Controlling two LCD 64x32 SmartDisplays with chip select (SS).
+1. Both SCK are connected to the same source.
+2. Both SDI are connected to the same source.
+3. Each SS is connected to a different microcontroller pin.
+   
+#### Controlling the LCD 64x32 SmartDisplays with 2 pins:
+
+For controlling the LCD 64x32 SmartDisplays with two pins, SCK/SDI must be normally high, and the SS pin is low all the time. For most applications, SS can be connected to ground. However, one customer had an FPGA controlling the switches. When the FPGA is reset sometimes it sends a clock bit causing the switches to fall out of sync. It is recommended to connect all SS to a control pin so the communication can be reset if needed. Below is an example of nine SmartDisplays controlled with two pins with output chip select (SS).
+
+<img src="/src/assets/ss-64x32.png" width="500"/>
+
+All the clock and data lines remain high (or float) except one active clock and one active data. The addressed switch is at the intersection of the active clock and active data. Since the clock is high, there is no effect for other switches of the active data. Other switches of the active clock row receive 0xFF data which is ignored.
+
+## Controlling the LCD 64x32 SmartDisplays
+
+Upon power up, the LCD 64x32 has the following initial state and is ready for commands from the host.  
+
+- LCD display: OFF  
+- LED colors: OFF  
+- Brightness level: Lowest level  
+
+The host has the following command options:
+1. Transmit a new image.
+2. Transmit to select 1 of 64 available backlight options.
+3. Transmit to select 1 of 8 backlight brightness level options.
+
+Any command can be transmitted at any time. The command goes into effect and the settings and display are maintained until they are changed via another command from the host. Any transmission that is not a command is ignored. There is no delay required between the commands.
+
+SPI or UART in synchronous mode or two pins of a microcontroller can be used to control the LCD 64x32 SmartDisplays. The data bits are taken on the falling edge of each clock. The communication is byte oriented. The first bit transmitted is taken as the most significant bit of the byte (B7) and the second bit transmitted is B6. The eighth bit is taken as B0.
+
+There is no time limit to finish a byte. If the SS line is pulled high before completion of a command or its associated data, that command is ignored, and communication gets reset.
+The commands for serial communication with the most significant bit first (SPI) are explained [in this section](#communication-with-most-significant-bit-first-spi). Please note the image bytes must be manipulated from the bitmap format.
+
+The commands for serial communication with least significant bit first (UART) are explained [in this section](#communication-with-least-significant-bit-first-spi). Please note that no manipulation is needed for the image bytes from the bitmap format.
+
+## Communication with Most Significant Bit First (SPI)
+
+#### SPI Set Up
+
+The data is taken on the falling edge of the clock so SPI should be set up accordingly. For a PIC microcontroller the following setup will work:  
+CKP=1, CKE=1, SMP=0/1  
+CKP=0, CKE=0, SMP=0/1
+
+Please note in some types of microcontrollers when the SPI transmit is set for the rising edge, the switches might seem to work, but the circuit will be very sensitive since the data line will be marginally stable on the falling edge.
+
+There are four commands for controlling the LCD 64x32 SmartDisplay.
+	
+| HEX Command | Binary   | Data                           | Function         | Remark                                            |
+| ----------- | -------- | ------------------------------ | ---------------- | ------------------------------------------------- |
+| 0x55        | 01010101 | 256 Bytes (64x32 = 2,048 bits) | Graphic data     | See below for bitmap data.                        |
+| 0x40        | 01000000 | One byte (RRGGBB11)            | LED colors       | 64 color options for backlight. 2 bits per color. |
+| 0x41        | 01000001 | One byte (***11111)            | Brightness level | 8 brightness levels. 3 bits.                      |
+| 0x5E        | 01011110 | One byte 0x03 (00000011)       | Reset            | Reset                                             |
+
+#### Command to Reset
+
+This command is two bytes: 0x5E, 0x03. Upon receiving this command, the LCD 64x32 SmartDisplay returns to the default state of:  
+- LCD display: OFF
+- Brightness: 1/20 
+- LEDs: OFF
+
+#### Command to Set the LED Backlight Master Brightness
+
+This command is two bytes. Upon receiving this command, the LCD 64x32 SmartDisplay will set the LED backlight master brightness according to the value of the second byte.
+
+The first byte is 0x41. The second byte is as follows:
+
+| B7  | B6  | B5  | B4  | B3  | B2  | B1  | B0  |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| L2  | L1  | L0  | 1   | 1   | 1   | 1   | 1   |
+
+B0, B1, B2, B3, and B4 must be set to 1. B5, B6, and B7 determine the brightness as follows:
+
+| L2  | L1  | L0  | Brightness level   |
+| --- | --- | --- | ------------------ |
+| 0   | 0   | 0   | 1/20 of brightness |
+| 0   | 0   | 1   | 1/10 of brightness |
+| 0   | 1   | 0   | 1/7 of brightness  |
+| 0   | 1   | 1   | 1/5 of brightness  |
+| 1   | 0   | 0   | 1/3 of brightness  |
+| 1   | 0   | 1   | 1/2 of brightness  |
+| 1   | 1   | 0   | 2/3 of brightness  |
+| 1   | 1   | 1   | Full brightness    |
+
+#### Command to Set the LED Backlight Color
+
+This command is two bytes. Upon receiving this command, the LCD 64x32 SmartDisplay will set the LED backlight color according to the value of the second byte.
+
+The first byte is 0x40. The second byte is as follows:
+
+| B7  | B6  | B5  | B4  | B3  | B2  | B1  | B0  |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R1  | R0  | G1  | G0  | BU1 | BU0 | 1   | 1   |
+
+B0 and B1 must be set to 1. B2 to B7 determine the colors. BU0 and BU1 determine the blue level. G0 and G1 determine the green level. R0 and R1 determine the red level.
+
+| R1/G1/BU1 | R0/G0/BU0 | Color brightness |
+| --------- | --------- | ---------------- |
+| 0         | 0         | off              |
+| 0         | 1         | ¼ brightness     |
+| 1         | 0         | ½ brightness     |
+| 1         | 1         | Full brightness  |
+
+There are 64 backlight color options available with this command.
+
+#### Command to Download an Image
+
+This command is 257 bytes. The first byte is the command, and the following 256 bytes are the data for the image. The LCD 64x32 SmartDisplay has two memory locations that are interchangeable. While one is being used to refresh the displayed image, the other is free for receiving a new image. Upon completion of the download, the memory location that just received an image is used for refreshing the display while the other location is now free to receive another image. The advantage is the downloading is hidden from the switch user and the new image is only displayed when fully received.
+
+The first byte is 0x55. The following 256 bytes will be displayed according to table below.
+
+#### Bitmap format for LCD 64x32 SmartDisplay 
+(Bytes are in the format D0D1D2D3D4D5D6D7)
+|          |          |          |          |          |          |          |          |
+| -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+| Byte 8   | Byte 7   | Byte 6   | Byte 5   | Byte 4   | Byte 3   | Byte 2   | Byte 1   |
+| Byte 16  | Byte 15  | Byte 14  | Byte 13  | Byte 12  | Byte 11  | Byte 10  | Byte 9   |
+| . . .    | . . .    | . . .    | . . .    | . . .    | . . .    | . . .    | . . .    |
+| Byte 256 | Byte 255 | Byte 254 | Byte 253 | Byte 252 | Byte 251 | Byte 250 | Byte 249 |
+
+The monochrome bitmap images created in graphic programs have the same format as the table above, except the bytes are in the format: D7D6D5D4D3D2D1D0.
+
+Each byte must be reformatted according to the table below to have a proper picture display.
+
+|                 |     |     |     |     |     |     |     |     |
+| --------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Image file byte | B7  | B6  | B5  | B4  | B3  | B2  | B1  | B0  |
+| Converted byte  | B0  | B1  | B2  | B3  | B4  | B5  | B6  | B7  |
+
+## Communication with Least Significant Bit First (SPI)
+
+#### SPI Set Up
+
+There are four commands for controlling the LCD 64x32 SmartDisplay.
+	
+| HEX Command | Binary   | Data                           | Function         | Remark                                            |
+| ----------- | -------- | ------------------------------ | ---------------- | ------------------------------------------------- |
+| 0xAA        | 10101010 | 256 Bytes (64x32 = 2,048 bits) | Graphic data     | See below for bitmap data.                        |
+| 0x02        | 00000010 | One byte (11BBGGRR)            | LED colors       | 64 color options for backlight. 2 bits per color. |
+| 0x82        | 10000010 | One byte (11111***)            | Brightness level | 8 brightness levels. 3 bits.                      |
+| 0x7A        | 01111010 | One byte 0xC0 (11000000)       | Reset            | Reset                                             |
+
+#### Command to Reset
+
+This command is two bytes: 0x7A, 0xC0. Upon receiving this command, the LCD 64x32 SmartDisplay returns to the default state of:  
+- LCD display: OFF
+- Brightness: 1/20 
+- LEDs: OFF
+
+#### Command to Set the LED Backlight Master Brightness
+
+This command is two bytes. Upon receiving this command, the LCD 64x32 SmartDisplay will set the LED backlight master brightness according to the value of the second byte.
+
+The first byte is 0x82. The second byte is as follows:
+
+| B7  | B6  | B5  | B4  | B3  | B2  | B1  | B0  |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1   | 1   | 1   | 1   | 1   | L0  | L1  | L2  |
+
+B7, B6, B5, B4, and B3 must be set to 1. B0, B1, B2 determine the brightness as follows:
+
+| L2  | L1  | L0  | Brightness level   |
+| --- | --- | --- | ------------------ |
+| 0   | 0   | 0   | 1/20 of brightness |
+| 0   | 0   | 1   | 1/10 of brightness |
+| 0   | 1   | 0   | 1/7 of brightness  |
+| 0   | 1   | 1   | 1/5 of brightness  |
+| 1   | 0   | 0   | 1/3 of brightness  |
+| 1   | 0   | 1   | 1/2 of brightness  |
+| 1   | 1   | 0   | 2/3 of brightness  |
+| 1   | 1   | 1   | Full brightness    |
+
+#### Command to Set the LED Backlight Color
+
+This command is two bytes. Upon receiving this command, the LCD 64x32 SmartDisplay will set the LED backlight color according to the value of the second byte.
+
+The first byte is 0x02. The second byte is as follows:
+
+| B7  | B6  | B5  | B4  | B3  | B2  | B1  | B0  |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1   | 1   | BU0 | BU1 | G0  | G1  | R0  | R1  |
+
+B6 and B7 must be set to 1. B0 to B5 determine the colors. BU0 and BU1 determine the blue level. G0 and G1 determine the green level. R0 and R1 determine the red level.
+
+| R1/G1/BU1 | R0/G0/BU0 | Color brightness |
+| --------- | --------- | ---------------- |
+| 0         | 0         | off              |
+| 0         | 1         | ¼ brightness     |
+| 1         | 0         | ½ brightness     |
+| 1         | 1         | Full brightness  |
+
+There are 64 backlight color options available with this command.
+
+#### Command to Download an Image
+
+This command is 257 bytes. The first byte is the command, and the following 256 bytes are the data for the image. The LCD 64x32 SmartDisplay has two memory locations that are interchangeable. While one is being used to refresh the displayed image, the other is free for receiving a new image. Upon completion of the download, the memory location that just received an image is used for refreshing the display while the other location is now free to receive another image. The advantage is the downloading is hidden from the switch user and the new image is only displayed when fully received.
+
+The first byte is 0xAA. The following 256 bytes will be displayed according to table below.
+
+#### Bitmap format for LCD 64x32 SmartDisplay
+(Bytes are in the format D0D1D2D3D4D5D6D7)
+|          |          |          |          |          |          |          |          |
+| -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+| Byte 8   | Byte 7   | Byte 6   | Byte 5   | Byte 4   | Byte 3   | Byte 2   | Byte 1   |
+| Byte 16  | Byte 15  | Byte 14  | Byte 13  | Byte 12  | Byte 11  | Byte 10  | Byte 9   |
+| . . .    | . . .    | . . .    | . . .    | . . .    | . . .    | . . .    | . . .    |
+| Byte 256 | Byte 255 | Byte 254 | Byte 253 | Byte 252 | Byte 251 | Byte 250 | Byte 249 |
+
+The monochrome bitmap images created in graphic programs have the same format as the table above, except the bytes are in the format: D7D6D5D4D3D2D1D0.
+
+Byte reformatting is not needed for least significant bit first transmission.
+
+## Sample Schematics
+
+Please see the [Engineering Kits for LCD 64x32](/docs/engineering-kits/lcd-64x32-engineering-kits-user-manual) for an example schematic on how to control two switches.
+
+## Frequently Asked Questions
+
+**Does the display have to be refreshed?**  
+**No**. the LCD 64x32 SmartDisplay automatically refreshes the display with the current image until a new image is fully received.
+
+**Is a delay required between commands?**  
+**No**. The commands can be sent continuously.
+
+**Why do the pixels not look sharp?**  
+The VDD is out of range. The LCD voltage is produced from VDD. If the voltage is low, the pixels will not be at maximum darkness and the contrast will be reduced. If the voltage is high, the background will be darker which will also cause a reduction in contrast.
+
+**Is it possible to extend the operating temperature by adjusting VDD?**  
+The display requires no adjustment for use in the specified operating temperature range. It should be possible to extend the temperature range by adjusting the VDD or at least improve the contrast at the extreme temperature. However, NKK Switches does not have data for LCD 64x32 SmartDisplay behaviors with VDD adjustment. Additionally, the maximum voltage for logic is 5.5V which should not be exceeded.
+
+**My circuit only controls the LCD 64x32 SmartDisplay intermittently; however, it works fine when I probe the SCK or SDI pins with the oscilloscope. What is going on?**  
+The serial communication of the circuit is set for transmitting on the rising edge of the clock hence the data is not stable on the falling edge of the clock. The added oscilloscope capacitance makes the data more stable.
+
+**I check the signals with an oscilloscope. They all look correct. Why does the switch not accept the commands?**  
+Most likely your controller does not wait for the transmit buffer to finish before putting the SS signal to high. If the SS signal is pulled high before the command and its associated data are received, the command is ignored.
+
+**Does the microcontroller have to have external memory?**  
+External memory is not required. The picture data can be retrieved from storage, or the images can be made on the fly using ASCII code and look-up tables placed on the microcontroller program memory without using external memory.
+
+**Is the display visible without the backlighting?**  
+**Yes**. The LCD in the switch is transflective, so it can be seen with sufficient ambient lighting. 
+
+**Is the display sunlight readable?**  
+Since the LCD is transflective, it is sunlight readable. However, the backlight color will be more difficult to see and appear more washed out.
+ 
+
+**How many switches can be driven by one SPI?**  
+With an 8 MHZ clock, it takes approximately 0.26 ms to transmit an image and backlighting data to one LCD 64x32 SmartDisplay.
+
+<img src="/src/assets/equation-64x32.png" width="400"/>
+
+The limitation depends on how fast all the switches need to be updated at once in the application. For example, 193 switches can be controlled, and all 193 switches can receive new image LED data in 50ms. However, the signal’s fan out should be considered. A driver can be used to put the switches in many groups. NKK Switches uses a 74HC4050 chip with 16 switches to a group.
+
+**Can the switches be controlled with low voltage?**  
+The VDD must be 5.0V. The LCD 64x32 SmartDisplay specifications do not support low voltage signals. The switches have been tested down to 2.8V signals without any issues. However, the customer should have due diligence and test the switches within the application environment. The microcontroller signal pins need to handle current from the switch signals’ internal 50K pull up to 5V.

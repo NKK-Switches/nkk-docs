@@ -1,0 +1,633 @@
+---
+title: IS-S0109
+description: IS-S0109 user manual.
+sidebar:
+  badge:
+    text: NRND
+    variant: caution
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> IS-S0109 User Manual </div>
+
+<img src="/src/assets/s0109.png" width="300"/>
+
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein.
+SmartDisplay is a trademark of NKK Switches.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Features](#general-features)
+- [Applications](#applications)
+- [How to Order](#how-to-order)
+- [S0109 General Features](#s0109-general-features)
+- [Backlighting](#backlighting)
+- [Attributes](#attributes)
+- [Hardware](#hardware)
+  - [Dimensions](#dimensions)
+  - [Application Interface Header (J1) pinout](#application-interface-header-j1-pinout)
+- [Connecting to Application](#connecting-to-application)
+- [IS-S0109DEM Evaluation Kit](#is-s0109dem-evaluation-kit)
+- [IS-S0109DEM Operational Overview](#is-s0109dem-operational-overview)
+  - [Pinout used in IS-S0109DEM](#pinout-used-in-is-s0109dem)
+- [UART Communication](#uart-communication)
+    - [Command to Download Image to Flash](#command-to-download-image-to-flash)
+    - [Command to Disable All the Functions](#command-to-disable-all-the-functions)
+    - [Command to Enable All the Functions](#command-to-enable-all-the-functions)
+    - [Command to Upload the Set Up](#command-to-upload-the-set-up)
+    - [Command to set LED Backlight Brightness](#command-to-set-led-backlight-brightness)
+    - [Command to Set LCD Contrast](#command-to-set-lcd-contrast)
+    - [Command to Save the Set Up](#command-to-save-the-set-up)
+    - [Command to Set Amber and Red Color for the Battery](#command-to-set-amber-and-red-color-for-the-battery)
+    - [Command to Check the Connection](#command-to-check-the-connection)
+    - [Command to Display Image from Flash](#command-to-display-image-from-flash)
+    - [Command to Fill the Image with the Fill Byte](#command-to-fill-the-image-with-the-fill-byte)
+    - [Command to Fill the Indicated Pixel Row Data with the Fill Byte](#command-to-fill-the-indicated-pixel-row-data-with-the-fill-byte)
+    - [Command to Create the Image of 6 Characters (Font5x7) from Indicated Start Address](#command-to-create-the-image-of-6-characters-font5x7-from-indicated-start-address)
+    - [Command to Create the Image of 4 Characters (Font7x10) from Indicated Start Address](#command-to-create-the-image-of-4-characters-font7x10-from-indicated-start-address)
+    - [Command to Change the Backlight Color](#command-to-change-the-backlight-color)
+    - [Command to Change PWM Duty Cycle](#command-to-change-pwm-duty-cycle)
+    - [Command to Create a Bar Graph](#command-to-create-a-bar-graph)
+    - [Command to Upload the Analog and Digital Status](#command-to-upload-the-analog-and-digital-status)
+- [IS-S0109DEM Hardware](#is-s0109dem-hardware)
+- [Programming](#programming)
+  - [1.	Preparing the IS-S0109DEM for Programming](#1preparing-the-is-s0109dem-for-programming)
+  - [2. Preparing the MPLAB Program](#2-preparing-the-mplab-program)
+  - [3. Programming the S0109](#3-programming-the-s0109)
+  - [4. Testing](#4-testing)
+- [Warranty](#warranty)
+
+
+## General Features
+
+The **Single Switch Solution** is a compact device that can both monitor and control an industrial process independently or in conjunction with other controllers.
+
+The 36x24 pixel LCD display can display graphics or characters while the backlight color options allow for status color schemes and modes of operation. In addition to the on-board flash, capable of holding up to 64 graphic images, there are two look-up fonts (5x7 and 7x10) on board to create images based on characters. Up to 3 lines of 6 characters in font 5x7 or up to 2 lines of 4 characters in font 7x10 can be displayed.
+
+There are twelve connections that can be digital input/output or analog input. The analog inputs can be used to check status of gauges such as temperature, pressure, voltage, amperage, oil level, gas level…etc.
+The digital inputs can be used to check the ON/OFF statuses of devices or count frequency of an event.
+The digital outputs can be used to signal to turn ON or OFF a device based on preset values of the inputs. 
+The digital input/output can also be used for communication with another device. There can be one PWM output.
+The switch presses can be used for toggling between the statuses and pressing and holding the switch can be used for setting up or selecting an option.
+SPI, I2C or UART communications are possible.
+
+**EMC/ESD compliance based on the IEC 60601-11-2:2014.**
+
+## Applications
+
+The Single Switch Solution is a plug and play controller/indicator device for use in an application with little to no technical or engineering know-how needed to install and operate. 
+
+The customer would list what images, labels and actions they want to see. The device would then be programmed and preloaded with the images, actions and responses ready to be used. The customer would simply need to install the device into their application. Please contact NKK Switches with your application. If the current product does not meet your application, we can design a device to meet your requirements.
+
+**Examples:**
+- A Single Switch Solution is hooked up to a device that drops jellybeans into a bag and a counting sensor. When the Single Switch Solution counts out a fixed number of beans it sends signals to stop the jellybeans from dropping, move the bag out of the way, seal the bag and get the next bag.
+- A Single Switch Solution is used to monitor two voltages and two currents. Pressing the switch steps through displaying the status of each of the four measurements. When the voltages or currents exceed a preset warning range the display blinks to warn the operator. When the voltages or currents reach a danger range not only does the display turn red it also sends signals to shut down the system. The warning and shut down values for each measurement are user defined and can be modified by pressing and holding the switch while displaying the measurement.
+- A Single Switch Solution is hooked up to engine sensors to display fuel, water, oil, and temperature. Pressing the switch cycles through and displays the four statuses. When any of the statuses are outside normal the display blinks amber to warn the operator. When any of the statuses are in the danger range the display blinks red. 
+
+
+
+## How to Order
+
+The Single Switch Solution is custom programmed for each application, so a custom part number is assigned for each application. An evaluation kit can be ordered to get the process started. The evaluation kit part number is **IS-S0109DEM** and includes:
+1. One Single Switch Solution.
+2. A demonstration board that has the following features:
+      - 4 potentiometers for analog input 
+      - 4 switches for digital input
+      - 4 LED’s for indicate status of each digital I/O 
+      - The demonstration has a UART to USB converter for communication.
+      - Connector for 2 pins for possible I2C firmware testing
+3. A programming connector for reprogramming the Single Switch Solution (Requires a PICKIT3 from Microchip for programming).
+4. A USB connection for power and communication.
+
+<img src="/src/assets/IS-S0109DEM-Parts.png" width="400"/>
+
+The evaluation kit **IS-S0109DEM** comes preprogrammed for demonstrating the Single Switch Solution capabilities. 
+
+The information on the evaluation kit is at the end of this document.
+
+Once the customer decides on the features required for their application, the requirements are evaluated by NKK and functional features are documented. Then they are sent for customer approval. Once approved, the firmware is written, and the custom part number is issued. The customer can place the order and receive the preprogrammed Single Switch Solution for their application. An estimate of the hours required will be determined per project. A fee estimate for the required hours will be provided for each project.
+
+To reprogram the Single Switch Solution, a Microchip PICKIT 3 Programmer is required. Firmware is distributed via email to the customer. The evaluation kit IS-S0109DEM can also be used to reprogram the Single Switch Solution as well as for testing and verification of the new firmware.
+
+
+## S0109 General Features
+
+The Single Switch System is useful in many applications where complex information needs to be displayed while minimizing design and installation time and complexity. The firmware is written based on customer requirements. Contact engineering@nkkswitches.com for application consultation.
+
+Features:
+- 36x24 pixel graphic LCD.
+- Can display 3 lines of 6 characters in Font 5x7, 2 lines of 4 characters in Font 7x10 or graphic.
+- 64 backlight colors (RGB) for various mode of operation.
+- 8 level of backlight brightness
+- Panel Mount for easy installation.
+- Single pole momentary switch.
+- Firmware is written based on customer requirements.
+- The connection to application is via 2x9 header (0.1”x0.1”).
+- Up to 12 digital input/outputs or Analog to digital converter
+- One PWM
+- I2C, SPI, or UART configurations are available upon request.
+- A customer has got EMC/ESD compliance based on the IEC 60601-11-2:2014
+- Many interface boards are available for converting Analog/digital input to proper voltage and convert the digital I/O to proper voltage/current to sense, turn OFF and ON devices. Please contact factory with your requirement.
+
+**S0109 Photos:**
+
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+  <img src="/src/assets/is-s0109-top.png" width="200"/>
+  <img src="/src/assets/is-s0109-bottom.png" width="200"/>  
+</div>
+
+**Part Number Attributes: IS-S0109XXX**. Each application would have a unique part number.
+
+IS-S0109 - Base part number  
+XXX	- Unique for each application
+
+## Backlighting
+
+There are two backlighting states: "ON cycle" and "OFF cycle". The duration time of OFF cycle is about 500ms. The ON cycle is two times of duration of the OFF cycle. Both the duration of the OFF cycle and the multiple of the ON cycle to the OFF cycle can be specified by the customer. Each of the ON cycle and OFF cycle have 8 color option. The 64 backlight options are achieved by combination of ON cycle and OFF cycle. Additionally, 8 level of brightness are available. Below are the options for ON and OFF cycle:
+
+Available color for ON cycle and OFF cycle:
+
+| #   | Color   | Red | Green | Blue |
+| --- | ------- | --- | ----- | ---- |
+| 1   | OFF     | OFF | OFF   | OFF  |
+| 2   | Red     | ON  | OFF   | OFF  |
+| 3   | Green   | OFF | ON    | OFF  |
+| 4   | Blue    | OFF | OFF   | ON   |
+| 5   | Amber   | ON  | ON    | OFF  |
+| 6   | Cyan    | OFF | ON    | ON   |
+| 7   | Magenta | ON  | OFF   | ON   |
+| 8   | White   | ON  | ON    | ON   |
+
+The LED code is one byte. Bit=1 is for ON.
+
+| Bits  | B7           | B6        | B5        | B4        | B3           | B2       | B1       | B0       |
+| ----- | ------------ | --------- | --------- | --------- | ------------ | -------- | -------- | -------- |
+| Cycle | Must be zero | OFF Cycle | OFF Cycle | OFF Cycle | Must be zero | ON Cycle | ON Cycle | ON Cycle |
+| Color | 0            | Blue      | Green     | Red       | 0            | Blue     | Green    | Red      |
+
+## Attributes
+
+The purpose of the attributes is to control the unit’s behavior without the need for programming. The attributes control the legends and backlighting of the switch display, and the response to the switch actuation and the inputs, as well as the outputs.
+
+The first section is the input/output designator, the trigger values, and the jump.
+
+
+
+## Hardware
+
+<Aside type="danger" title="Warning">
+  These devices are ESD sensitive. Please handle with care and use proper ESD precautions.
+</Aside>
+
+The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount accessory soldered to a small controller PCB.
+
+**Power input:** 5V or 7.5V to 15V at maximum of 35mA.
+
+### Dimensions
+
+<img src="/src/assets/s0109-dimensions.png" width="800;"/>
+
+
+**Application Interface Header (J1)** is a 2x9 header 0.1” x 0.1” for application connections.
+
+<img src="/src/assets/s0109-j1.png" width="300;"/>
+
+
+### Application Interface Header (J1) pinout
+
+Application Interface Header (J1) is a 2x9 header 0.1” x 0.1” for application connections.
+
+| Pin# | Pin Name | Possible Function         | Notes                                                                                                                                                                                                         |
+| ---- | -------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | RC2      | Digital/Analog            | Used as UART TX in demo unit. Do not use unless you need more than 10 I/O.                                                                                                                                    |
+| 2    | RC1      | Digital/Analog            | Used as UART RX in demo unit. Do not use unless you need more than 10 I/O.                                                                                                                                    |
+| 3    | RC4      | Digital/Analog            | Can be used as I2C SDA                                                                                                                                                                                        |
+| 4    | RC3      | Digital/Analog            | Can be used as I2C SCL                                                                                                                                                                                        |
+| 5    | Power    | Input voltage 7.5V to 15V | If pin 9 is used as 5V power in, this pin should be connected to 5V as well                                                                                                                                   |
+| 6    | Power    | Input voltage 7.5V to 15V | If pin 9 is used as 5V power in, this pin should be connected to 5V as well                                                                                                                                   |
+| 7    | Ground   | Ground                    |                                                                                                                                                                                                               |
+| 8    | Ground   | Ground                    |                                                                                                                                                                                                               |
+| 9    | 5V       | 5V output                 | If pins 5/6 are used as power in, the 5V is generated by the onboard voltage regulator. The maximum current drawn cannot exceed 10 mA.                                                                        |
+| 10   | DG0      | Digital/Analog            |                                                                                                                                                                                                               |
+| 11   | DG1      | Digital/Analog            |                                                                                                                                                                                                               |
+| 12   | AN1      | Digital/Analog            |                                                                                                                                                                                                               |
+| 13   | AN0      | Digital/Analog            | Can be used as I2C SCL                                                                                                                                                                                        |
+| 14   | SWRD     | Switch output             | Switch pin connected to MC pin with a weak pull-up. The other switch pin is connected to Ground. In Rev C a diode is placed between MC pin and the switch pin to protect the MC from external switch scan. |
+| 15   | DG2      | Digital/Analog            | Can be used as I2C SDA                                                                                                                                                                                        |
+| 16   | DG3      | Digital/Analog            |                                                                                                                                                                                                               |
+| 17   | AN3      | Digital/Analog            |                                                                                                                                                                                                               |
+| 18   | AN2      | Digital/Analog            |                                                                                                                                                                                                               |
+
+Note: Any of I/O pins can be used as SPI.
+
+## Connecting to Application
+
+All the I/O pins are directly connected to the microcontroller pin. There is no safety circuit due to lack of space. If the application signals are not stable appropriate safety measures should be implemented in the application or interface board.
+
+Analog Resolution: 10 bits  
+Analog Voltage: 0 to 5V  
+Digital input Voltage: Vil < 0.8V,   2V < Vih< 5V  
+Digital output Voltage: Vol < 0.6V, 4.2V < Voh  
+
+Maximum output current sourced: One I/O pin 20 mA, Total for all I/O pins 50 mA  
+Maximum current sunk:  One I/O pin 20 mA, Total for all I/O pins 100 mA
+
+Some applications require an interface board for converting the Analog input to proper voltage or turning on relays that require more current. NKK has interface boards for some application. We also entertain designing interface boards for new applications.
+
+
+## IS-S0109DEM Evaluation Kit
+
+<img src="/src/assets/IS-S0109DEM.png" width="350;"/>
+
+The IS-S0109DEM is a demonstration unit for the Single Switch Solution. Below are the features:
+
+- Four potentiometers wired to four pins to simulate various Analog input signals. 
+- Four toggle switches and four LED’s wired to Digital In/Out to simulate digital in and digital out.
+- USB connection for power and communication.
+- Programming plug.
+
+The IS-S0109DEM is designed to demonstrate the features of the Single Switch Solution. It has four potentiometers, four toggles, and four LEDs that simulate various inputs and outputs. It has been programmed to show some of the different ways to use the Single Switch Solution. However, the firmware can be altered by NKK Switches as per customer requirements. This manual will go through the various aspects of the firmware written for demonstration of features. The UART to USB adapter on the demo unit allow communication to computer. The firmware is being written to allow varicose communication commands. The commands will be listed on the next revision.
+
+
+## IS-S0109DEM Operational Overview
+
+When first turned on the IS-S0109DEM will display the NKK Switches logo. After 2 seconds it will then display the battery charge image. Pressing the button steps through each of the six simulated functions. It then loops back to the beginning.
+
+
+### Pinout used in IS-S0109DEM
+| Pin# | Pin Name | Possible Function      | IS-S0109DEM Description                                                                                                                         |
+| ---- | -------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | RC2      | Digital/Analog         | UART TX                                                                                                                                         |
+| 2    | RC1      | Digital/Analog         | UART RX                                                                                                                                         |
+| 3    | RC4      | Digital/Analog         | Input with weak pull up                                                                                                                         |
+| 4    | RC3      | Digital/Analog         | PWM out                                                                                                                                         |
+| 5    | Power    | Input voltage 7.5V-15V | 5V power in                                                                                                                                     |
+| 6    | Power    | Input voltage 7.5V-15V | 5V power in                                                                                                                                     |
+| 7    | Ground   | Ground                 | Ground                                                                                                                                          |
+| 8    | Ground   | Ground                 | Ground                                                                                                                                          |
+| 9    | 5V       | 5V output              | 5V power in                                                                                                                                     |
+| 10   | DG0      | Digital/Analog         | Turn LED0 on when battery is in amber color                                                                                                     |
+| 11   | DG1      | Digital/Analog         | Turn LED1 on when battery is in red color                                                                                                       |
+| 12   | AN1      | Digital/Analog         | Analog in. Demonstrate 10 bits analog converter                                                                                                 |
+| 13   | AN0      | Digital/Analog         | Analog in. Battery Analog in                                                                                                                    |
+| 14   | SWRD     | Switch output          | Switch pin connected to MC pin with a weak pull-up. The other switch pin is connected to Ground. In Rev C a diode protects MC from switch scan. |
+| 15   | DG2      | Digital/Analog         | Used to start and stop timer                                                                                                                    |
+| 16   | DG3      | Digital/Analog         | Used as counter                                                                                                                                 |
+| 17   | AN3      | Digital/Analog         | Analog in. Voltmeter                                                                                                                            |
+| 18   | AN2      | Digital/Analog         | Analog in. Rotary 16 levels                                                                                                                     |
+
+
+<CardGrid>
+
+<Card title="NKK Logo Splash Screen ">	
+    <img src="/src/assets/s0109-menu1.png" width="100;"/>
+    Only seen when first turned on. Stays on only for a few seconds.
+</Card>
+
+<Card title= "Battery Charge*">
+    <img src="/src/assets/s0109-menu2.png"  width="100;"/>
+    AN0 input is represented/displayed from 0% to 100% with green backlight.
+    - The warning level at which point in addition to the amber/Green backlight blink a signal is sent to DIG0 to turn ON the LED.
+    - The Danger level at which point in addition to the red backlight blink a signal is sent to DIG1 to turn ON the LED.
+</Card>
+
+<Card title="10-bit Stepper">
+    <img src="/src/assets/s0109-menu3.png"  width="100;"/>
+    AN1 input is represented/displayed from 0 to 1023 steps indicating the 10 bits analog resolution.
+</Card>
+
+<Card title="Voltmeter">
+    <img src="/src/assets/s0109-menu4.png"  width="100;"/>
+    AN2 input is represented/displayed from 0 to 5.00V.
+</Card> 
+
+<Card title="Rotary Stepper">
+    <img src="/src/assets/s0109-menu5.png" width="100;"/>
+    AN3 input is represented/displayed in 16 steps 1/16 to 16/16.
+</Card>
+
+<Card title="Timer">
+    <img src="/src/assets/s0109-menu6.png" width="100;"/> 
+    Turns on and off by Dig 2 toggle control. Green when running and amber when stopped.
+</Card>
+
+<Card title="Counter">
+    <img src="/src/assets/s0109-menu7.png" width="100;"/>
+    Counts each time the Dig 3 toggle is actuated. Resets to zero when power is off.
+</Card>
+
+<Card title="Firmware Version">
+    <img src="/src/assets/s0109-menu8.png" width="100;"/>
+    The current firmware loaded on the S0109. Hold down pushbuttons to go to brightness controls.
+</Card>
+
+<Card title="LCD Brightness Adjustment">
+    <img src="/src/assets/s0109-menu9.png"  width="100;"/>
+    Brightness control: Adjusts the contrast (or how dark the pixels are) of the LCD. Levels 1-5. After 5 seconds of inactivity it jumps to LED Brightness Adjustment.
+</Card>
+
+<Card title="LED Brightness Adjustment">
+    <img src="/src/assets/s0109-menu10.png"  width="100;"/>
+    Brightness control: Adjusts the brightness of the backlight LEDs. Levels 1-5. After 5 seconds of inactivity it jumps to Firmware Version.
+</Card>
+
+</CardGrid>
+
+*To select warning and danger level press and hold the switch while it is displaying “Batt Charge” till the display shows “Amber”. Then release the switch followed by press/releases to get to the desire choice (None, 5% to 90%). After 5 seconds of inactivity the danger setting appears when the display shows “RED”. Pressing and releasing the switch cycles through choices (None, 5% to (Amber choice -5%)). After 5 seconds of inactivity the chosen values are saved, and status of the battery charge functions accordingly. 
+
+## UART Communication
+
+The following UART commands are implemented in IS-S0109DEM.  
+64 images can be downloaded to flash using the Engineering Kits Communicator software. 
+
+#### Command to Download Image to Flash
+| Name        | Command | Address   | Image Data |
+| ----------- | ------- | --------- | ---------- |
+| Bytes       | 0x28    | 0x00XX    | 120 bytes  |
+| Send Format | HEX     | ASCII HEX | ASCII HEX  |
+
+The valid addresses are from 0x0001 to 0x0040. Controller responds with 0x6179. Please note when downloading to flash, all the functions get disabled.
+
+#### Command to Disable All the Functions
+| Name        | Command |
+| ----------- | ------- |
+| Bytes       | 0x2161  |
+| Send Format | HEX     |
+
+Controller responds with 0x6179.
+
+#### Command to Enable All the Functions
+| Name        | Command |
+| ----------- | ------- |
+| Bytes       | 0x2162  |
+| Send Format | HEX     |
+
+Controller responds with 0x6179.
+
+#### Command to Upload the Set Up
+| Name        | Command |
+| ----------- | ------- |
+| Bytes       | 0X2655  |
+| Send Format | HEX     |
+
+Controller responds with 0x61, Battery LED amber level, Battery LED red level, Backlight brightness level, LCD contrast, 79.
+
+#### Command to set LED Backlight Brightness
+| Name        | Command | LED Brightness |
+| ----------- | ------- | -------------- |
+| Bytes       | 0x2165  | 0x0X           |
+| Send Format | HEX     | HEX            |
+
+There are 8 backlight levels (0x07 to 0x00). 0x00 is the brightest level.   
+Controller responds with 0x6179.
+
+#### Command to Set LCD Contrast
+| Name        | Command | LCD Contrast |
+| ----------- | ------- | ------------ |
+| Bytes       | 0x2166  | 0xXX         |
+| Send Format | HEX     | ASCII HEX    |
+
+This produce the voltage for LCD. The default is 0xE0. There is no need to change this value unless for extreme temperature. Controller responds with 0x6179.
+
+#### Command to Save the Set Up
+| Name        | Command |
+| ----------- | ------- |
+| Bytes       | 0x2167  |
+| Send Format | HEX     |
+
+Controller save LED brightness AND level, LCD contrast. Controller responds with 0x6179.
+
+#### Command to Set Amber and Red Color for the Battery
+| Name        | Command | Amber %   | RED %     |
+| ----------- | ------- | --------- | --------- |
+| Bytes       | 0x2155  | 0xXX      | 0xXX      |
+| Send Format | HEX     | ASCII HEX | ASCII HEX |
+
+The Amber present range is 0x00 to 0x63. Red percentage range is 0x00 to less than the amber range. Controller responds with 0x6179.
+
+#### Command to Check the Connection
+| Name        | Command |
+| ----------- | ------- |
+| Bytes       | 0x01    |
+| Send Format | HEX     |
+
+Controller responds with 0x61, Firmware version, 0x79.
+
+#### Command to Display Image from Flash
+| Name        | Command | Image address |
+| ----------- | ------- | ------------- |
+| Bytes       | 0x2D    | 0xXX          |
+| Send Format | HEX     | HEX           |
+
+The acceptable image address range is from 0x01 to 0x40. Controller responds with 0x6179.
+
+#### Command to Fill the Image with the Fill Byte
+| Name        | Command | Fill byte |
+| ----------- | ------- | --------- |
+| Bytes       | 0x2761  | 0xXX      |
+| Send Format | HEX     | ASCII HEX |
+
+All the image bytes are replaced with the indicated byte. Controller responds with 0x6179.
+
+#### Command to Fill the Indicated Pixel Row Data with the Fill Byte
+| Name        | Command | Start row address | Fill byte |
+| ----------- | ------- | ----------------- | --------- |
+| Bytes       | 0x2762  | 0xXX              | 0xXX      |
+| Send Format | HEX     | HEX               | ASCII HEX |
+
+The start row range is from 0x00 to 0x17. Controller responds with 0x6179.
+
+#### Command to Create the Image of 6 Characters (Font5x7) from Indicated Start Address
+| Name        | Command | Start address | Characters (6) |
+| ----------- | ------- | ------------- | -------------- |
+| Bytes       | 0x2763  | 0xXX          | 0xXX           |
+| Send Format | HEX     | HEX           | HEX            |
+
+The start address range is from 0x00 to 0x11. Controller responds with 0x6179.
+
+#### Command to Create the Image of 4 Characters (Font7x10) from Indicated Start Address
+| Name        | Command | Start address | Characters (4) |
+| ----------- | ------- | ------------- | -------------- |
+| Bytes       | 0x2765  | 0xXX          | 0xXX           |
+| Send Format | HEX     | HEX           | HEX            |
+
+The start address range is from 0x00 to 0x0E. Controller responds with 0x6179.
+
+#### Command to Change the Backlight Color
+| Name        | Command | LED code |
+| ----------- | ------- | -------- |
+| Bytes       | 0x2755  | 0xXX     |
+| Send Format | HEX     | HEX      |
+
+Controller responds with 0x6179.
+
+#### Command to Change PWM Duty Cycle
+| Name        | Command | Duty cycle |
+| ----------- | ------- | ---------- |
+| Bytes       | 0x2757  | 0xXX       |
+| Send Format | HEX     | ASCII HEX  |
+
+Duty cycle range from 0x00 to 0xFF. Controller responds with 0x6179.
+
+#### Command to Create a Bar Graph
+| Name        | Command | Start address | Level |
+| ----------- | ------- | ------------- | ----- |
+| Bytes       | 0x2753  | 0xXX          | 0xXX  |
+| Send Format | HEX     | HEX           | HEX   |
+
+The start address range is from 0x00 to 0x14. The level is from 0x00 to 0x22. Controller responds with 0x6179.
+
+#### Command to Upload the Analog and Digital Status
+| Name        | Command |
+| ----------- | ------- |
+| Bytes       | 0x2F    |
+| Send Format | HEX     |
+
+Controller responds with 0x61, analog and digital data (10 bytes), 0x79. The pins are scanned every 12ms.
+
+**Analog and Digital Data Format:**
+| Byte # | Byte              | Description                                                                                   |
+| ------ | ----------------- | --------------------------------------------------------------------------------------------- |
+| 1      | High byte Analog1 | All analog inputs are scanned 4 times; the sum of the 4 scans is reported. Max value: 0x0FFC. |
+| 2      | Low byte Analog1  |                                                                                               |
+| 3      | High byte Analog2 |                                                                                               |
+| 4      | Low byte Analog2  |                                                                                               |
+| 5      | High byte Analog3 |                                                                                               |
+| 6      | Low byte Analog3  |                                                                                               |
+| 7      | High byte Analog4 |                                                                                               |
+| 8      | Low byte Analog4  |                                                                                               |
+| 9      | Digital OR status | Logical OR of every scan since the last upload.                                               |
+| 10     | Digital status    | B0–B3: digital 1–4; B6: RC3; B7: RC4                                                          |
+
+## IS-S0109DEM Hardware
+
+**Controls Overview:**
+
+<img src="/src/assets/IS-S0109DEM-Idenitier.png" width="500"/>
+
+<Aside type="caution" title="Caution">
+  Improper installation of the Single Switch Solution could damage the units.
+</Aside>
+
+The **Analog In** has four potentiometers that simulate analog input signals.
+
+| Pin      | Function  |
+| -------- | --------- |
+| Analog 0 | Battery   |
+| Analog 1 | 10 bits   |
+| Analog 2 | Voltmeter |
+| Analog 3 | Stepper   |
+
+The **Digital In/Out** has four on/off toggles that simulate digital input signals and four LED’s that simulate digital output signals. Note that the Digital In and Digital Out are connected so the pin can only be used for one or the other. Digital 0 and 1 are used for output. Digital 2 and 3 are used for input.
+
+| Pin       | Direction | Function                                                              |
+| --------- | --------- | --------------------------------------------------------------------- |
+| Digital 0 | Output    | LED lit when AN0 is below warning level and higher than danger level. |
+| Digital 1 | Output    | LED lit when AN0 is lower than danger level.                          |
+| Digital 2 | Input     | ON/OFF the timer                                                      |
+| Digital 3 | Input     | Counter                                                               |
+ 
+The **9-15V DC Power jack** mates with a 2.5mm cylinder power connector with a center positive.
+
+The **Programming Connector** links the Single Switch Solution to the firmware programmer such as the PICKit 3 or 4 by Microchip. The unit must have power to program. Also, the five-pin programming bridge should be installed into the 5x1 female header, so the unit is connected to the Single Switch Solution. It should be removed after programming to prevent stray signals.
+
+|             |      |     |     |     |     |
+| ----------- | ---- | --- | --- | --- | --- |
+| Pin         | 1    | 2   | 3   | 4   | 5   |
+| Description | MCLR | VDD | GND | PGD | PGC |
+
+
+## Programming
+
+### 1.	Preparing the IS-S0109DEM for Programming
+
+The Programming Connector links the Single Switch Solution to the firmware programmer such as the PICKit 3 by Microchip.
+
+1.	The unit must have power to program.
+2.	The five-pin programming bridge should be installed into the 5x1 female header, so the unit is connected to the Single Switch Solution. It should be removed after programming to prevent stray signals. Make sure there is contact between the connector and pads on the bottom of the S0109.
+3.	Pin one on the programmer must be connected to pin one on the programming connector. Plugging it in wrong may damage the unit or the programmer or both.
+
+|             |      |     |     |     |     |
+| ----------- | ---- | --- | --- | --- | --- |
+| Pin         | 1    | 2   | 3   | 4   | 5   |
+| Description | MCLR | VDD | GND | PGD | PGC |
+
+Single Switch Solution with programmer attached:
+
+<img src="/src/assets/IS-S0109DEM-Programming.png" width="350"/>
+
+### 2. Preparing the MPLAB Program
+
+Note: These instructions are for PICKit 3 and MPLAB X IDE v5.10. The version will change at Microchip’s discretion.
+1.	Open MPLAB X IDE program.
+2.	Select **File**, then **Import**, then **Hex/ELF. . . (Prebuilt) file**.
+3.	Prebuilt Filename: **IS0109DEM20.X.Hex**.
+4.	Device: PIC18F26K40-I/MV.
+5.	Hardware Tool: PICKIT3.
+6.	All else leave the same.
+
+<img src="/src/assets/s0109-mplab1.png"/>
+
+7.	Click on **Next**.
+8.	Select a Project Name and click on **Finish**.
+
+<img src="/src/assets/s0109-mplab2.png"/>
+
+9. Click on the project’s folder and open it.
+10.	Open the “Prebuilt Files” folder and select the hex file.
+
+<img src="/src/assets/s0109-mplab3.png"/>
+
+### 3. Programming the S0109
+
+1.	Click on the Make and Program Device icon  . Then name of the project should be displayed in the drop down.
+2.	Be sure to hold gently hold down the S0109 unit while it is programming.
+3.	Ignore any Programming warnings. Click “OK” button.
+4.	MPLAB IDE will say:  
+Programming. . .  
+Programming/Verify complete  
+5.	Programming is complete.
+
+<img src="/src/assets/s0109-mplab4.png"/>
+
+**Common Errors:**
+1.	Target device was not found (could not detect target voltage VDD). You must connect to a target device to use PICkit 3.
+      - Check that the connections are attached. Wiggle the S0109 around.
+2.	Target Device ID (0x0) is an Invalid Device ID. Please check your connections to the Target Device.
+      - Wiggle the S0109 around. Make sure the programming connection has proper contact.
+
+### 4. Testing
+
+1.	Unplug power plug.
+2.	Remove PICkit 3 from unit.
+3.	Remove Single Switch Solution from the IS-S0109DEM board.
+4.	Remove programming bridge.
+5.	Plug in Single Switch Solution back onto IS-S0109DEM board.
+
+<img src="/src/assets/IS-S0109DEM.png" width="250;"/>
+
+6.	Plug in power plug.
+7.	Adjust analog pots, IS pushbutton, and digital switches as necessary to verify that the unit is working as expected.
+
+**Notes:**
+- If any of the analog pins are used as digital output, make sure the corresponding potentiometer is in a middle position while programming. 
+- If the pins are assigned as digital OUT and the potentiometer is all the away to one side or the other, it may cause damage to the unit.
+- If the pins are assigned as digital IN the potentiometer should not be left to produce voltage between 0.6V to 2V.
+
+## Warranty
+
+NKK SWITCHES LIMITED WARRANTY AND LIMITATION OF LIABILITY
+
+***The following limits our liability. Please read.*** 
+
+NKK Switches hereby warrants this product against any and all manufacturing defects for a period of one year from the date of sale of this product to the original end user.  NKK Switches’ liability in the event of such defect is limited to repair or replacement of the defective products.  NKK Switches disclaims any liability or warranty obligation with respect to any product that is misused, damaged by any user, or not used in conformity with all applicable product specifications.
+
+NKK SWITCHES HEREBY DISCLAIMS ANY WARRANTY, EXPRESS OR IMPLIED, OTHER THAN THAT CONTAINED HEREIN.  **NKK SWITCHES EXPRESSLY DISCLAIMS THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE,** AND SHALL HAVE NO LIABILITY BASED ON OR ARISING FROM ANY CLAIM OF SUCH WARRANTY.
+
+NKK Switches shall have no liability to any person for any incidental, consequential, special, punitive, or other damages of any kind whatsoever relating to any use of this product.
+
+**USE OF THIS PRODUCT IN CONNECTION WITH ANY LIFE CRITICAL APPLICATION IS NOT RECOMMENDED.**

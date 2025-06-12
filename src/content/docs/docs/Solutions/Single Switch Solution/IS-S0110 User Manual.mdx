@@ -1,0 +1,355 @@
+---
+title: IS-S0110
+description: IS-S0110 user manual.
+sidebar:
+  badge:
+    text: New
+    variant: success
+---
+import { LinkCard, Aside } from '@astrojs/starlight/components';
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> IS-S0110 User Manual </div>
+
+<img src="/src/assets/is-s0110-top.png" width="200"/>
+
+
+**All Rights Reserved Worldwide**
+
+NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein.
+SmartDisplay is a trademark of NKK Switches.
+
+<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
+
+- [General Features](#general-features)
+- [Applications](#applications)
+- [How to Order](#how-to-order)
+- [Hardware](#hardware)
+  - [Dimensions](#dimensions)
+  - [Application Interface Header (J1) Pinout](#application-interface-header-j1-pinout)
+- [Schematics](#schematics)
+- [Connecting to Application](#connecting-to-application)
+- [IS-S0110DEM Evaluation Kit](#is-s0110dem-evaluation-kit)
+  - [IS-S0110DEM Evaluation Kit Hardware](#is-s0110dem-evaluation-kit-hardware)
+- [Demo Program Overview](#demo-program-overview)
+  - [Pinout used in IS-S0110DEM](#pinout-used-in-is-s0110dem)
+- [IS-S0110DEM Evaluation Kit Schematics](#is-s0110dem-evaluation-kit-schematics)
+- [Programming](#programming)
+- [Resources](#resources)
+- [Warranty](#warranty)
+
+
+## General Features
+
+The **Single Switch Solution** is a compact device that can both monitor and control an industrial process independently or in conjunction with other controllers.
+
+The 36x24 pixel LCD display can display graphics or characters while the backlight color options allow for status color schemes and modes of operation. In addition to the on-board flash, there are two look-up fonts (5x7 and 7x10) on board to create images based on characters. Up to 3 lines of 6 characters in font 5x7 or up to 2 lines of 4 characters in font 7x10 can be displayed.
+
+14 micro-controller pins are available for use. Pins can be configured to be analog inputs or digital inputs/outputs:
+- Analog inputs can be used to check the status of gauges such as temperature, pressure, voltage, amperage, oil level, gas level, etc.
+- Digital inputs can be used to check the ON/OFF statuses of devices or count the frequency of an event.
+- Digital outputs can be used as signals to turn a device on or off based on preset values. 
+- Digital signals can be used for communication with other devices. 
+- Digital outputs can be configured as PWM outputs.
+
+The SmartDisplay push button presses can be used for toggling between statuses or menus and holding the push button can be used for selecting options.
+
+SPI, I2C, and UART communications are possible.
+
+The Single Switch solution is useful in many applications where complex information needs to be displayed while minimizing design and installation time and complexity. Contact engineering@nkkswitches.com for application consultation.
+
+Features:
+- 36x24 pixel graphic LCD.
+- Two look-up fonts. Can display 3 lines of 6 characters in font 5x7, and 2 lines of 4 characters in font 7x10.
+- RGB LED backlighting for various modes of operation.
+- Adjustable backlight brightness.
+- Adjustable LCD contrast.
+- Panel mount for easy installation.
+- Single pole momentary switch.
+- User configurable firmware.
+- Pins available on 2x9 header (0.1”x0.1”).
+- USB C connection for programming and UART communication.
+- UART also available on two pins.
+- Up to 14 configurable pins:
+  - 9 pins are GPIO, 5 pins are input only.
+  - Maximum of 9 digital outputs or PWM.
+  - Maximum of 14 digital inputs.
+  - Maximum of 7 ADC analog inputs.
+
+## Applications
+
+The Single Switch Solution is a controller/indicator device for use in an application with little to no technical or engineering know-how needed to install, operate, and configure.
+
+The device can be configured with the web user interface. The user can upload images and configure what images, text, and actions they want to see. The device would then be programmed and loaded with the images, actions, and responses ready to be used. The customer would then simply need to install the device into their application. Please contact NKK Switches for any support with your application. If the current product does not meet your application, we can add features that meet your requirements.
+
+Application Examples:  
+
+A Single Switch Solution is hooked up to a device that drops jellybeans into a bag and a counting sensor. When the Single Switch Solution counts out a fixed number of beans it sends signals to stop the jellybeans from dropping, move the bag out of the way, seal the bag and get the next bag.  
+
+A Single Switch Solution is used to monitor two voltages and two currents. Pressing the switch steps through displaying the status of each of the four measurements. When the voltages or currents exceed a preset warning range the display blinks to warn the operator. When the voltages or currents reach a danger range not only does the display turn red it also sends signals to shut down the system. The warning and shut down values for each measurement are user defined and can be modified by pressing and holding the switch while displaying the measurement.
+
+A Single Switch Solution is hooked up to engine sensors to display fuel, water, oil, and temperature. Pressing the switch cycles through and displays the four statuses. When any of the statuses are outside normal the display blinks amber to warn the operator. When any of the statuses are in danger range the display blinks red. 
+
+## How to Order
+
+The Single Switch Solution part number is **IS-S0110**.
+
+An evaluation kit can be ordered for testing. The evaluation kit part number is **IS-S0110DEM** and includes: 
+1. One IS-S0110.
+2.	A demonstration board that has the following features:    
+    - 4 potentiometers for analog input 
+    - 5 toggle switches for digital input
+    - 5 LEDs to operate with digital output  
+ 
+The evaluation kit IS-S0110DEM comes preprogrammed with a demo for demonstrating the Single Switch Solution capabilities. Please see the section [IS-S0110DEM Evaluation Kit](#is-s0110dem-evaluation-kit) for more information.
+
+
+## Hardware
+
+<Aside type="danger" title="Warning">
+  These devices are ESD sensitive. Please handle with care and use proper ESD precautions.
+</Aside>
+
+The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount accessory soldered to a small controller PCB.
+
+Power input: 5V to 15V. The absolute maximum load is 1A.
+
+**IS-S0110 Photos:**
+
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+  <img src="/src/assets/is-s0110-top.png" width="250"/>
+  <img src="/src/assets/is-s0110-down.png" width="250"/>  
+</div>
+
+### Dimensions  
+
+
+<img src="/src/assets/s0110-dimensions.png"/>
+
+
+Application Interface Header (J1) is a 2x9 header 0.1” x 0.1” for application connections.
+
+
+
+### Application Interface Header (J1) Pinout
+
+<img src="/src/assets/s0110-pins.png" width="300;"/>
+
+Application Interface Header (J1) is a 2x9 header 0.1” x 0.1” for application connections.
+
+| Pin# | Pin Name | Possible Function | Notes                                                                                                                   |
+| ---- | -------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 1    | IO33     | GPIO / PWM / ADC  | Can be digital input/output, PWM output, or analog input.                                                               |
+| 2    | IO32     | GPIO / PWM / ADC  | Can be digital input/output, PWM output, or analog input.                                                               |
+| 3    | IO26     | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 4    | IO25     | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 5    | IO12     | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 6    | IO14     | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 7    | IO15     | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 8    | IO13     | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 9    | IO2      | GPIO / PWM        | Can be digital input/output, PWM output.                                                                                |
+| 10   | I35      | GPI / ADC         | Input only. Can be digital or analog input.                                                                             |
+| 11   | I34      | GPI / ADC         | Input only. Can be digital or analog input.                                                                             |
+| 12   | I39      | GPI / ADC         | Input only. Can be digital or analog input.                                                                             |
+| 13   | I38      | GPI / ADC         | Input only. Can be digital or analog input.                                                                             |
+| 14   | I37      | GPI / ADC         | Input only. Can be digital or analog input.                                                                             |
+| 15   | GND      |                   | Ground                                                                                                                  |
+| 16   | 3V3      |                   | 3.3V output generated by the onboard circuit. If powering external devices, the maximum current drawn cannot exceed 1A. |
+| 17   | GND      |                   | Ground                                                                                                                  |
+| 18   | VIN      |                   | Input voltage 5V to 15V. The unit can also be powered via the USB C connector with 5V.                                  |
+
+
+## Schematics
+
+<img src="/src/assets/s0110-schematics.png"/>
+
+## Connecting to Application
+
+All the I/O pins are directly connected to the microcontroller pin. There is no safety circuit due to lack of space. If the application signals are not stable appropriate safety measures should be implemented in the application or interface board.
+
+- Analog Resolution: 12 bits
+- Analog pin input voltage: 0 to 3.3V
+- DC characteristics:
+  - High-level input voltage: 2.475V to 3.6V  
+  - Low-level input voltage: -0.3V to 0.825V  
+  - High-level output voltage: 2.64V to 3.3V  
+  - Low-level output voltage: 0V to 0.33V  
+  - High-level source current: 20mA  
+  - Low-level sink current: 28mA  
+  - Pull-up and pull-down resistance: 45kΩ  
+
+Some applications require an interface board for converting the analog input to proper voltage or turning on relays that require more current. NKK can design interface boards for new applications.
+
+## IS-S0110DEM Evaluation Kit
+
+<img src="/src/assets/IS-S0110-DEM.png" width="400;"/>
+
+The IS-S0110DEM is a demonstration unit for the IS-S0110 Single Switch Solution. Below are the current features:
+
+- Four potentiometers to simulate analog input signals. 
+- Five G12AP miniature toggle switches to simulate digital input signals.
+- Five LEDs to drive with digital outputs.
+- The default program loaded on the IS-S0110 demonstrates capabilities.
+
+### IS-S0110DEM Evaluation Kit Hardware
+
+JIN - Connector for IS-S0110.  
+J1 - 2x14 header for connecting board peripherals to the IS-S0110 pins.  
+AN1-AN4 - Potentiometers for analog input.  
+DIG1-DIG5 - Toggle switches for digital input.  
+LED1-LED5 - LEDs for digital output.  
+VIN - Power input 5V to 15V.  
+3V3 - 3.3V output generated by the onboard circuit. If powering external devices, the maximum current drawn cannot exceed 1A.  
+GND - Ground.
+
+<img src="/src/assets/DS0110.png" width="400;"/>
+
+## Demo Program Overview
+
+### Pinout used in IS-S0110DEM
+
+The unit has four potentiometers that simulate analog input signals, five toggle switches that simulate digital inputs, and five LEDs that simulate digital outputs. The demo program configures the pins as:
+
+| Pin# | Pin Name | Function | Pin Mode         | Notes                                                                                                                   |
+| ---- | -------- | -------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 1    | IO33     | LED1     | Output           | Connected to LED1.                                                                                                      |
+| 2    | IO32     | LED2     | Output           | Connected to LED2.                                                                                                      |
+| 3    | IO26     | LED3     | Output           | Connected to LED3.                                                                                                      |
+| 4    | IO25     | LED4     | Output           | Connected to LED4.                                                                                                      |
+| 5    | IO12     | LED5     | Output           | Connected to LED5.                                                                                                      |
+| 6    | IO14     | DIG1     | Input, pull-down | Connected to toggle switch 1.                                                                                           |
+| 7    | IO15     | DIG2     | Input, pull-down | Connected to toggle switch 2.                                                                                           |
+| 8    | IO13     | DIG3     | Input, pull-down | Connected to toggle switch 3.                                                                                           |
+| 9    | IO2      | DIG4     | Input, pull-down | Connected to toggle switch 4.                                                                                           |
+| 10   | I35      | DIG5     | Input, pull-down | Connected to toggle switch 5.                                                                                           |
+| 11   | I34      | AN1      | Input            | Connected to potentiometer 1.                                                                                           |
+| 12   | I39      | AN2      | Input            | Connected to potentiometer 2.                                                                                           |
+| 13   | I38      | AN3      | Input            | Connected to potentiometer 3.                                                                                           |
+| 14   | I37      | AN4      | Input            | Connected to potentiometer 4.                                                                                           |
+| 15   | GND      |          |                  | Ground                                                                                                                  |
+| 16   | 3V3      |          |                  | 3.3V output generated by the onboard circuit. If powering external devices, the maximum current drawn cannot exceed 1A. |
+| 17   | GND      |          |                  | Ground                                                                                                                  |
+| 18   | VIN      |          |                  | Input voltage 5V to 15V. The unit can also be powered via the USB C connector with 5V.                                  |
+
+VIN is 5-15V DC and can be connected through the 2-pin connector labeled VIN (top is PWR, bottom is GND), or the 2.54mm header.
+
+Upon power-up, the display shows the NKK Switches logo. After 3 seconds it will then display the battery charge image. Pressing the button loops through eight simulated functions:
+
+<CardGrid>
+
+<Card title="NKK Logo Splash Screen ">	
+    <img src="/src/assets/s0110-splash_logo.png" width="150;"/>
+    Displays on power-up. Stays on for three seconds. The backlight blinks white and yellow.
+</Card>
+
+<Card title= "Battery Charge">
+<img src="/src/assets/s0110-menu1.png"  width="150;"/>
+    AN1 input is displayed as a percentage from 0% to 100%. 
+    - If the percentage is greater than 50%, the backlight is green. 
+    - If the percentage is 20% to 50%, the backlight is yellow. 
+    - If the percentage is less than 20%, the backlight blinks red and orange. 
+</Card>
+
+<Card title="12-bit Stepper">
+    <img src="/src/assets/s0110-menu2.png"  width="150;"/>
+    AN2 input is displayed as a value from 0 to 4095 indicating the 12-bit analog resolution. A bar graph animation also updates based on the value. The backlight is cyan. The LEDs also light up based on AN2.
+</Card>
+
+<Card title="Voltmeter">
+    <img src="/src/assets/s0110-menu3.png"  width="150;"/>
+    AN3 input is displayed as a voltage from 0 - 3.3V. The backlight is white.
+</Card> 
+
+<Card title="Rotary Stepper">
+    <img src="/src/assets/s0110-menu4.png" width="150;"/>
+    AN4 input is displayed in steps from 0/16 to 16/16. The backlight is blue. 
+    - If DIG1 is toggled HIGH, the step resolution increases. 
+    - If DIG2 is toggled HIGH, the step resolution decreases. 
+    - The step resolutions can be toggled between 4, 10, 16, 32, 50. 
+    - The LEDs also light up to indicate the current step resolution.
+</Card>
+
+<Card title="Timer">
+    <img src="/src/assets/s0110-menu5.png" width="150;"/> 
+    Operates a countdown timer. The backlight is green when the timer is running and yellow when not running. 
+    - If DIG5 is LOW, the other switches operate as: 
+    - If DIG1 is toggled HIGH, the timer starts. 
+    - If DIG2 is toggled HIGH, the timer stops and goes to 0. 
+    - If DIG3 is toggled HIGH, the timer pauses. 
+    - If DIG4 is toggled HIGH, the timer resumes. 
+    - If DIG5 is HIGH, the other switches operate as: 
+    - If DIG1 is toggled HIGH, the set timer time decreases by 10s. 
+    - If DIG2 is toggled HIGH, the set timer time decreases by 1s. 
+    - If DIG3 is toggled HIGH, the set timer time increases by 1s. 
+    - If DIG4 is toggled HIGH, the set timer time increases by 10s.  
+    LED5 is on if DIG5 is HIGH.
+</Card>
+
+<Card title="Counter">
+    <img src="/src/assets/s0110-menu6.png" width="150;"/>
+    Keeps track and displays a counter value. Resets to zero when power is off. The backlight is magenta.
+    - If DIG1 is toggled HIGH, the counter decreases by 10.
+    - If DIG2 is toggled HIGH, the counter decreases by 1.
+    - If DIG3 is toggled HIGH, the counter increases by 1.
+    - If DIG4 is toggled HIGH, the counter increases by 10.
+    - If DIG5 is toggled HIGH, the counter is reset to 0.
+</Card>
+
+<Card title="Stopwatch">
+    <img src="/src/assets/s0110-menu7.png" width="150;"/>
+    Displays the time the unit has been powered on. The backlight is white when running, and yellow when not running.
+    - If DIG1 is toggled HIGH, the timer restarts from 0.
+    - If DIG2 is toggled HIGH, the timer stops and is set to 0.
+    - If DIG3 is toggled HIGH, the timer pauses.
+    - If DIG4 is toggled HIGH, the timer resumes.
+</Card>
+
+<Card title="Demo Version">
+    <img src="/src/assets/s0110-menu8.png"  width="150;"/>
+    The current demo program version. The backlight is white.
+    - Hold down the push button to go to Backlight Brightness Adjustment.
+</Card>
+
+<Card title="Backlight Brightness Adjustment">
+    <img src="/src/assets/s0110-menu9.png"  width="150;"/>
+    Adjusts and displays the backlight brightness from 1 to 10.
+    - Press the button to adjust the brightness level.
+    - After 5 seconds of inactivity, the program goes to LCD Contrast Adjustment.
+</Card>
+
+<Card title="LCD Contrast Adjustment">
+    <img src="/src/assets/s0110-menu10.png"  width="150;"/>
+    Adjusts and displays the LCD contrast from 1 to 10.
+    - Press the button to adjust the contrast level.
+    - After 5 seconds of inactivity, the program goes back to Demo Version.
+</Card>
+
+</CardGrid>
+
+## IS-S0110DEM Evaluation Kit Schematics
+
+<img src="/src/assets/ds0110-schematics.png"/>
+
+## Programming
+
+The unit’s program can be configured in the web user interface. The program behavior can be configured to control the legends and backlighting of the SmartDisplay, control the state of the output pins, and respond to the switch actuation and input pins. Please see the page [Creator Program API Reference](/docs/how-to/creator-program-api-reference/) for information on how to create programs for the IS-S0110.
+
+## Resources
+
+- [NKK Switches IS-S0110 Product Page](https://www.nkkswitches.com/products/s0110-single-switch-solution)
+- [IS15BBFP4RGB Datasheet](https://www.nkkswitches.com/pdf/IS15BBFP4RGB_Wide36x24PB.pdf)
+- [ESP32-PICO-MINI-02U Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-pico-mini-02_datasheet_en.pdf)
+
+## Warranty
+
+NKK SWITCHES LIMITED WARRANTY AND LIMITATION OF LIABILITY
+
+***The following limits our liability. Please read.*** 
+
+NKK Switches hereby warrants this product against any and all manufacturing defects for a period of one year from the date of sale of this product to the original end user.  NKK Switches’ liability in the event of such defect is limited to repair or replacement of the defective products.  NKK Switches disclaims any liability or warranty obligation with respect to any product that is misused, damaged by any user, or not used in conformity with all applicable product specifications.
+
+NKK SWITCHES HEREBY DISCLAIMS ANY WARRANTY, EXPRESS OR IMPLIED, OTHER THAN THAT CONTAINED HEREIN.  **NKK SWITCHES EXPRESSLY DISCLAIMS THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE,** AND SHALL HAVE NO LIABILITY BASED ON OR ARISING FROM ANY CLAIM OF SUCH WARRANTY.
+
+NKK Switches shall have no liability to any person for any incidental, consequential, special, punitive, or other damages of any kind whatsoever relating to any use of this product.
+
+**USE OF THIS PRODUCT IN CONNECTION WITH ANY LIFE CRITICAL APPLICATION IS NOT RECOMMENDED.**

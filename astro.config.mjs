@@ -22,18 +22,30 @@ export default defineConfig({
 					label: '[home]Welcome',
 					link: '/',
 				},
-				{
-					label: '[book]Products Documentation',
-					autogenerate: { directory: 'docs/Products' },
-				},
-				{
-					label: '[rocket]Application Notes',
+                {
+                    label: '[list-box]Datasheets',
+                    link: 'docs/datasheets',                    
+                },
+                {
+                    label: '[pen]Whitepapers',
+                    link: 'docs/whitepapers', 
+                },
+                {
+					label: '[book]Application Notes',
 					autogenerate: { directory: 'docs/Application Notes' },
 				},
-				{
-					label: '[changelog]Whitepapers',
-					autogenerate: { directory: 'docs/Whitepapers' },
-				},
+                {
+                    label: '[rocket]Engineering Kits',
+                    autogenerate: { directory: 'docs/Engineering Kits' },
+                },
+                {
+                    label: '[bolt]Controllers',
+                    autogenerate: { directory: 'docs/Controllers' },
+                },
+                {
+                    label: '[lightbulb]Solutions',
+                    autogenerate: { directory: 'docs/Solutions' },
+                },
 				{
 					label: '[box]How To',
 					autogenerate: { directory: 'docs/How To' },
