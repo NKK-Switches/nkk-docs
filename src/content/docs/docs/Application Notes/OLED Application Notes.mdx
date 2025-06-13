@@ -2,46 +2,21 @@
 title: OLED
 description: OLED application notes.
 ---
+import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the OLED Color SmartDisplay </div>
 
 <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-  <img src="/src/assets/oled-frameless.png" width="200"/>
-  <img src="/src/assets/standard-oled.png" width="190"/>
-  <img src="/src/assets/oled-display.png" width="170"/>  
+  <image src="/assets/oled-frameless.png" width="200"/>
+  <image src="/assets/standard-oled.png" width="190"/>
+  <image src="/assets/oled-display.png" width="170"/>  
 </div>
 
 **All Rights Reserved Worldwide**
 
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches. 
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
-
-- [General Information](#general-information)
-- [Part Numbers](#part-numbers)
-  - [Switches](#switches)
-  - [Engineering Developments Kits](#engineering-developments-kits)
-- [Pin-outs](#pin-outs)
-- [Design Considerations](#design-considerations)
-  - [1. Power Requirements VCC (16V)](#1-power-requirements-vcc-16v)
-  - [2. Communication](#2-communication)
-  - [3. Hardware and Layout](#3-hardware-and-layout)
-  - [4. Controlling Many OLED Switches or Displays](#4-controlling-many-oled-switches-or-displays)
-  - [5. SCK Frequency](#5-sck-frequency)
-  - [6. Running Video](#6-running-video)
-- [Operating Life](#operating-life)
-- [Initialization](#initialization)
-- [Memory Format](#memory-format)
-- [Specifying a Memory Window for Downloading](#specifying-a-memory-window-for-downloading)
-- [Pixels and Image Format](#pixels-and-image-format)
-- [Display Commands Available](#display-commands-available)
-- [Additional Commands Available](#additional-commands-available)
-- [Scrolling (Screensaver)](#scrolling-screensaver)
-- [Graphic Commands](#graphic-commands)
-- [Initialization Options](#initialization-options)
-- [Sample Schematic for a Multi-switch Controller](#sample-schematic-for-a-multi-switch-controller)
-- [Frequently Asked Questions](#frequently-asked-questions)
 
 ## General Information
 
@@ -55,15 +30,15 @@ The OLED color family currently has three products (a frameless pushbutton, a st
 
 | Switch                                                                           | PN        | Pixels | Socket      |
 | -------------------------------------------------------------------------------- | --------- | ------ | ----------- |
-| Frameless OLED Pushbutton <img src="/src/assets/oled-frameless.png" width="50"/> | ISF15ACP4 | 96x64  | AT9704-085L |
-| OLED Pushbutton <img src="/src/assets/standard-oled.png" width="50"/>            | ISC15ANP4 | 64x48  | AT9704-085L |
-| OLED Display <img src="/src/assets/oled-display.png" width="43"/>                | ISC01P    | 52x36  | AT9704-085M |
+| Frameless OLED Pushbutton <image src="/assets/oled-frameless.png" width="50"/> | ISF15ACP4 | 96x64  | AT9704-085L |
+| OLED Pushbutton <image src="/assets/standard-oled.png" width="50"/>            | ISC15ANP4 | 64x48  | AT9704-085L |
+| OLED Display <image src="/assets/oled-display.png" width="43"/>                | ISC01P    | 52x36  | AT9704-085M |
 
 ### Engineering Developments Kits
 
 Engineering Development Kits are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by not only familiarizing design engineers to SmartDisplay products, but also as a development platform for experimentation and design viability testing. The schematic and source codes in C language are provided. Please refer to the [Engineering Kits for OLED](/docs/engineering-kits/oled-engineering-kits-user-manual) documentation for more information.
 
-<img src="/src/assets/IS-ENG-KIT-7-FF.png" width="300"/>
+<image src="/assets/IS-ENG-KIT-7-FF.png" width="300"/>
 
 ## Pin-outs
 
@@ -145,7 +120,7 @@ The specification states the maximum frequency is 6.6MHz. However, the Engineeri
 
 Displaying video is achieved by sequentially sending video frames at the desired speed. The theoretical maximum frames per second for the Frameless OLED is about 67. If multiple OLEDs need to run video at the same time, the design may need to have multiple clocks and data lines. Running 9 Frameless OLED with the same clock and data line will yield about 7.5 fps. Having clocks and data lines for every three switches will improve to about 22 fps at 6.6MHz. For example, for one Frameless OLED:
 
-<img src="/src/assets/equation-oled-fps.png" width="300"/>
+<image src="/assets/equation-oled-fps.png" width="300"/>
 
 ## Operating Life
 
@@ -269,7 +244,7 @@ Upon finishing initialization, the OLED module displays the content of whatever 
 
 The onboard OLED controller can control up to 96x64 pixels. The controller memory size is 96x2 bytes per pixel x64. The OLED on-board memory map is as follows:
 
-<img src="/src/assets/oled-memory-map.png" width="500"/>
+<image src="/assets/oled-memory-map.png" width="500"/>
 
 The memory data specified by yellow will be displayed on the OLED Display (52x36).
 
@@ -322,11 +297,11 @@ Any data transmitted when the D/C pin is high is considered image data. The OLED
 
 Each pixel requires two bytes in the 565 format as shown below:
 
-<img src="/src/assets/oled-bgr.png" width="500"/>
+<image src="/assets/oled-bgr.png" width="500"/>
 
 It may be best to create the images in a computer as 24-bit bitmap (.bmp) images, which is standard, then extract the 16 bits from the three bytes of the 24-bit bitmap. The Engineering Kits Communicator converts the three bytes to two bytes as shown in the image below:
 
-<img src="/src/assets/oled-bgr-565.png" width="500"/>
+<image src="/assets/oled-bgr-565.png" width="500"/>
 
 When resizing an image to fit the size of the OLED switch or display, consider compressing the image to compensate for the fact that the pixels are not square. It is best to compress before resizing.
 
@@ -537,7 +512,7 @@ Description:
 Below is a sample schematic to control two OLED modules. With the theoretical maximum clock frequency of 6.6MHz, 134 images per second can be transmitted via SPI. However, realistically, 84 images per second is possible. There are 6144 bytes for each image in the 65k color mode. One image takes 6144 bytes * 8 bits/byte = 49152 bits. Dividing the SPI frequency by 49152 provides the maximum number of images that can be transmitted per second. The preceding calculation does not consider overhead and data retrieving time.
 
 *Sample schematic for control of two OLED modules*
-<img src="/src/assets/schematic-oled.png" width="500"/>
+<image src="/assets/schematic-oled.png" width="500"/>
 
 Additionally, please see the [Engineering Kits for OLED](/docs/engineering-kits/oled-engineering-kits-user-manual) for an example schematic on how to control two switches.
 

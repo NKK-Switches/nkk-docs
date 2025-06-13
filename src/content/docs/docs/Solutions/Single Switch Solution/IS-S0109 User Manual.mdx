@@ -6,12 +6,13 @@ sidebar:
     text: NRND
     variant: caution
 ---
+import Image from '../../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> IS-S0109 User Manual </div>
 
-<img src="/src/assets/s0109.png" width="300"/>
+<image src="/assets/s0109.png" width="300"/>
 
 
 **All Rights Reserved Worldwide**
@@ -19,47 +20,6 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein.
 SmartDisplay is a trademark of NKK Switches.
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
-
-- [General Features](#general-features)
-- [Applications](#applications)
-- [How to Order](#how-to-order)
-- [S0109 General Features](#s0109-general-features)
-- [Backlighting](#backlighting)
-- [Attributes](#attributes)
-- [Hardware](#hardware)
-  - [Dimensions](#dimensions)
-  - [Application Interface Header (J1) pinout](#application-interface-header-j1-pinout)
-- [Connecting to Application](#connecting-to-application)
-- [IS-S0109DEM Evaluation Kit](#is-s0109dem-evaluation-kit)
-- [IS-S0109DEM Operational Overview](#is-s0109dem-operational-overview)
-  - [Pinout used in IS-S0109DEM](#pinout-used-in-is-s0109dem)
-- [UART Communication](#uart-communication)
-    - [Command to Download Image to Flash](#command-to-download-image-to-flash)
-    - [Command to Disable All the Functions](#command-to-disable-all-the-functions)
-    - [Command to Enable All the Functions](#command-to-enable-all-the-functions)
-    - [Command to Upload the Set Up](#command-to-upload-the-set-up)
-    - [Command to set LED Backlight Brightness](#command-to-set-led-backlight-brightness)
-    - [Command to Set LCD Contrast](#command-to-set-lcd-contrast)
-    - [Command to Save the Set Up](#command-to-save-the-set-up)
-    - [Command to Set Amber and Red Color for the Battery](#command-to-set-amber-and-red-color-for-the-battery)
-    - [Command to Check the Connection](#command-to-check-the-connection)
-    - [Command to Display Image from Flash](#command-to-display-image-from-flash)
-    - [Command to Fill the Image with the Fill Byte](#command-to-fill-the-image-with-the-fill-byte)
-    - [Command to Fill the Indicated Pixel Row Data with the Fill Byte](#command-to-fill-the-indicated-pixel-row-data-with-the-fill-byte)
-    - [Command to Create the Image of 6 Characters (Font5x7) from Indicated Start Address](#command-to-create-the-image-of-6-characters-font5x7-from-indicated-start-address)
-    - [Command to Create the Image of 4 Characters (Font7x10) from Indicated Start Address](#command-to-create-the-image-of-4-characters-font7x10-from-indicated-start-address)
-    - [Command to Change the Backlight Color](#command-to-change-the-backlight-color)
-    - [Command to Change PWM Duty Cycle](#command-to-change-pwm-duty-cycle)
-    - [Command to Create a Bar Graph](#command-to-create-a-bar-graph)
-    - [Command to Upload the Analog and Digital Status](#command-to-upload-the-analog-and-digital-status)
-- [IS-S0109DEM Hardware](#is-s0109dem-hardware)
-- [Programming](#programming)
-  - [1.	Preparing the IS-S0109DEM for Programming](#1preparing-the-is-s0109dem-for-programming)
-  - [2. Preparing the MPLAB Program](#2-preparing-the-mplab-program)
-  - [3. Programming the S0109](#3-programming-the-s0109)
-  - [4. Testing](#4-testing)
-- [Warranty](#warranty)
 
 
 ## General Features
@@ -103,7 +63,7 @@ The Single Switch Solution is custom programmed for each application, so a custo
 3. A programming connector for reprogramming the Single Switch Solution (Requires a PICKIT3 from Microchip for programming).
 4. A USB connection for power and communication.
 
-<img src="/src/assets/IS-S0109DEM-Parts.png" width="400"/>
+<image src="/assets/IS-S0109DEM-Parts.png" width="400"/>
 
 The evaluation kit **IS-S0109DEM** comes preprogrammed for demonstrating the Single Switch Solution capabilities. 
 
@@ -136,8 +96,8 @@ Features:
 **S0109 Photos:**
 
 <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-  <img src="/src/assets/is-s0109-top.png" width="200"/>
-  <img src="/src/assets/is-s0109-bottom.png" width="200"/>  
+  <image src="/assets/is-s0109-top.png" width="200"/>
+  <image src="/assets/is-s0109-bottom.png" width="200"/>  
 </div>
 
 **Part Number Attributes: IS-S0109XXX**. Each application would have a unique part number.
@@ -189,12 +149,12 @@ The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount ac
 
 ### Dimensions
 
-<img src="/src/assets/s0109-dimensions.png" width="800;"/>
+<image src="/assets/s0109-dimensions.png" width="800;"/>
 
 
 **Application Interface Header (J1)** is a 2x9 header 0.1” x 0.1” for application connections.
 
-<img src="/src/assets/s0109-j1.png" width="300;"/>
+<image src="/assets/s0109-j1.png" width="300;"/>
 
 
 ### Application Interface Header (J1) pinout
@@ -241,7 +201,7 @@ Some applications require an interface board for converting the Analog input to 
 
 ## IS-S0109DEM Evaluation Kit
 
-<img src="/src/assets/IS-S0109DEM.png" width="350;"/>
+<image src="/assets/IS-S0109DEM.png" width="350;"/>
 
 The IS-S0109DEM is a demonstration unit for the Single Switch Solution. Below are the features:
 
@@ -284,54 +244,54 @@ When first turned on the IS-S0109DEM will display the NKK Switches logo. After 2
 <CardGrid>
 
 <Card title="NKK Logo Splash Screen ">	
-    <img src="/src/assets/s0109-menu1.png" width="100;"/>
+    <image src="/assets/s0109-menu1.png" width="100;"/>
     Only seen when first turned on. Stays on only for a few seconds.
 </Card>
 
 <Card title= "Battery Charge*">
-    <img src="/src/assets/s0109-menu2.png"  width="100;"/>
+    <image src="/assets/s0109-menu2.png"  width="100;"/>
     AN0 input is represented/displayed from 0% to 100% with green backlight.
     - The warning level at which point in addition to the amber/Green backlight blink a signal is sent to DIG0 to turn ON the LED.
     - The Danger level at which point in addition to the red backlight blink a signal is sent to DIG1 to turn ON the LED.
 </Card>
 
 <Card title="10-bit Stepper">
-    <img src="/src/assets/s0109-menu3.png"  width="100;"/>
+    <image src="/assets/s0109-menu3.png"  width="100;"/>
     AN1 input is represented/displayed from 0 to 1023 steps indicating the 10 bits analog resolution.
 </Card>
 
 <Card title="Voltmeter">
-    <img src="/src/assets/s0109-menu4.png"  width="100;"/>
+    <image src="/assets/s0109-menu4.png"  width="100;"/>
     AN2 input is represented/displayed from 0 to 5.00V.
 </Card> 
 
 <Card title="Rotary Stepper">
-    <img src="/src/assets/s0109-menu5.png" width="100;"/>
+    <image src="/assets/s0109-menu5.png" width="100;"/>
     AN3 input is represented/displayed in 16 steps 1/16 to 16/16.
 </Card>
 
 <Card title="Timer">
-    <img src="/src/assets/s0109-menu6.png" width="100;"/> 
+    <image src="/assets/s0109-menu6.png" width="100;"/> 
     Turns on and off by Dig 2 toggle control. Green when running and amber when stopped.
 </Card>
 
 <Card title="Counter">
-    <img src="/src/assets/s0109-menu7.png" width="100;"/>
+    <image src="/assets/s0109-menu7.png" width="100;"/>
     Counts each time the Dig 3 toggle is actuated. Resets to zero when power is off.
 </Card>
 
 <Card title="Firmware Version">
-    <img src="/src/assets/s0109-menu8.png" width="100;"/>
+    <image src="/assets/s0109-menu8.png" width="100;"/>
     The current firmware loaded on the S0109. Hold down pushbuttons to go to brightness controls.
 </Card>
 
 <Card title="LCD Brightness Adjustment">
-    <img src="/src/assets/s0109-menu9.png"  width="100;"/>
+    <image src="/assets/s0109-menu9.png"  width="100;"/>
     Brightness control: Adjusts the contrast (or how dark the pixels are) of the LCD. Levels 1-5. After 5 seconds of inactivity it jumps to LED Brightness Adjustment.
 </Card>
 
 <Card title="LED Brightness Adjustment">
-    <img src="/src/assets/s0109-menu10.png"  width="100;"/>
+    <image src="/assets/s0109-menu10.png"  width="100;"/>
     Brightness control: Adjusts the brightness of the backlight LEDs. Levels 1-5. After 5 seconds of inactivity it jumps to Firmware Version.
 </Card>
 
@@ -507,7 +467,7 @@ Controller responds with 0x61, analog and digital data (10 bytes), 0x79. The pin
 
 **Controls Overview:**
 
-<img src="/src/assets/IS-S0109DEM-Idenitier.png" width="500"/>
+<image src="/assets/IS-S0109DEM-Idenitier.png" width="500"/>
 
 <Aside type="caution" title="Caution">
   Improper installation of the Single Switch Solution could damage the units.
@@ -558,7 +518,7 @@ The Programming Connector links the Single Switch Solution to the firmware progr
 
 Single Switch Solution with programmer attached:
 
-<img src="/src/assets/IS-S0109DEM-Programming.png" width="350"/>
+<image src="/assets/IS-S0109DEM-Programming.png" width="350"/>
 
 ### 2. Preparing the MPLAB Program
 
@@ -570,17 +530,17 @@ Note: These instructions are for PICKit 3 and MPLAB X IDE v5.10. The version wil
 5.	Hardware Tool: PICKIT3.
 6.	All else leave the same.
 
-<img src="/src/assets/s0109-mplab1.png"/>
+<image src="/assets/s0109-mplab1.png"/>
 
 7.	Click on **Next**.
 8.	Select a Project Name and click on **Finish**.
 
-<img src="/src/assets/s0109-mplab2.png"/>
+<image src="/assets/s0109-mplab2.png"/>
 
 9. Click on the project’s folder and open it.
 10.	Open the “Prebuilt Files” folder and select the hex file.
 
-<img src="/src/assets/s0109-mplab3.png"/>
+<image src="/assets/s0109-mplab3.png"/>
 
 ### 3. Programming the S0109
 
@@ -592,7 +552,7 @@ Programming. . .
 Programming/Verify complete  
 5.	Programming is complete.
 
-<img src="/src/assets/s0109-mplab4.png"/>
+<image src="/assets/s0109-mplab4.png"/>
 
 **Common Errors:**
 1.	Target device was not found (could not detect target voltage VDD). You must connect to a target device to use PICkit 3.
@@ -608,7 +568,7 @@ Programming/Verify complete
 4.	Remove programming bridge.
 5.	Plug in Single Switch Solution back onto IS-S0109DEM board.
 
-<img src="/src/assets/IS-S0109DEM.png" width="250;"/>
+<image src="/assets/IS-S0109DEM.png" width="250;"/>
 
 6.	Plug in power plug.
 7.	Adjust analog pots, IS pushbutton, and digital switches as necessary to verify that the unit is working as expected.

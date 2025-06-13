@@ -2,46 +2,18 @@
 title: IS-C3201
 description: IS-C3201 manual.
 ---
+import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> IS-C3201 Intelligent Controller User Manual </div>
 
-<img src="/src/assets/C3201-top.png" width="400"/>
+<image src="/assets/C3201-top.png" width="400"/>
 
 **All Rights Reserved Worldwide**
 
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors, which may appear in this document, nor does it make a commitment to update the information contained herein.
 SmartDisplay is trademark of NKK Switches.
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
-
-- [General Controller Features](#general-controller-features)
-- [Electrical Specifications](#electrical-specifications)
-- [Compatible Logic Boards](#compatible-logic-boards)
-  - [Logic Boards](#logic-boards)
-  - [Signal Booster](#signal-booster)
-  - [Connectors](#connectors)
-  - [Ribbon Cables](#ribbon-cables)
-- [Operational Detail](#operational-detail)
-  - [Power-up Sequence](#power-up-sequence)
-  - [Main Operational Mode](#main-operational-mode)
-  - [LED Backlighting](#led-backlighting)
-  - [Attributes](#attributes)
-- [Communication Protocol](#communication-protocol)
-  - [Image Format](#image-format)
-  - [Images, Attributes, and Backlight Numbering](#images-attributes-and-backlight-numbering)
-  - [Switch Numbering](#switch-numbering)
-  - [Backlights](#backlights)
-  - [Flash Memory](#flash-memory)
-- [Command List](#command-list)
-- [Saving Images/Attributes using Engineering Kits Communicator](#saving-imagesattributes-using-engineering-kits-communicator)
-- [Updating with New Firmware](#updating-with-new-firmware)
-- [Hardware](#hardware)
-  - [Controller Dimensions](#controller-dimensions)
-  - [Logic Board Dimensions](#logic-board-dimensions)
-- [Schematics](#schematics)
-- [Key Terms \& Definitions](#key-terms--definitions)
-- [Warranty](#warranty)
 
 
 ## General Controller Features
@@ -98,19 +70,19 @@ The logic boards listed below are standard production parts. There are additiona
 <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L0107-IS15BBFB4PRGB</div>
-    <img src="/src/assets/IS-L0107-IS15ABFP4RGB.png" width="200"/>
+    <image src="/assets/IS-L0107-IS15ABFP4RGB.png" width="200"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L0271-C</div>
-    <img src="/src/assets/IS-L0271-C.png" width="200"/>
+    <image src="/assets/IS-L0271-C.png" width="200"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L0403-CS</div>
-    <img src="/src/assets/IS-L0403-CS.png" width="150"/>
+    <image src="/assets/IS-L0403-CS.png" width="150"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-L1602-CS</div>
-    <img src="/src/assets/IS-L1602-CS.png" width="200"/>
+    <image src="/assets/IS-L1602-CS.png" width="200"/>
   </div>  
 </div>
 
@@ -131,13 +103,13 @@ This Logic Board signal booster may be needed when more than 10 logic boards are
 | ---- | --------- | ------------------------------- |
 | 1    | IS-LBUF01 | Signal Booster for Logic Boards |
 
-<img src="/src/assets/IS-LBUF01.png" width="150"/>
+<image src="/assets/IS-LBUF01.png" width="150"/>
 
 ### Connectors 
 
 The IS-C3201 controller connects to the J1 header of the first logic board via a 14-pin ribbon cable. The J2 header of the first logic board connects to the J1 header of the second logic board and so on. The switch numbering starts with switch one on the first logic board. The first switch of the next logic board will be one number higher than the last switch of the previous logic board and so on.
 
-<img src="/src/assets/logic-board-connectors.png" width="500"/>
+<image src="/assets/logic-board-connectors.png" width="500"/>
 
 <Aside type="caution" title="Caution">
     Attaching the ribbon cable without the red line on pin 1 on each of the headers may cause damage to the controller or the logic board.
@@ -279,7 +251,7 @@ Commands are one byte in the range of 01H, 20H to 2FH and are transmitted in hex
 
 An ASCII Hex byte is a normal hex byte split in two halves and converted to their ASCII equivalent (www.asciitable.com). This is a safety measure so that all data sent is not accidentally interpreted as a command. Most data sent after commands and sub-commands are encoded in ASCII Hex. 
 
-<img src="/src/assets/ascii-hex.png" width="700"/>
+<image src="/assets/ascii-hex.png" width="700"/>
 
 ### Image Format
 
@@ -374,11 +346,11 @@ Make sure the IS-C3201 is not connected to Engineering Kits Communicator via COM
 Dimension: Board size: 3.6” x 3.0” (91.44 x 76.2 mm)   
 Mounting hole size: 0.125” (3.175 mm) 
 
-<img src="/src/assets/c3201-dimensions.png" width="700"/>
+<image src="/assets/c3201-dimensions.png" width="700"/>
 
 **Board Photo:**
 
-<img src="/src/assets/C3201-top.png" width="400"/>
+<image src="/assets/C3201-top.png" width="400"/>
 
 **Connectors:**
 
@@ -401,31 +373,31 @@ Mating: USB Mini B
 
 Logic board dimensions for IS-L0107-IS15BBFB4PRGB:
 
-<img src="/src/assets/l0107-dimensions.png" width="600"/>
+<image src="/assets/l0107-dimensions.png" width="600"/>
 
 Logic board dimensions for L0204:
 
-<img src="/src/assets/l0204-dimensions.png" width="600"/>
+<image src="/assets/l0204-dimensions.png" width="600"/>
 
 Logic board dimensions for L0271:
 
-<img src="/src/assets/l0271-dimensions.png" width="600"/>
+<image src="/assets/l0271-dimensions.png" width="600"/>
 
 Logic board dimensions for L0403:
 
-<img src="/src/assets/l0403-dimensions.png" width="600"/>
+<image src="/assets/l0403-dimensions.png" width="600"/>
 
 Logic board dimensions for L1602:
 
-<img src="/src/assets/l1602-dimensions.png" width="600"/>
+<image src="/assets/l1602-dimensions.png" width="600"/>
 
 Logic board dimensions for LBUF01:
 
-<img src="/src/assets/lbuf01-dimensions.png" width="600"/>
+<image src="/assets/lbuf01-dimensions.png" width="600"/>
 
 ## Schematics
 
-<img src="/src/assets/c3201-schematics.png"/>
+<image src="/assets/c3201-schematics.png"/>
 
 ## Key Terms & Definitions
 

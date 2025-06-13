@@ -2,49 +2,19 @@
 title: OLED Rocker
 description: OLED Rocker application notes.
 ---
+import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the OLED Rocker </div>
 
 <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-  <img src="/src/assets/oled-rocker.png" width="200"/>  
+  <image src="/assets/oled-rocker.png" width="200"/>  
 </div>
 
 **All Rights Reserved Worldwide**
 
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches. 
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
-
-- [General Information](#general-information)
-- [Part Numbers](#part-numbers)
-- [Pin-outs](#pin-outs)
-- [Switches](#switches)
-- [Overview of How to Control the OLED Rocker](#overview-of-how-to-control-the-oled-rocker)
-- [OLED Voltage VCC (15V) Requirements](#oled-voltage-vcc-15v-requirements)
-- [Communication to OLED Rocker](#communication-to-oled-rocker)
-  - [OLED Commands](#oled-commands)
-  - [Communication Protocol](#communication-protocol)
-  - [Memory](#memory)
-  - [Command for Writing Image Data](#command-for-writing-image-data)
-- [Sample Schematic for Multi-Rocker Controller](#sample-schematic-for-multi-rocker-controller)
-- [How to Control the OLED Rocker](#how-to-control-the-oled-rocker)
-  - [Power Up](#power-up)
-  - [Initialization](#initialization)
-  - [Writing an image](#writing-an-image)
-- [Commands](#commands)
-    - [Software Reset Command](#software-reset-command)
-    - [Display ON/OFF Command](#display-onoff-command)
-    - [Display Standby Mode Command](#display-standby-mode-command)
-    - [Brightness Level Command](#brightness-level-command)
-    - [Specifying the Window Size for Writing Data to Memory Commands](#specifying-the-window-size-for-writing-data-to-memory-commands)
-    - [Writing Data to Memory Command](#writing-data-to-memory-command)
-    - [Direction of Writing to Memory Command](#direction-of-writing-to-memory-command)
-    - [Direction of Refreshing the OLED from Memory Command](#direction-of-refreshing-the-oled-from-memory-command)
-    - [Start Point of Refreshing the OLED from Memory (Manual Scrolling)](#start-point-of-refreshing-the-oled-from-memory-manual-scrolling)
-- [Scrolling (Screen saver)](#scrolling-screen-saver)
-- [Operating Lifetime](#operating-lifetime)
-- [Frequently Asked Questions](#frequently-asked-questions)
 
 ## General Information
 
@@ -66,7 +36,7 @@ The following is a list of the OLED Rocker part numbers and its associated hardw
 <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-8-R</div>
-    <img src="/src/assets/IS-ENG-KIT-8-R.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-8-R.png" width="300"/>
   </div>  
 </div>
 
@@ -127,7 +97,7 @@ Design considerations for OLED voltage:
 
 Four control lines are used for communication:
 
-<img src="/src/assets/oled-rocker-communication.png" width="550"/>
+<image src="/assets/oled-rocker-communication.png" width="550"/>
 
 
 The data is transmitted using clock (SCL) and data (SI). One bit of data is received on each rising of the clock signal. The normal state of the clock can be high or low. Each eight bits of data received make a byte. The first bit transmitted for each byte is received as the highest bit of the bytes.
@@ -145,7 +115,7 @@ When the select line (XCS) is high, clock and data are ignored. To start the com
 The onboard OLED Rocker controller memory size is 16 bytes (128 bits) x 64. The display size is 96 bits x 64 where initialization sets the memory for the image as shown in green. The additional memory area shown in blue is provided for scrolling. Scrolling will be discussed in a later section.
 
 *OLED Rocker onboard memory map*
-<img src="/src/assets/oled-rocker-memory-map.png" width="400" id="oled-rocker-memory-map.png"/>
+<image src="/assets/oled-rocker-memory-map.png" width="400" id="oled-rocker-memory-map.png"/>
 
 ### Command for Writing Image Data
 
@@ -164,7 +134,7 @@ The command for writing the image data is **08H**. The number of parameter bytes
 Below is a schematic to control two OLED Rockers. The charge pump produces OLED voltage. R1 is needed if upon power up it takes the microcontroller too long to disable the charge pump by setting the P1 to low.
 
 *Schematic for controlling two OLED Rockers*
-<img src="/src/assets/schematic-oled-rocker.png" width="500"/>
+<image src="/assets/schematic-oled-rocker.png" width="500"/>
 
 Additionally, please see the [Engineering Kits for OLED](/docs/engineering-kits/oled-engineering-kits-user-manual) for an example schematic on how to control one rocker.
 
@@ -175,7 +145,7 @@ Additionally, please see the [Engineering Kits for OLED](/docs/engineering-kits/
 Follow the power up sequences according to the diagram below:
 
 *Power ON/OFF Sequence*
-<img src="/src/assets/oled-rocker-power-sequence.png" width="600"/>
+<image src="/assets/oled-rocker-power-sequence.png" width="600"/>
 
 ### Initialization
 
@@ -346,7 +316,7 @@ This command determines the direction that bytes are written to the memory windo
 B3 determines if the data bytes are received most or least significant bit first. Please note, this only applies to the image data. B0, B1, and B2 determine the direction that the data bytes are written to the memory window by the command 08H.
 
 *OLED Rocker Writing Direction*
-<img src="/src/assets/oled-rocker-writing-direction.png" width="650"/>
+<image src="/assets/oled-rocker-writing-direction.png" width="650"/>
 
 #### Direction of Refreshing the OLED from Memory Command
 
@@ -365,7 +335,7 @@ Parameter values D1 and D0:
 | 1  | 0  | Left to Right     | Bottom to Top    |
 
 *Display Direction*
-<img src="/src/assets/oled-rocker-display-direction.png" width="400"/>
+<image src="/assets/oled-rocker-display-direction.png" width="400"/>
 
 #### Start Point of Refreshing the OLED from Memory (Manual Scrolling)
 

@@ -2,11 +2,12 @@
 title: LCD 36x24
 description: LCD 36x24 Engineering Kits user manual.
 ---
+import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> LCD 36x24 Engineering Kits User Manual </div>
 
-<img src="/src/assets/IS-ENG-KIT-5-SC.png" width="400"/>  
+<image src="/assets/IS-ENG-KIT-5-SC.png" width="400"/>  
 
 
 **All Rights Reserved Worldwide**
@@ -14,41 +15,7 @@ import { LinkCard, Aside } from '@astrojs/starlight/components';
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors, which may appear in this document, nor does it make a commitment to update the information contained herein.
 SmartDisplay is a trademark of NKK Switches. All Engineering Kits are tested 100% and programmed with the default images and attributes. As the firmware for these kits can be modified by the customer, any damage caused by a customer mistake is not warrantied.
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
 
-- [General Information](#general-information)
-- [Available LCD 36x24 SmartDisplays](#available-lcd-36x24-smartdisplays)
-- [Possible Engineering Kits Using the S0205 Controller](#possible-engineering-kits-using-the-s0205-controller)
-- [Firmware Overview](#firmware-overview)
-  - [Attribute Block](#attribute-block)
-  - [Backlight LED Code](#backlight-led-code)
-- [Operational Overview](#operational-overview)
-  - [Power-up Sequence](#power-up-sequence)
-  - [Main Program](#main-program)
-  - [Timer-Interrupt](#timer-interrupt)
-- [Communication Protocol](#communication-protocol)
-- [Commands to the Controller](#commands-to-the-controller)
-    - [Command to Reboot the Controller](#command-to-reboot-the-controller)
-    - [Command to Check Communication](#command-to-check-communication)
-    - [Command to Download LCD Contrast Level](#command-to-download-lcd-contrast-level)
-    - [Command to Query the Controller for Mode, Controller, and Firmware Version](#command-to-query-the-controller-for-mode-controller-and-firmware-version)
-    - [Command to Manually Set Images for Switch#1 and Switch#2](#command-to-manually-set-images-for-switch1-and-switch2)
-    - [Command to Download Backlight Codes for Switch#1 and Switch#2](#command-to-download-backlight-codes-for-switch1-and-switch2)
-    - [Commands that Disable Switch and Timer Execution](#commands-that-disable-switch-and-timer-execution)
-    - [Command to Disable Switch and Timer Execution](#command-to-disable-switch-and-timer-execution)
-    - [Command to Erase the Flash Memory](#command-to-erase-the-flash-memory)
-    - [Command to Download Setup Data](#command-to-download-setup-data)
-    - [Command to Download an Image](#command-to-download-an-image)
-    - [Command to Upload an Image](#command-to-upload-an-image)
-    - [Command to Download Attribute Block](#command-to-download-attribute-block)
-    - [Command to Upload an Attribute Block](#command-to-upload-an-attribute-block)
-- [Hardware Considerations](#hardware-considerations)
-- [Programming Setup](#programming-setup)
-- [Modifying the Firmware](#modifying-the-firmware)
-- [Board Dimensions](#board-dimensions)
-- [Schematics](#schematics)
-- [Key Terms \& Definitions](#key-terms--definitions)
-- [Warranty](#warranty)
 
 ## General Information
 
@@ -83,9 +50,9 @@ The LCD 36x24 SmartDisplay is currently available as 36x24 standard pushbuttons,
 
 | Switch                                                                      | PN            | Socket                                             | Description                       |
 | --------------------------------------------------------------------------- | ------------- | -------------------------------------------------- | --------------------------------- |
-| LCD 36x24 RGB Pushbutton <img src="/src/assets/36x24.png" width="50"/>                 | IS15BBFP4RGB  | AT9704-065E                                        | Standard size, RGB backlight      |
-| Compact LCD 36x24 RGB Pushbutton <img src="/src/assets/36x24-compact.png" width="40"/> | IS15BSBFP4RGB | AT9704-065F                                        | Compact size, RBG backlight       |
-| LCD 36x24 RGB Display <img src="/src/assets/36x24-display.png" width="45"/>            | IS01BBFRGB    | Industry standard, 2mm x 2mm (example: 79107-7005) | Display only                      |
+| LCD 36x24 RGB Pushbutton <image src="/assets/36x24.png" width="50"/>                 | IS15BBFP4RGB  | AT9704-065E                                        | Standard size, RGB backlight      |
+| Compact LCD 36x24 RGB Pushbutton <image src="/assets/36x24-compact.png" width="40"/> | IS15BSBFP4RGB | AT9704-065F                                        | Compact size, RBG backlight       |
+| LCD 36x24 RGB Display <image src="/assets/36x24-display.png" width="45"/>            | IS01BBFRGB    | Industry standard, 2mm x 2mm (example: 79107-7005) | Display only                      |
 | LCD 36x24 Bicolor Pushbutton                                                | IS15BAFP4CF   | AT9704-02YC, *AT9704-065E                          | Standard size, bi-color backlight |
 | Compact LCD 36x24 Bicolor Pushbutton                                        | IS15BSAFP4CF  | AT9704-065F                                        | Compact size, bi-color backlight  |
 
@@ -104,15 +71,15 @@ Many variations of Engineering Kits can be made simply by soldering on various s
 <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-5-SC</div>
-    <img src="/src/assets/IS-ENG-KIT-5-SC.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-5-SC.png" width="300"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-5-DC</div>
-    <img src="/src/assets/IS-ENG-KIT-5-DC.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-5-DC.png" width="300"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-5-BC</div>
-    <img src="/src/assets/IS-ENG-KIT-5-BC.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-5-BC.png" width="300"/>
   </div>
 </div>
 
@@ -444,13 +411,13 @@ Note: Position 1 of the PICit3 must be at position 1 on the PCB or damage could 
 *IS-PA2 on a control board*
 
 <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
-    <img src="/src/assets/pickit3-eng-kit.png" width="200"/>
-    <img src="/src/assets/pickit3.png" width="200"/>
+    <image src="/assets/pickit3-eng-kit.png" width="200"/>
+    <image src="/assets/pickit3.png" width="200"/>
 </div>
 
 *IS-PA2 board photos*
 
-<img src="/src/assets/is-pa2.png" width="400"/>
+<image src="/assets/is-pa2.png" width="400"/>
 
 ## Modifying the Firmware
 
@@ -471,11 +438,11 @@ Note: Position 1 of the PICit3 must be at position 1 on the PCB or damage could 
 
 Typical dimensions. Sockets and components vary with kit type. 
   
-<img src="/src/assets/s0205-dimensions.png" width="400"/>
+<image src="/assets/s0205-dimensions.png" width="400"/>
 
 ## Schematics
 
-<img src="/src/assets/s0205-schematics.png"/>
+<image src="/assets/s0205-schematics.png"/>
 
 ## Key Terms & Definitions
 
