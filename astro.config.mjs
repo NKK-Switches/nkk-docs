@@ -53,6 +53,9 @@ export default defineConfig({
 			],
 			lastUpdated: true,
 			pagination: false,
+			editLink: {
+			baseUrl: 'https://github.com/NKK-Switches/nkk-docs/tree/main/',
+			},
 			plugins: [
 					ion({
 						icons: {
