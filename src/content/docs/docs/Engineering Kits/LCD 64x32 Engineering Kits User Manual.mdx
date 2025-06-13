@@ -2,11 +2,12 @@
 title: LCD 64x32
 description: LCD 64x32 Engineering Kits user manual.
 ---
+import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> LCD 64x32 Engineering Kits User Manual </div>
 
-<img src="/src/assets/IS-ENG-KIT-6-CH.png" width="400"/>  
+<image src="/assets/IS-ENG-KIT-6-CH.png" width="400"/>  
 
 
 **All Rights Reserved Worldwide**
@@ -14,41 +15,7 @@ import { LinkCard, Aside } from '@astrojs/starlight/components';
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors, which may appear in this document, nor does it make a commitment to update the information contained herein.
 SmartDisplay is a trademark of NKK Switches. All Engineering Kits are tested 100% and programmed with the default images and attributes. As the firmware for these kits can be modified by the customer, any damage caused by a customer mistake is not warrantied.
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
 
-- [General Information](#general-information)
-- [Available LCD 64x32 SmartDisplays](#available-lcd-64x32-smartdisplays)
-- [Possible Engineering Kits Using the S02G1 Controller](#possible-engineering-kits-using-the-s02g1-controller)
-- [Firmware Overview](#firmware-overview)
-  - [Attribute Block](#attribute-block)
-  - [Backlight LED Code](#backlight-led-code)
-- [Operational Overview](#operational-overview)
-  - [Power-up Sequence](#power-up-sequence)
-  - [Main Program](#main-program)
-  - [Timer-Interrupt](#timer-interrupt)
-- [Communication Protocol](#communication-protocol)
-- [Commands to the Controller](#commands-to-the-controller)
-    - [Command to Reboot the Controller](#command-to-reboot-the-controller)
-    - [Command to Check Communication](#command-to-check-communication)
-    - [Command to Download LED Brightness Level](#command-to-download-led-brightness-level)
-    - [Command to Query the Controller for Mode, Controller, and Firmware Version](#command-to-query-the-controller-for-mode-controller-and-firmware-version)
-    - [Command to Manually Set Images for Switch#1 and Switch#2](#command-to-manually-set-images-for-switch1-and-switch2)
-    - [Command to Download Backlight Codes for Switch#1 and Switch#2](#command-to-download-backlight-codes-for-switch1-and-switch2)
-    - [Commands that Disable Switch and Timer Execution](#commands-that-disable-switch-and-timer-execution)
-    - [Command to Disable Switch and Timer Execution](#command-to-disable-switch-and-timer-execution)
-    - [Command to Erase the Flash Memory](#command-to-erase-the-flash-memory)
-    - [Command to Download Setup Data](#command-to-download-setup-data)
-    - [Command to Download an Image](#command-to-download-an-image)
-    - [Command to Upload an Image](#command-to-upload-an-image)
-    - [Command to Download Attribute Block](#command-to-download-attribute-block)
-    - [Command to Upload an Attribute Block](#command-to-upload-an-attribute-block)
-- [Hardware Considerations](#hardware-considerations)
-- [Programming Setup](#programming-setup)
-- [Modifying the Firmware](#modifying-the-firmware)
-- [Board Dimensions](#board-dimensions)
-- [Schematics](#schematics)
-- [Key Terms \& Definitions](#key-terms--definitions)
-- [Warranty](#warranty)
 
 ## General Information
 
@@ -83,10 +50,10 @@ There are 4 products in LCD 64x32 family, a display, a compact size, and two sta
 
 | Switch                                                                          | PN                | Socket                       | Description                                                    |
 | ------------------------------------------------------------------------------- | ----------------- | ---------------------------- | -------------------------------------------------------------- |
-| LCD 64x32 Pushbutton <img src="/src/assets/64x32.png" width="50"/>                         | IS15EBFP4RGB-09YN | *AT9704-065FH                | Standard size, tactile travel (hybrid of standard and compact) |
-| Compact LCD 64x32 Pushbutton <img src="/src/assets/64x32-compact.png" width="43"/>         | IS15ESBFP4RGB     | *AT9704-065FH                | Compact size, tactile travel                                   |
-| Long Travel LCD 64x32 Pushbutton <img src="/src/assets/64x32-long-travel.png" width="50"/> | IS15EBFP4RGB      | AT9704-085K                  | Standard size, long travel, unique socket                      |
-| LCD 64x32 Display <img src="/src/assets/64x32-display.png" width="42"/>                    | IS01EBFRGB        | Industry standard, 2mm x 2mm | Display only                                                   |
+| LCD 64x32 Pushbutton <image src="/assets/64x32.png" width="50"/>                         | IS15EBFP4RGB-09YN | *AT9704-065FH                | Standard size, tactile travel (hybrid of standard and compact) |
+| Compact LCD 64x32 Pushbutton <image src="/assets/64x32-compact.png" width="43"/>         | IS15ESBFP4RGB     | *AT9704-065FH                | Compact size, tactile travel                                   |
+| Long Travel LCD 64x32 Pushbutton <image src="/assets/64x32-long-travel.png" width="50"/> | IS15EBFP4RGB      | AT9704-085K                  | Standard size, long travel, unique socket                      |
+| LCD 64x32 Display <image src="/assets/64x32-display.png" width="42"/>                    | IS01EBFRGB        | Industry standard, 2mm x 2mm | Display only                                                   |
 
 *AT9704-065FH is AT9704-065F with pins 3, 4, 11, 12, 13, and 14 removed.
 
@@ -109,15 +76,15 @@ Many Engineering Kits can be made with the S02G1 controller simply by soldering 
 <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-6-DH</div>
-    <img src="/src/assets/IS-ENG-KIT-6-DH.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-6-DH.png" width="300"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-6-SH</div>
-    <img src="/src/assets/IS-ENG-KIT-6-SH.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-6-SH.png" width="300"/>
   </div>
   <div style={{ textAlign: "center" }}>
     <div style={{ marginBottom: "8px", fontWeight: "bold" }}>IS-ENG-KIT-6-CH</div>
-    <img src="/src/assets/IS-ENG-KIT-6-CH.png" width="300"/>
+    <image src="/assets/IS-ENG-KIT-6-CH.png" width="300"/>
   </div>
 </div>
 
@@ -435,13 +402,13 @@ The Engineering Kits are designed to be easily programmed and have a 5-position 
 *IS-PA2 on a control board*
 
 <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
-    <img src="/src/assets/pickit3-eng-kit.png" width="200"/>
-    <img src="/src/assets/pickit3.png" width="200"/>
+    <image src="/assets/pickit3-eng-kit.png" width="200"/>
+    <image src="/assets/pickit3.png" width="200"/>
 </div>
 
 *IS-PA2 board photos*
 
-<img src="/src/assets/is-pa2.png" width="400"/>
+<image src="/assets/is-pa2.png" width="400"/>
 
 ## Modifying the Firmware
 
@@ -462,11 +429,11 @@ The Engineering Kits are designed to be easily programmed and have a 5-position 
 
 Typical dimensions. Sockets and components vary with kit type. 
   
-<img src="/src/assets/s0205-dimensions.png" width="400"/>
+<image src="/assets/s0205-dimensions.png" width="400"/>
 
 ## Schematics 
 
-<img src="/src/assets/s02g1-schematics.png"/>
+<image src="/assets/s02g1-schematics.png"/>
 
 ## Key Terms & Definitions
 

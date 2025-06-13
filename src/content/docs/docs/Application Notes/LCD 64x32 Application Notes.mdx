@@ -2,48 +2,21 @@
 title: LCD 64x32
 description: LCDx 64x32 application notes.
 ---
+import Image from '../../../../components/Image.astro';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the LCD 64x32 SmartDisplay </div>
 
 <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-  <img src="/src/assets/64x32.png" width="200"/>
-  <img src="/src/assets/64x32-compact.png" width="170"/>
-  <img src="/src/assets/64x32-long-travel.png" width="200"/>
-  <img src="/src/assets/64x32-display.png" width="170"/>
+  <image src="/assets/64x32.png" width="200"/>
+  <image src="/assets/64x32-compact.png" width="170"/>
+  <image src="/assets/64x32-long-travel.png" width="200"/>
+  <image src="/assets/64x32-display.png" width="170"/>
 </div>
 
 **All Rights Reserved Worldwide**
 
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches.
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
-
-- [General Information](#general-information)
-- [Part Numbers](#part-numbers)
-  - [Switches](#switches)
-  - [Engineering Development Kits](#engineering-development-kits)
-  - [IS-C32G1 Controller](#is-c32g1-controller)
-- [Pin-outs](#pin-outs)
-- [Connection Options](#connection-options)
-    - [Controlling the LCD 64x32 SmartDisplays with 3 pins:](#controlling-the-lcd-64x32-smartdisplays-with-3-pins)
-    - [Controlling the LCD 64x32 SmartDisplays with 2 pins:](#controlling-the-lcd-64x32-smartdisplays-with-2-pins)
-- [Controlling the LCD 64x32 SmartDisplays](#controlling-the-lcd-64x32-smartdisplays)
-- [Communication with Most Significant Bit First (SPI)](#communication-with-most-significant-bit-first-spi)
-    - [SPI Set Up](#spi-set-up)
-    - [Command to Reset](#command-to-reset)
-    - [Command to Set the LED Backlight Master Brightness](#command-to-set-the-led-backlight-master-brightness)
-    - [Command to Set the LED Backlight Color](#command-to-set-the-led-backlight-color)
-    - [Command to Download an Image](#command-to-download-an-image)
-    - [Bitmap format for LCD 64x32 SmartDisplay](#bitmap-format-for-lcd-64x32-smartdisplay)
-- [Communication with Least Significant Bit First (SPI)](#communication-with-least-significant-bit-first-spi)
-    - [SPI Set Up](#spi-set-up-1)
-    - [Command to Reset](#command-to-reset-1)
-    - [Command to Set the LED Backlight Master Brightness](#command-to-set-the-led-backlight-master-brightness-1)
-    - [Command to Set the LED Backlight Color](#command-to-set-the-led-backlight-color-1)
-    - [Command to Download an Image](#command-to-download-an-image-1)
-    - [Bitmap format for LCD 64x32 SmartDisplay](#bitmap-format-for-lcd-64x32-smartdisplay-1)
-- [Sample Schematics](#sample-schematics)
-- [Frequently Asked Questions](#frequently-asked-questions)
 
 ## General Information
 
@@ -57,10 +30,10 @@ The LCD 64x32 family has four products (two standard size pushbuttons, a compact
 
 | Switch                                                                          | PN                | Socket                       | Description                               |
 | ------------------------------------------------------------------------------- | ----------------- | ---------------------------- | ----------------------------------------- |
-| LCD 64x32 Pushbutton <img src="/src/assets/64x32.png" width="50"/>                         | IS15EBFP4RGB-09YN | *AT9704-065FH                | Standard size, tactile travel             |
-| Compact LCD 64x32 Pushbutton <img src="/src/assets/64x32-compact.png" width="43"/>         | IS15ESBFP4RGB     | *AT9704-065FH                | Compact size, tactile travel              |
-| Long Travel LCD 64x32 Pushbutton <img src="/src/assets/64x32-long-travel.png" width="50"/> | IS15EBFP4RGB      | AT9704-085K                  | Standard size, long travel, unique socket |
-| LCD 64x32 Display <img src="/src/assets/64x32-display.png" width="42"/>                    | IS01EBFRGB        | Industry standard, 2mm x 2mm | Display only                              |
+| LCD 64x32 Pushbutton <image src="/assets/64x32.png" width="50"/>                         | IS15EBFP4RGB-09YN | *AT9704-065FH                | Standard size, tactile travel             |
+| Compact LCD 64x32 Pushbutton <image src="/assets/64x32-compact.png" width="43"/>         | IS15ESBFP4RGB     | *AT9704-065FH                | Compact size, tactile travel              |
+| Long Travel LCD 64x32 Pushbutton <image src="/assets/64x32-long-travel.png" width="50"/> | IS15EBFP4RGB      | AT9704-085K                  | Standard size, long travel, unique socket |
+| LCD 64x32 Display <image src="/assets/64x32-display.png" width="42"/>                    | IS01EBFRGB        | Industry standard, 2mm x 2mm | Display only                              |
 
 *AT9704-065FH is AT9704-065F with pins 3, 4, 11, 12, 13, and 14 removed.
 
@@ -68,13 +41,13 @@ The LCD 64x32 family has four products (two standard size pushbuttons, a compact
 
 Engineering Development Kits are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by not only familiarizing design engineers to SmartDisplay products, but also as a development platform for experimentation and design viability testing. The schematic and source codes in C language are provided. Please refer to the [Engineering Kits for LCD 64x32](/docs/engineering-kits/lcd-64x32-engineering-kits-user-manual) documentation for more information.
 
-<img src="/src/assets/IS-ENG-KIT-6-DH.png" width="300"/>
+<image src="/assets/IS-ENG-KIT-6-DH.png" width="300"/>
 
 ### IS-C32G1 Controller
 
 NKK offers predesigned controllers for SmartDisplay. The IS-C32G1 Intelligent Controller controls up to 32 LCD 64x32 switches. It is designed to be used in many different applications. There is total flexibility with user-defined features that allow the controllers to be programmed for specific applications. Please refer to the [IS-C32G1](/docs/controllers/is-c32g1-user-manual) documentation for more information.
 
-<img src="/src/assets/c32g1-top.png" width="300"/>
+<image src="/assets/C32G1-top.png" width="300"/>
 
 ## Pin-outs
 
@@ -123,7 +96,7 @@ Chip select (SS) is used for addressing individual LCD 64x32 SmartDisplays. For 
 
 For controlling the LCD 64x32 SmartDisplays with two pins, SCK/SDI must be normally high, and the SS pin is low all the time. For most applications, SS can be connected to ground. However, one customer had an FPGA controlling the switches. When the FPGA is reset sometimes it sends a clock bit causing the switches to fall out of sync. It is recommended to connect all SS to a control pin so the communication can be reset if needed. Below is an example of nine SmartDisplays controlled with two pins with output chip select (SS).
 
-<img src="/src/assets/ss-64x32.png" width="500"/>
+<image src="/assets/ss-64x32.png" width="500"/>
 
 All the clock and data lines remain high (or float) except one active clock and one active data. The addressed switch is at the intersection of the active clock and active data. Since the clock is high, there is no effect for other switches of the active data. Other switches of the active clock row receive 0xFF data which is ignored.
 
@@ -363,7 +336,7 @@ Since the LCD is transflective, it is sunlight readable. However, the backlight 
 **How many switches can be driven by one SPI?**  
 With an 8 MHZ clock, it takes approximately 0.26 ms to transmit an image and backlighting data to one LCD 64x32 SmartDisplay.
 
-<img src="/src/assets/equation-64x32.png" width="400"/>
+<image src="/assets/equation-64x32.png" width="400"/>
 
 The limitation depends on how fast all the switches need to be updated at once in the application. For example, 193 switches can be controlled, and all 193 switches can receive new image LED data in 50ms. However, the signal’s fan out should be considered. A driver can be used to put the switches in many groups. NKK Switches uses a 74HC4050 chip with 16 switches to a group.
 

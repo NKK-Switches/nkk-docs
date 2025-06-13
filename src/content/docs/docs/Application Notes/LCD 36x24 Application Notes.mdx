@@ -2,35 +2,21 @@
 title: LCD 36x24
 description: LCD 36x24 Application Notes.
 ---
+import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div style={{ fontSize: '2.5rem', color: 'white'}}> Application Notes for the LCD 36x24 SmartDisplay </div>
 
 <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-  <img src="/src/assets/36x24.png" width="200"/>
-  <img src="/src/assets/36x24-compact.png" width="160"/>
-  <img src="/src/assets/36x24-display.png" width="180"/>
+  <image src="/assets/36x24.png" width="200"/>
+  <image src="/assets/36x24-compact.png" width="160"/>
+  <image src="/assets/36x24-display.png" width="180"/>
 </div>
 
 **All Rights Reserved Worldwide**
 
 NKK Switches makes no warranty for the use of these products and assumes no responsibility for any errors which may appear in this document, nor does it make a commitment to update the information contained herein. SmartDisplay is a trademark of NKK Switches.
 
-<div style={{ fontSize: '2.5rem', color: 'white'}}> Table of Contents </div>
-
-- [General Information](#general-information)
-- [Part Numbers](#part-numbers)
-  - [Switches](#switches)
-  - [Engineering Development Kits](#engineering-development-kits)
-  - [IS-C3201 Controller](#is-c3201-controller)
-- [Pin-outs](#pin-outs)
-- [LED Backlighting](#led-backlighting)
-- [Controlling Multiple Switches](#controlling-multiple-switches)
-- [Bit Map Picture Format for One Module](#bit-map-picture-format-for-one-module)
-- [Refresh and LP Timing](#refresh-and-lp-timing)
-- [Timer Interrupt](#timer-interrupt)
-- [Sample Schematics](#sample-schematics)
-- [Frequently Asked Questions](#frequently-asked-questions)
 
 ## General Information
 
@@ -44,9 +30,9 @@ The LCD 36x24 SmartDisplay is currently available as 36x24 standard pushbuttons,
 
 | Switch                                                                      | PN            | Socket                                             | Description                       |
 | --------------------------------------------------------------------------- | ------------- | -------------------------------------------------- | --------------------------------- |
-| LCD 36x24 RGB Pushbutton <img src="/src/assets/36x24.png" width="50"/>                 | IS15BBFP4RGB  | AT9704-065E                                        | Standard size, RGB backlight      |
-| Compact LCD 36x24 RGB Pushbutton <img src="/src/assets/36x24-compact.png" width="40"/> | IS15BSBFP4RGB | AT9704-065F                                        | Compact size, RBG backlight       |
-| LCD 36x24 RGB Display <img src="/src/assets/36x24-display.png" width="45"/>            | IS01BBFRGB    | Industry standard, 2mm x 2mm (example: 79107-7005) | Display only                      |
+| LCD 36x24 RGB Pushbutton <image src="/assets/36x24.png" width="50"/>                 | IS15BBFP4RGB  | AT9704-065E                                        | Standard size, RGB backlight      |
+| Compact LCD 36x24 RGB Pushbutton <image src="/assets/36x24-compact.png" width="40"/> | IS15BSBFP4RGB | AT9704-065F                                        | Compact size, RBG backlight       |
+| LCD 36x24 RGB Display <image src="/assets/36x24-display.png" width="45"/>            | IS01BBFRGB    | Industry standard, 2mm x 2mm (example: 79107-7005) | Display only                      |
 | LCD 36x24 Bicolor Pushbutton                                                | IS15BAFP4CF   | AT9704-02YC, *AT9704-065E                          | Standard size, bi-color backlight |
 | Compact LCD 36x24 Bicolor Pushbutton                                        | IS15BSAFP4CF  | AT9704-065F                                        | Compact size, bi-color backlight  |
 
@@ -56,13 +42,13 @@ The LCD 36x24 SmartDisplay is currently available as 36x24 standard pushbuttons,
 
 Engineering Development Kits are designed to accelerate the incorporation of the SmartDisplay family of products into real world applications by not only familiarizing design engineers to SmartDisplay products, but also as a development platform for experimentation and design viability testing. The schematic and source codes in C language are provided. Please refer to the [Engineering Kits for LCD 36x24](/docs/engineering-kits/lcd-36x24-engineering-kits-user-manual) documentation for more information.
 
-<img src="/src/assets/IS-ENG-KIT-5-SC.png" width="300"/>
+<image src="/assets/IS-ENG-KIT-5-SC.png" width="300"/>
 
 ### IS-C3201 Controller
 
 NKK offers predesigned controllers for SmartDisplay. The IS-C3201 Intelligent Controller controls up to 32 LCD 36x24 switches. It is designed to be used in many different applications. There is total flexibility with user-defined features that allow the controllers to be programmed for specific applications. Please refer to the [IS-C3201](/docs/controllers/is-c3201-user-manual) documentation for more information.
 
-<img src="/src/assets/C3201-top.png" width="300"/>
+<image src="/assets/C3201-top.png" width="300"/>
 
 ## Pin-outs
 
@@ -97,7 +83,7 @@ All the functions are the same regardless of the pin-outs, so for the purpose of
 
 **BL-LED(+), BL-LED(-), BL-LED(-), BL-LED(-)**: LED backlighting as shown in the diagram below.
 
-<img src="/src/assets/leds-36x24.png" width="400"/>
+<image src="/assets/leds-36x24.png" width="400"/>
 
 The LED forward voltages for the LCD 36x24 RGB SmartDisplay are as follows:
 
@@ -123,11 +109,11 @@ The LCD display has 36 pixels in each row. Positions 37, 38, 39, and 40 of the i
 
 Backlighting can be controlled using current limiting resistors and a driver IC with latch as shown below:
 
-<img src="/src/assets/leds2-36x24.png" width="500"/>
+<image src="/assets/leds2-36x24.png" width="500"/>
 
 The circuit below results in consistent brightness between single LED ON and multiple LEDs ON.
 
-<img src="/src/assets/leds3-36x24.png" width="500"/>
+<image src="/assets/leds3-36x24.png" width="500"/>
 
 
 <Aside type="note" title="Note">
@@ -143,7 +129,7 @@ The circuit below results in consistent brightness between single LED ON and mul
 
 If the fan-out of the source is not sufficient, a buffer IC should be used for SCP, LP, and FLM. As the number of switches increases, directly controlling the clock and data by the micro-controller becomes inefficient. A different method should be used to shift the data faster. Some possible options are using a serial port in 8-bit mode or using three shift registers. Three parallel-in serial-out shift registers can be used to accomplish this task as shown below. This circuit converts the parallel byte to serial.
 
-<img src="/src/assets/shift-registers-36x24.png" width="1000"/>
+<image src="/assets/shift-registers-36x24.png" width="1000"/>
 
 ## Bit Map Picture Format for One Module
 
@@ -155,7 +141,7 @@ LP and FLM are normally low. FLM must be set high before shifting the data for t
 
 <div id="figure-1" style={{ textAlign: "left" }}>
   <div style={{ fontStyle: "italic", marginBottom: "8px" }}>Figure 1.</div>
-  <img src="/src/assets/bit-map-36x24.png" width="700"/>
+  <image src="/assets/bit-map-36x24.png" width="700"/>
 </div>
 
 ## Refresh and LP Timing
