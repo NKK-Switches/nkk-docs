@@ -1,35 +1,48 @@
 ---
-title: Welcome
+title: Welcome to NKK Switches Docs
 description: Welcome
 tableOfContents: false
-banner:
-  content: |
-    We just launched the S0110!
-    <a href="/docs/solutions/single-switch-solution/">See what solutions are available for you!</a>
+# banner:
+#   content: |
+#     We just launched the S0110!
+#     <a href="/docs/solutions/single-switch-solution/">See what solutions are available for you!</a>
 ---
 
 import { LinkCard, Aside } from '@astrojs/starlight/components';
+
+Welcome to NKK Switches Docs, where you can access resources for SmartDisplay and NKK engineering products including datasheets, whitepapers, application notes, user manauals, and guides.
 
 NKK Switches provides comprehensive full-service solutions to support the integration of SmartDisplay into many different applications.
 Featured here are resources that can help to integrate SmartDisplay products into your application.
 
 For personal support and customized design solution services, please email NKK engineering at: smartdisplay@nkkswitches.com.
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+<LinkCard
+  title="Download Catalog"
+  href="https://www.nkkswitches.com/pdf/smartswitch-1.pdf" target="_blank" rel="noopener noreferrer"
+  description="Download our SmartDisplay complete catalog."
+/>
 
-<CardGrid>
-  <Card title="Download Catalog">
-    <a href="https://www.nkkswitches.com/pdf/smartswitch-1.pdf" target="_blank" rel="noopener noreferrer">SmartDisplay Complete Catalog (PDF)</a>
-  </Card>
-  <Card title="SmartDisplay Brochure">
-    <a href="https://www.nkkswitches.com/pdf/NKKSmartDisplayBrochure.pdf" target="_blank" rel="noopener noreferrer">SmartDisplay Brochure (PDF)</a>
-    Download our SmartDisplay brochure for an overview of the entire SmartDisplay product line, available development kits, and design solution services.  
-  </Card>
-  <Card title="Product Selector">
-    <a href="https://www.nkkswitches.com/pdf/NKK_SmartDisplay_Product_Selector_Guide.pdf" target="_blank" rel="noopener noreferrer">Product Selector (PDF)</a>
-    Download our SmartDisplay Product Selector to view part details, specifications, and features by product.  
-  </Card>
-  <Card title="SmartDisplay Products">    
-    View the entire line of <a href="https://www.nkkswitches.com/smartdisplay/" target="_blank" rel="noopener noreferrer">SmartDisplay products</a>, 100-piece pricing, and available inventory.  
-  </Card>  
-</CardGrid>
+<LinkCard
+  title="SmartDisplay Brochure"
+  href="https://www.nkkswitches.com/pdf/NKKSmartDisplayBrochure.pdf" target="_blank" rel="noopener noreferrer"
+  description="Download our SmartDisplay brochure for an overview of the entire SmartDisplay product line, available development kits, and design solution services."
+/>
+
+<LinkCard
+  title="Product Selector"
+  href="https://www.nkkswitches.com/pdf/NKK_SmartDisplay_Product_Selector_Guide.pdf" target="_blank" rel="noopener noreferrer"
+  description="Download our SmartDisplay Product Selector to view part details, specifications, and features by product."
+/>
+
+<LinkCard
+  title="SmartDisplay Products"
+  href="https://www.nkkswitches.com/smartdisplay/" target="_blank" rel="noopener noreferrer"
+  description="View the entire line of SmartDisplay products, 100-piece pricing, and available inventory."
+/>
+
+<LinkCard
+  title="Software Downloads"
+  href="https://www.nkkswitches.com/download-software/" target="_blank" rel="noopener noreferrer"
+  description="Our C source code is available for our Engineering Development Kits, in addition to our Engineering Kits Communicator program, a GUI that can operate our Kits and other controllers."
+/>
