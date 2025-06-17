@@ -33,6 +33,7 @@ export default defineConfig({
 				{
 					label: '[box]Program Creator',
 					link: '/assets/creator.html',
+					attrs: { target: '_blank', rel: 'noopener' }
 				},
                 {
                     label: '[book]Application Notes',
