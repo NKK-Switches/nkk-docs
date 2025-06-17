@@ -30,6 +30,10 @@ export default defineConfig({
                     label: '[pen]Whitepapers',
                     link: 'docs/whitepapers', 
                 },
+				{
+					label: '[box]Program Creator',
+					link: '/assets/creator.html',
+				},
                 {
 					label: '[book]Application Notes',
 					autogenerate: { directory: 'docs/Application Notes' },
