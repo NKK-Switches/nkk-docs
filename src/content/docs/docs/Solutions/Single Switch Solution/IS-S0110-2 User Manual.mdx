@@ -5,6 +5,7 @@ sidebar:
   badge:
     text: New
     variant: success
+draft: true
 ---
 import Image from '../../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
@@ -202,7 +203,7 @@ GND - Ground.
 
 ## Demo Program Overview
 
-### Pinout used in IS-S0110-2DEM
+### Pinout Used in Demo Program
 
 The unit has four potentiometers that simulate analog input signals, five toggle switches that simulate digital inputs, and five LEDs that simulate digital outputs. The demo program configures the pins as:
 
@@ -228,6 +229,8 @@ The unit has four potentiometers that simulate analog input signals, five toggle
 | 18   | VIN      |          |                  | Input voltage 5V to 15V. The unit can also be powered via the USB C connector with 5V.                                  |
 
 VIN is 5-15V DC and can be connected through the 2-pin connector labeled VIN (top is PWR, bottom is GND), or the 2.54mm header.
+
+### Demo Program Functionality 
 
 Upon power-up, the display shows the NKK Switches logo. After 3 seconds it will then display the battery charge image. Pressing the button loops through eight simulated functions:
 

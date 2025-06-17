@@ -50,6 +50,16 @@ export default defineConfig({
 					label: '[box]How To',
 					autogenerate: { directory: 'docs/How To' },
 				},
+                {
+					label: '[list]Engineering Documents',
+                    items: [
+                        {
+                        label: 'SmartDisplay Cleaning',
+                        link: '/assets/docs/SmartDisplay_Cleaning.pdf',
+                        attrs: { target: '_blank', rel: 'noopener' }
+                        }
+                    ]					
+				},
 			],
 			lastUpdated: true,
 			pagination: false,
