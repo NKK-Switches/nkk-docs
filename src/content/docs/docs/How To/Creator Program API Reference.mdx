@@ -37,7 +37,7 @@ The output block will define all the outputs that will be needed for your device
 | Name      | The human readable comment of the output.                                          | out1          |
 | Pin       | The pin number that the output will represent.                                     | -1            |
 | Type      | The type of output. Either digital or PWM.                                         | digital       |
-| Channel   | PWM channel to use if type is set to PWM. There are 12 channels available for use. | 1             |
+| Channel   | PWM channel to use if type is set to PWM. There are 10 channels available for use. | 1             |
 | Frequency | The frequency in Hz of the PWM channel if type is set to PWM.                      | 1000          |
 
 ## States & Conditions
@@ -69,7 +69,7 @@ Therefore, when the switch is pressed, the backlight turns green. When both pin 
 
 <Image src="/assets/timer_action.png" />
 
-Operates a timer. A maximum of 12 timers can be used. The actions are:
+Operates a timer. There are 8 different timers available for use. The actions are:
 * Start - When a timer is started, it counts down from its set duration.
 * Stop - When stopped, the timer is set to 0.
 * Restart - Restarts the timer with its set duration.
@@ -91,7 +91,7 @@ Operation to modify a timer's duration in milliseconds. The options are:
 
 <Image src="/assets/flag_action.png" />
 
-Flags are integer variables that can be modified and read. There are 12 flags. The options are:
+Flags are integer variables that can be modified and read. There are 12 flags available for use. The options are:
 * = , sets the flag to a specific value.
 * += , add a value to a flag.
 * -= , subtract a value from a flag.
