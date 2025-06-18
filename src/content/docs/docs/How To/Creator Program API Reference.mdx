@@ -1,7 +1,9 @@
 ---
 title: "Creator Program API Reference"
 description: Learn how to use a dropdown menu to switch between topics in your Starlight website.
-
+sidebar:  
+  hidden: false  
+pagefind: true
 ---
 import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
@@ -30,11 +32,13 @@ The input block will define all inputs that will be needed for your device. The 
 
 The output block will define all the outputs that will be needed for your device. The output block will take 3 parameters that are required to create a valid output. The output block will fit inside of the input block and will take states and conditions blocks will fit inside.  When PWM is selected the output block will require a channel and frequency input as well.&#x20;
 
-| Parameter | Input description                              | Default Value |
-| --------- | ---------------------------------------------- | ------------- |
-| Name      | The human readable comment of the output.      | out1          |
-| Pin       | The pin number that the output will represent. | -1            |
-| Type      | The type of output. Either digital or PWM.     | digital       |
+| Parameter | Input description                                                                  | Default Value |
+| --------- | ---------------------------------------------------------------------------------- | ------------- |
+| Name      | The human readable comment of the output.                                          | out1          |
+| Pin       | The pin number that the output will represent.                                     | -1            |
+| Type      | The type of output. Either digital or PWM.                                         | digital       |
+| Channel   | PWM channel to use if type is set to PWM. There are 12 channels available for use. | 1             |
+| Frequency | The frequency in Hz of the PWM channel if type is set to PWM.                      | 1000          |
 
 ## States & Conditions
 
@@ -42,147 +46,169 @@ The output block will define all the outputs that will be needed for your device
 
 <Image src="/assets/state.png" />
 
-The state block is a general block to set or show the state of the switch element.&#x20;
+The state block is a general block to set or show the state of the switch element. A maximum of 10 states can exist per output. For example, states are used to change images or text on the LCD, change the backlight color, drive the I/O pins, operate timers, change flag variables, etc. &#x20;
 
 ### Condition
 
 <Image src="/assets/condition.png" />
 
-The condition block is used to set conditions.&#x20;
+The condition block is used to set conditions. A maximum of 10 conditions can exist per output. There are multiple options for conditions such as reading the switch press, pins, timers, and flags. &#x20;
+
+States and conditions are numbered state1, state2, etc. When the conditions in condition1 are satisfied, state1 activates. A condition triggers when all the options are satisfied. 
+
+Example: For an output:  
+State 1 is changing the backlight green.  
+State 2 is changing the backlight red.  
+Condition 1 is when the switch is pressed.  
+Condition 2 is when pin 14 is HIGH and pin 15 is LOW.  
+Therefore, when the switch is pressed, the backlight turns green. When both pin 14 is HIGH and pin 15 is LOW, the backlight turns red.
 
 ## State Options
-
-### Output
-
-<Image src="/assets/output_pin.png" />
-
-LOW or HIGH, state of the output pin, "type" must be digital
-
-### Duty
-
-<Image src="/assets/duty.png" />
-
-Duty cycle of the PWM channel, "type" must be PWM
-
-### On Duration
-
-<Image src="/assets/on_duration.png" />
-
-Duration of how long the output pin is high, overrides "output" and "PWM"
-
-### Off Duration
-
-<Image src="/assets/off_duration.png" />
-
-Duration of how long the output pin is low, overrides "output" and "PWM"
-
-### Clear Background
-
-<Image src="/assets/clear_background.png" />
-
-0 or 1, if you want text to superimpose over previous pixels, or if you want to clear pixels before setting new text
-
-### Set Text
-
-<Image src="/assets/text.png" />
-
-Set Text to a specific row on the switch, if row 3 is selected, the font will be forced to 6x8.
-
-### Font
-
-<Image src="/assets/font.png" />
-
-Font size for text (6x8 & 9x12)
-
-### Invert
-
-<Image src="/assets/invert.png" />
-
-Choose to invert the text or image placed
-
-### Set Color
-
-<Image src="/assets/color.png" />
-
-Set backlight color
-
-<Image src="/assets/color_on_off.png" />
-
-if blinking is required, the first  and second backlight colors, overrides "color". Duration is in milliseconds.
-
-### Brightness
-
-<Image src="/assets/brightness.png" />
-
-Backlight brightness
-
-### Contrast
-
-<Image src="/assets/contrast.png" />
-
-LCD contrast
-
-### Display Analog Value
-
-<Image src="/assets/display_analog.png" />
-
-Use to display analong values. They can be displayed in number of different ways. 
-
-* DisplayAnalogVoltage
-* DisplayAnalogPercent
-* DisplayAnalogBarGraph
-* DisplayAnalogFraction
-* DisplayAnalogValue
-
-### Display Timer
-
-<Image src="/assets/display_timer.png" />
-
-Displays selected timer
-
-### Display Flag
-
-<Image src="/assets/display_flag.png" />
-
-Displays selected flag
-
-### Display Stopwatch
-
-<Image src="/assets/display_stopwatch.png" />
-
-Displays the stopwatch in HH:MM:SS
-
-### Display Stopwatch Days
-
-<Image src="/assets/display_stopwatch_days.png" />
-
-Displays the stopwatch in days
 
 ### Timer
 
 <Image src="/assets/timer_action.png" />
 
-Start, stop, restart, pause, or resume a selected timer
+Operates a timer. A maximum of 12 timers can be used. The actions are:
+* Start - When a timer is started, it counts down from its set duration.
+* Stop - When stopped, the timer is set to 0.
+* Restart - Restarts the timer with its set duration.
+* Pause - Pauses a timer.
+* Resume - Resumes a timer if paused. 
 
 <Image src="/assets/timer_duration.png" />
 
-Milliseconds value to use with the timer, when a timer uses "start" the duration is used
+The value in milliseconds to set a timer when it is started. 
 
 <Image src="/assets/timer_operation.png" />
 
-Timer duration operation, value is in milliseconds
+Operation to modify a timer's duration in milliseconds. The options are:
+* = , sets the duration to a specific value.
+* += , add a value to the duration.
+* -= , subtract a value from the duration.
 
 ### Flag
 
-Number to set the flag to, or "++" or "--" to increment by 1
-
 <Image src="/assets/flag_action.png" />
+
+Flags are integer variables that can be modified and read. There are 12 flags. The options are:
+* = , sets the flag to a specific value.
+* += , add a value to a flag.
+* -= , subtract a value from a flag.
+* ++ , increment the flag value by 1.
+* -- , decrement tht flag value by 1.
 
 ### Images
 
-Path of the image on the flash storage to display. This will list the current images already on the device flash. To upload more images please see the getting started guide. 
-
 <Image src="/assets/image.png" />
+
+Displays an image from the path on the flash storage. To upload more images please see the [getting started](/docs/how-to/getting-started-with-wifi-products/) guide. 
+
+### Output
+
+<Image src="/assets/output_pin.png" />
+
+Sets the state of the output pin LOW or HIGH. The output "type" must be set to "digital".
+
+### Duty
+
+<Image src="/assets/duty.png" />
+
+Sets the duty cycle of the PWM channel if the output "type" is set to "PWM".
+
+### On Duration
+
+<Image src="/assets/on_duration.png" />
+
+Sets the pin HIGH for the set duration, overrides the "output" block and "PWM" setting.
+
+### Off Duration
+
+<Image src="/assets/off_duration.png" />
+
+Sets the pin LOW for the set duration, overrides the "output" block and "PWM" setting.
+
+### Clear Background
+
+<Image src="/assets/clear_background.png" />
+
+Clears the pixels before putting text or images. Don't use if you want text to superimpose over previous pixels.
+
+### Set Text
+
+<Image src="/assets/text.png" />
+
+Sets text to rows 1, 2, or 3 on the switch. If row 3 is selected, the font will be 6x8.
+
+### Font
+
+<Image src="/assets/font.png" />
+
+Sets the font size for text. There are two sizes: 6x8 and 9x12. 6x8 can fit six characters per row in three rows. 9x12 can fit four characters per row in two rows.
+
+### Invert
+
+<Image src="/assets/invert.png" />
+
+Inverts the pixels of the text or image placed.
+
+### Set Color
+
+<Image src="/assets/color.png" />
+
+Sets the backlight to a static color.
+
+<Image src="/assets/color_on_off.png" />
+
+Sets two alternating and blinking colors. The duration of each color is set. This option overrides the "color" block. Durations are in milliseconds.
+
+### Brightness
+
+<Image src="/assets/brightness.png" />
+
+Sets the backlight brightness from levels 1-10. The default level is 10.
+
+### Contrast
+
+<Image src="/assets/contrast.png" />
+
+Sets the LCD contrast or the darkness of the pixels from levels 1-10. The default level is 7. It is not necessary to change the contrast. Adjusting the contrast is only needed if you see changes in the display due to extreme temperatures.
+
+### Display Analog Value
+
+<Image src="/assets/display_analog.png" />
+
+Displays an analog reading from a pin on the LCD. Data can be displayed in various formats:     
+
+* Display Analog Voltage: converts and shows the reading as a voltage from 0-3.3V.
+* Display Analog Percent: converts and shows the reading as a value from 0-100%.
+* Display Analog BarGraph: converts and shows the reading as a bar graph animation in one row.
+* Display Analog Fraction: converts and shows the reading as a fraction. The steps field sets the denominator or number of steps.
+* Display Analog Value: shows the raw 12-bit analog value from 0-4095.
+
+### Display Timer
+
+<Image src="/assets/display_timer.png" />
+
+Displays the value of the selected timer in seconds.
+
+### Display Flag
+
+<Image src="/assets/display_flag.png" />
+
+Displays the value of the selected flag.
+
+### Display Stopwatch
+
+<Image src="/assets/display_stopwatch.png" />
+
+Displays the value of the stopwatch in format HH:MM:SS. The stopwatch begins automatically on startup and is reset on power reboot.
+
+### Display Stopwatch Days
+
+<Image src="/assets/display_stopwatch_days.png" />
+
+Displays the value of the stopwatch days. Every 24 hours that the stopwatch is on, a day is incremented. 
 
 ## Condition Options
 
@@ -190,62 +216,70 @@ Path of the image on the flash storage to display. This will list the current im
 
 <Image src="/assets/pin.png" />
 
-Input pin to read
+The input pin to read.
 
 ### State
 
 <Image src="/assets/output_state.png" />
 
-Digital state of the input pin
+Digital state of the input pin to read.
 
 ### Threshold
 
-#### Range
+<Image src="/assets/threshold.png" />
 
-<Image src="/assets/threshold_range.png" />
-
-* "max" (max number of the analog range)
-
-* "min" (min number of the analog range)
-
-#### Voltage
-
-<Image src="/assets/threshold_voltage.png" />
-
-* "max" (max number of the analog voltage)
-
-* "min" (min number of the analog voltage)
-
-#### Percent
-
-<Image src="/assets/threshold_percentage.png" />
-
-* "max" (max number of the analog percent)
-
-* "min" (min number of the analog percent)
+Threshold value to read from the analog input pin. Must be used with the "comparison" block.
 
 ### Comparison
 
 <Image src="/assets/comparison.png" />
 
-Less, greater, or equal, must be used with threshold
+Set the comparison to be less, greater, or equal to the value set in the "threshold" block. 
+
+### Threshold Range
+
+<Image src="/assets/threshold_range.png" />
+
+Threshold range to read from the analog input pin. The range is the 12-bit value 0-4095.
+* Max - Max number of the analog range.  
+* Min - Min number of the analog range.
+
+### Threshold Voltage
+
+<Image src="/assets/threshold_voltage.png" />
+
+Threshold range to read from the analog input pin. The range is 0-3.3V.
+* Max - Max number of the analog voltage. 
+* Min - Min number of the analog voltage.
+
+### Threshold Percent
+
+<Image src="/assets/threshold_percentage.png" />
+
+Threshold range to read from the analog input pin. The range is 0-100%.
+* Max - Max number of the analog percent.  
+* Min - Min number of the analog percent.
 
 ### Switch
 
 <Image src="/assets/switch.png" />
 
-Pressed, released, held, heldReleased, IS state to read
+Reads the state of the SmartDisplay button. The options are pressed, released, held, or held released.
 
 ### Timer
 
 <Image src="/assets/timer.png" />
 
-Expired, running, paused, stopped, timer condition to check
+Reads the state of the timer. The options are:
+* Expired - A timer is expired when it counts down to 0.
+* Running - When the timer is counting down.
+* Paused - When the timer is paused.
+* Stopped - When the timer is stopped.
 
 ### Flag
 
 <Image src="/assets/flag.png" />
 
-Flags 1-12 to read, DNP any flags not reading
+Reads the value of a flag.
 
 <LinkCard title="Getting Started With Wi-Fi Products" href="/docs/how-to/getting-started-with-wifi-products/" />
