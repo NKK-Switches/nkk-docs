@@ -1238,8 +1238,8 @@
         } else if (c.type === 'condition_option_switch') {
           condEntry.switch = c.getFieldValue('SWITCH_STATE');
         } else if (c.type === 'condition_option_timer') {
-          condEntry.timer = +c.getFieldValue('TIMER_NUMBER');
-          condEntry.timerState = c.getFieldValue('TIMER_STATE');
+          var timer_index = c.getFieldValue('TIMER_NUMBER');
+          condEntry['timer' + timer_index] = c.getFieldValue('TIMER_STATE');
         } else if(c.type === 'condition_option_flag'){
           var flag_index = c.getFieldValue('FLAG_INDEX');
           condEntry['flag' + flag_index] = c.getFieldValue('FLAG_VALUE');
