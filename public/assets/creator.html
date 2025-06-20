@@ -320,12 +320,27 @@
       },
       {
         type: 'output_block',
-        message0: 'Output name %1 pin %2 type %3 Channel %4 Frequency %5',
+        message0: 'Output name %1 pin %2 type %3 %4 Frequency %5',
         args0: [
           { type: 'field_input', name: 'NAME', text: 'out1' },
           { type: 'field_number', name: 'PIN', value: -1, min: -1 },
           { type: 'field_dropdown', name: 'TYPE', options: [['digital', 'digital'], ['pwm', 'pwm']] },
-          { type: 'field_number', name: 'CHANNEL', value: 1, min: 1 },
+          { 
+            type: 'field_dropdown', 
+            name: 'CHANNEL', 
+            options: [
+              ['Channel 1', '1'],
+              ['Channel 2', '2'],
+              ['Channel 3', '3'],
+              ['Channel 4', '4'],
+              ['Channel 5', '5'],
+              ['Channel 6', '6'],
+              ['Channel 7', '7'],
+              ['Channel 8', '8'],
+              ['Channel 9', '9'],
+              ['Channel 10', '10']
+            ]
+          },
           { type: 'field_number', name: 'FREQUENCY', value: 1000, min: 1 }
         ],
         message1: 'States %1',
@@ -375,7 +390,11 @@
         type: 'timer_block',
         message0: 'Timer %1 Action %2 Duration (ms) %3',
         args0: [
-          { type: 'field_number', name: 'TIMER_INDEX', value: 1, min: 1, max: 12 },
+          { 
+            type: 'field_number', 
+            name: 'TIMER_INDEX', 
+            value: 1, min: 1, max: 12 
+          },
           { 
             type: 'field_dropdown', 
             name: 'TIMER_ACTION', 
@@ -538,16 +557,57 @@
       previousStatement: null,
       nextStatement: null,
       colour: 280 },
-      { type: 'state_option_displayTimer', message0: 'Display Timer, timer %1 font %2 row %3', args0: [
-        { type: 'field_number', name: 'TIMER', value: 1, min: 1, max: 12 },
+      {
+        type: 'state_option_displayTimer', 
+        message0: 'Display %1 font %2 row %3', 
+        args0: [
+          { 
+            type: 'field_dropdown', 
+            name: 'TIMER', 
+            options: [
+              ['Timer 1', '1'],
+              ['Timer 2', '2'],
+              ['Timer 3', '3'],
+              ['Timer 4', '4'],
+              ['Timer 5', '5'],
+              ['Timer 6', '6'],
+              ['Timer 7', '7'],
+              ['Timer 8', '8']
+            ] 
+          },
         { type: 'field_dropdown', name: 'FONT', options: [['6x8', '0'], ['9x12', '1']] },
         { type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }
-      ], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_displayFlag', message0: 'Display Flag flag %1 font %2 row %3', args0: [
-        { type: 'field_number', name: 'FLAG', value: 1, min: 1, max: 12 },
+        ], colour: 290, previousStatement: null, nextStatement: null 
+      },
+      {
+        type: 'state_option_displayFlag', 
+        message0: 'Display %1 font %2 row %3', 
+        args0: [
+        { 
+          type: 'field_dropdown', 
+          name: 'FLAG', 
+          options: [
+              ['Flag 1', '1'],
+              ['Flag 2', '2'],
+              ['Flag 3', '3'],
+              ['Flag 4', '4'],
+              ['Flag 5', '5'],
+              ['Flag 6', '6'],
+              ['Flag 7', '7'],
+              ['Flag 8', '8'],
+              ['Flag 9', '9'],
+              ['Flag 10', '10'],
+              ['Flag 11', '11'],
+              ['Flag 12', '12']
+            ]
+        },
         { type: 'field_dropdown', name: 'FONT', options: [['6x8', '0'], ['9x12', '1']] },
         { type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }
-      ], previousStatement: null, nextStatement: null, colour: 295 },
+      ], 
+        previousStatement: null, 
+        nextStatement: null, 
+        colour: 295 
+      },
       { type: 'state_option_displayStopwatch', message0: 'Display Stopwatch font %1 row %2', args0: [
         { type: 'field_dropdown', name: 'FONT', options: [['6x8', '0'], ['9x12', '1']] },
         { type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }
@@ -626,11 +686,7 @@
               ['Timer 5', '5'],
               ['Timer 6', '6'],
               ['Timer 7', '7'],
-              ['Timer 8', '8'],
-              ['Timer 9', '9'],
-              ['Timer 10', '10'],
-              ['Timer 11', '11'],
-              ['Timer 12', '12']
+              ['Timer 8', '8']
             ]
           },
           {
@@ -650,24 +706,24 @@
       },
       {
         type: 'condition_option_flag',
-        message0: 'Flag %1 Value %2',
+        message0: '%1 Value %2',
         args0: [
           {
             type: 'field_dropdown',
             name: 'FLAG_INDEX',
             options: [
-              ['1', '1'],
-              ['2', '2'],
-              ['3', '3'],
-              ['4', '4'],
-              ['5', '5'],
-              ['6', '6'],
-              ['7', '7'],
-              ['8', '8'],
-              ['9', '9'],
-              ['10', '10'],
-              ['11', '11'],
-              ['12', '12']
+              ['Flag 1', '1'],
+              ['Flag 2', '2'],
+              ['Flag 3', '3'],
+              ['Flag 4', '4'],
+              ['Flag 5', '5'],
+              ['Flag 6', '6'],
+              ['Flag 7', '7'],
+              ['Flag 8', '8'],
+              ['Flag 9', '9'],
+              ['Flag 10', '10'],
+              ['Flag 11', '11'],
+              ['Flag 12', '12']
             ]
           },
           {
@@ -684,9 +740,22 @@
       },
       {
         type: 'timer_action_block',
-        message0: 'Timer %1 Action %2',
+        message0: '%1 Action %2',
         args0: [
-          { type: 'field_number', name: 'TIMER_INDEX', value: 1, min: 1, max: 12 },
+          { 
+            type: 'field_dropdown', 
+            name: 'TIMER_INDEX', 
+            options: [
+            ['Timer 1', '1'],
+            ['Timer 2', '2'],
+            ['Timer 3', '3'],
+            ['Timer 4', '4'],
+            ['Timer 5', '5'],
+            ['Timer 6', '6'],
+            ['Timer 7', '7'],
+            ['Timer 8', '8']
+          ]
+          },
           {
             type: 'field_dropdown',
             name: 'TIMER_ACTION',
@@ -705,9 +774,22 @@
       },
       {
         type: 'timer_duration_block',
-        message0: 'Timer %1 Duration (ms) %2',
+        message0: '%1 Duration (ms) %2',
         args0: [
-          { type: 'field_number', name: 'TIMER_INDEX', value: 1, min: 1, max: 12 },
+          { 
+            type: 'field_dropdown', 
+            name: 'TIMER_INDEX', 
+            options: [
+            ['Timer 1', '1'],
+            ['Timer 2', '2'],
+            ['Timer 3', '3'],
+            ['Timer 4', '4'],
+            ['Timer 5', '5'],
+            ['Timer 6', '6'],
+            ['Timer 7', '7'],
+            ['Timer 8', '8']
+          ] 
+          },
           { type: 'field_number', name: 'DURATION', value: 0, min: 0 }
         ],
         previousStatement: null,
@@ -730,9 +812,7 @@
             ['Timer 5', '5'],
             ['Timer 6', '6'],
             ['Timer 7', '7'],
-            ['Timer 8', '8'],
-            ['Timer 9', '9'],
-            ['Timer 10', '10']
+            ['Timer 8', '8']
           ]
         },
         {
@@ -1053,11 +1133,6 @@
           } else if (o.type === 'state_option_contrast') {
             entry.contrast = +o.getFieldValue('CT');
           } else if (o.type === 'state_option_displayAnalog') {
-            //barGraph
-            //voltage
-            //percent
-            //fraction
-            //value
             if(o.getFieldValue('MODE') === 'voltage'){
                 entry.displayAnalogVoltage = {
                 pin: +o.getFieldValue('APIN'),
