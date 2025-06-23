@@ -11,6 +11,7 @@
   <script src="https://unpkg.com/@blockly/workspace-minimap@0.3.1/dist/index.js"></script>
   <script src="https://unpkg.com/@blockly/fixed-edges@6.0.1/dist/index.js"></script>
   <script src="https://unpkg.com/@blockly/field-bitmap@6.0.1/dist/index.js"></script>
+  <script src="https://unpkg.com/@blockly/workspace-backpack@7.0.1/dist/index.js"></script>
   <style>
     :root {
       --primary: #007bff;
@@ -225,6 +226,7 @@
             <block type="state_option_colorBlink"></block>
             <block type="state_option_brightness"></block>
             <block type="state_option_contrast"></block>
+            <block type="state_option_stopwatch"></block>
             <block type="state_option_displayAnalog"></block>
             <block type="state_option_displayTimer"></block>
             <block type="state_option_displayFlag"></block>
@@ -474,6 +476,7 @@
         previousStatement: null,
         nextStatement: null
       },
+      { type: 'state_option_stopwatch', message0: 'Stopwatch %1', args0: [{ type: 'field_dropdown', name: 'STOPWATCH', options: [['Start','start'],['Stop','stop'],['Pause','pause'],['Resume','resume']] }], colour: 290, previousStatement: null, nextStatement: null },
       { type: 'state_option_output', message0: 'Output %1', args0: [{ type: 'field_dropdown', name: 'OUTPUT', options: [['LOW','LOW'],['HIGH','HIGH']] }], colour: 290, previousStatement: null, nextStatement: null },
       { type: 'state_option_duty', message0: 'Duty %1', args0: [{ type: 'field_number', name: 'DUTY', value: 128, min: 0, max: 255 }], colour: 290, previousStatement: null, nextStatement: null },
       { type: 'state_option_onDuration', message0: 'OnDuration %1', args0: [{ type: 'field_number', name: 'ONDUR', value: 1000, min: 0 }], colour: 290, previousStatement: null, nextStatement: null },
@@ -1078,6 +1081,23 @@
       zoom: { controls: true, wheel: true, startScale: 1.0, maxScale: 3, minScale: 0.3, scaleSpeed: 1.2 },
       plugins: { metricsManager: FixedEdgesMetricsManager }
     });
+    
+    const defaultOptions = {
+    allowEmptyBackpackOpen: true,
+    useFilledBackpackImage: true,
+    skipSerializerRegistration: false,
+    contextMenu: {
+      emptyBackpack: false,
+      removeFromBackpack: true,
+      copyToBackpack: true,
+      copyAllToBackpack: true,
+      pasteAllToBackpack: true,
+      disablePreconditionChecks: false,
+    },
+  };
+    
+    const backpack = new Backpack(workspace, defaultOptions);
+    backpack.init();
 
     // Initialize the minimap plugin (correct usage)
       const minimap = new PositionedMinimap(workspace);
@@ -1298,6 +1318,8 @@
             // Always add the text value as imagePath
             let imgVal = o.getFieldValue('IMG');
             entry.imagePath = '/img/' + imgVal + '.bmp' || "";
+          } else if (o.type === 'state_option_stopwatch'){
+            entry.stopwatch = o.getFieldValue('STOPWATCH');
           }
 
           o = o.getNextBlock();
