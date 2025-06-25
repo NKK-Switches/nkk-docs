@@ -12,6 +12,7 @@
   <script src="https://unpkg.com/@blockly/fixed-edges@6.0.1/dist/index.js"></script>
   <script src="https://unpkg.com/@blockly/field-bitmap@6.0.1/dist/index.js"></script>
   <script src="https://unpkg.com/@blockly/workspace-backpack@7.0.1/dist/index.js"></script>
+  <script src="https://unpkg.com/@mit-app-inventor/blockly-plugin-workspace-multiselect@1.0.1/dist/index.js"></script>
   <style>
     :root {
       --primary: #007bff;
@@ -312,6 +313,7 @@
       {
         type: 'input_block',
         message0: 'Input name %1 pin %2 type %3 pull %4',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#inputs',
         args0: [
           { type: 'field_input', name: 'NAME', text: 'in1' },
           { type: 'field_number', name: 'PIN', value: 0, min: 0 },
@@ -323,6 +325,7 @@
       {
         type: 'output_block',
         message0: 'Output name %1 pin %2 type %3 %4 Frequency %5',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#outputs',
         args0: [
           { type: 'field_input', name: 'NAME', text: 'out1' },
           { type: 'field_number', name: 'PIN', value: -1, min: -1 },
@@ -366,6 +369,7 @@
       },
       {
         type: 'state_block',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#state',
         message0: 'State',
         args0: [],
         message1: 'Timers %1',
@@ -380,6 +384,7 @@
       },
       {
         type: 'condition_block',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#condition',
         message0: 'Condition',
         args0: [],
         message1: 'Options %1',
@@ -390,6 +395,7 @@
       },
       {
         type: 'timer_block',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#timer',
         message0: 'Timer %1 Action %2 Duration (ms) %3',
         args0: [
           { 
@@ -416,6 +422,7 @@
       },
       {
         type: 'flag_block',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#flag',
         message0: ' %1 Action %2 Value %3',
         args0: [
           {
@@ -460,31 +467,74 @@
         nextStatement: null,
         colour: 120
       },
-      {
-        type: 'channel_block',
-        message0: 'Channel number %1',
-        args0: [{ type: 'field_number', name: 'CHANNEL_INDEX', value: 1, min: 1, max: 12 }],
-        colour: 330,
-        previousStatement: null,
-        nextStatement: null
+      { 
+        type: 'state_option_stopwatch', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#stopwatch',
+        message0: 'Stopwatch %1', 
+        args0: [{ type: 'field_dropdown', name: 'STOPWATCH', 
+                 options: [['Start','start'],['Stop','stop'],['Pause','pause'],['Resume','resume']] }], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
       },
-      {
-        type: 'frequency_block',
-        message0: 'Frequency (Hz) %1',
-        args0: [{ type: 'field_number', name: 'FREQ_VALUE', value: 1000, min: 1 }],
-        colour: 340,
-        previousStatement: null,
-        nextStatement: null
+      { 
+        type: 'state_option_output', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#output',
+        message0: 'Output %1', 
+        args0: [{ type: 'field_dropdown', name: 'OUTPUT', options: [['LOW','LOW'],['HIGH','HIGH']] }], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
       },
-      { type: 'state_option_stopwatch', message0: 'Stopwatch %1', args0: [{ type: 'field_dropdown', name: 'STOPWATCH', options: [['Start','start'],['Stop','stop'],['Pause','pause'],['Resume','resume']] }], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_output', message0: 'Output %1', args0: [{ type: 'field_dropdown', name: 'OUTPUT', options: [['LOW','LOW'],['HIGH','HIGH']] }], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_duty', message0: 'Duty %1', args0: [{ type: 'field_number', name: 'DUTY', value: 128, min: 0, max: 255 }], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_onDuration', message0: 'OnDuration %1', args0: [{ type: 'field_number', name: 'ONDUR', value: 1000, min: 0 }], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_offDuration', message0: 'OffDuration %1', args0: [{ type: 'field_number', name: 'OFFDUR', value: 1000, min: 0 }], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_clearBackground', message0: 'ClearBackground %1', args0: [{ type: 'field_checkbox', name: 'CLEAR', "checked": true}], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_rowMessage', message0: 'Row%1Message %2', args0: [{ type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }, { type: 'field_input', name: 'MSG', text: 'Hello' }], colour: 290, previousStatement: null, nextStatement: null },
+      { 
+        type: 'state_option_duty', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#duty',
+        message0: 'Duty %1', 
+        args0: [{ type: 'field_number', name: 'DUTY', value: 128, min: 0, max: 255 }], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_onDuration', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#on-duration',
+        message0: 'OnDuration %1', 
+        args0: [{ type: 'field_number', name: 'ONDUR', value: 1000, min: 0 }], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_offDuration', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#off-duration',
+        message0: 'OffDuration %1', 
+        args0: [{ type: 'field_number', name: 'OFFDUR', value: 1000, min: 0 }], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_clearBackground', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#clear-background',
+        message0: 'ClearBackground %1', 
+        args0: [{ type: 'field_checkbox', name: 'CLEAR', "checked": true}], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_rowMessage', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#set-text',
+        message0: 'Row%1Message %2', 
+        args0: [{ type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }, 
+                { type: 'field_input', name: 'MSG', text: 'Hello' }], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
       { 
         type: 'state_option_font', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#font',
         message0: 'Font %1', 
         args0: [
           { type: 'field_dropdown', name: 'FONT', options: [['6x8', '0'], ['9x12', '1']] }
@@ -495,14 +545,19 @@
       },
       { 
        type: 'state_option_invert', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#invert',
        message0: 'Invert %1', 
        args0: [
          { type: 'field_checkbox', name: 'INV', "checked": true }
        ], 
        colour: 290, 
        previousStatement: null, 
-       nextStatement: null },
-      { type: 'state_option_color', message0: 'Color %1', args0: [
+       nextStatement: null
+      },
+      { 
+        type: 'state_option_color', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#set-color',
+        message0: 'Color %1', args0: [
         {
           type: 'field_dropdown',
           name: 'COLOR',
@@ -515,8 +570,15 @@
             ['LIGHT CYAN', '25'], ['WHITE', '26']
           ]
         }
-      ], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_colorBlink', message0: 'Color1 %1 Color2 %2 Dur1 %3 Dur2 %4', args0: [
+      ], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null },
+      { 
+        type: 'state_option_colorBlink', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#set-color',
+        message0: 'Color1 %1 Color2 %2 Dur1 %3 Dur2 %4', 
+        args0: [
         {
           type: 'field_dropdown',
           name: 'C1',
@@ -543,14 +605,37 @@
         },
         { type: 'field_number', name: 'D1', value: 1000, min: 0 },
         { type: 'field_number', name: 'D2', value: 1000, min: 0 }
-      ], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_brightness', message0: 'Brightness %1', args0: [
+      ], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_brightness', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#brightness',
+        message0: 'Brightness %1', 
+        args0: [
         { type: 'field_slider', name: 'BR', value: 5, min: 0, max: 10, precision: 1 }
-      ], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_contrast', message0: 'Contrast %1', args0: [
+      ], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_contrast', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#contrast',
+        message0: 'Contrast %1', 
+        args0: [
         { type: 'field_slider', name: 'CT', value: 5, min: 0, max: 10, precision: 1 }
-      ], colour: 290, previousStatement: null, nextStatement: null },
-      { type: 'state_option_displayAnalog', message0: 'Display Analog %1 pin %2 font %3 row %4', args0: [
+      ], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'state_option_displayAnalog', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#display-analog-value',
+        message0: 'Display Analog %1 pin %2 font %3 row %4', args0: [
         { type: 'field_dropdown', name: 'MODE', options: [['Voltage', 'voltage'], ['Percent', 'percent'], ['BarGraph', 'barGraph'], ['Fraction', 'fraction'], ['Value', 'value']] },
         { type: 'field_number', name: 'APIN', value: 0, min: 0 },
         { type: 'field_dropdown', name: 'AFONT', options: [['6x8', '0'], ['9x12', '1']] },
@@ -560,9 +645,11 @@
       mutator: 'display_analog_mutator',
       previousStatement: null,
       nextStatement: null,
-      colour: 280 },
+      colour: 280 
+      },
       {
         type: 'state_option_displayTimer', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#display-timer',
         message0: 'Display %1 font %2 row %3', 
         args0: [
           { 
@@ -585,6 +672,7 @@
       },
       {
         type: 'state_option_displayFlag', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#display-flag',
         message0: 'Display %1 font %2 row %3', 
         args0: [
         { 
@@ -612,15 +700,33 @@
         nextStatement: null, 
         colour: 295 
       },
-      { type: 'state_option_displayStopwatch', message0: 'Display Stopwatch font %1 row %2', args0: [
+      { 
+        type: 'state_option_displayStopwatch', 
+       helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#display-stopwatch',
+       message0: 'Display Stopwatch font %1 row %2', 
+       args0: [
         { type: 'field_dropdown', name: 'FONT', options: [['6x8', '0'], ['9x12', '1']] },
         { type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }
-      ], colour: 300, previousStatement: null, nextStatement: null },
-      { type: 'state_option_displayStopwatchDays', message0: 'Display Stopwatch Days font %1 row %2', args0: [
+      ], 
+       colour: 300, 
+       previousStatement: null, 
+       nextStatement: null 
+      },
+      { 
+        type: 'state_option_displayStopwatchDays', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#display-stopwatch-days',
+        message0: 'Display Stopwatch Days font %1 row %2', 
+        args0: [
         { type: 'field_dropdown', name: 'FONT', options: [['6x8', '0'], ['9x12', '1']] },
         { type: 'field_number', name: 'ROW', value: 1, min: 1, max: 3 }
-      ], colour: 305, previousStatement: null, nextStatement: null },
-      { type: 'state_option_bitmap', message0: 'Bitmap %1', 
+      ], 
+        colour: 305, 
+        previousStatement: null, 
+        nextStatement: null
+      },
+      { 
+        type: 'state_option_bitmap', 
+        message0: 'Bitmap %1', 
       args0: [
         { type: 'field_bitmap', name: 'BITMAP', value: [],
         buttons:{
@@ -632,9 +738,14 @@
         fieldHeight: 75,
         output: null
        }
-      ], colour: 290, previousStatement: null, nextStatement: null },
+      ], 
+        colour: 290, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
       {
         type: 'display_image',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#images',
         message0: 'Image Name %1',
         args0: [
          {
@@ -647,23 +758,81 @@
         previousStatement: null,
         nextStatement: null
       },
-      { type: 'condition_option_pin', message0: 'Pin %1', args0: [{ type: 'field_number', name: 'PIN', value: 0, min: 0 }], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_state', message0: 'State %1', args0: [{ type: 'field_dropdown', name: 'STATE', options: [['LOW', 'LOW'], ['HIGH', 'HIGH']] }], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_threshold', message0: 'Threshold %1', args0: [{ type: 'field_number', name: 'THRESHOLD', value: 0 }], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_comparison', message0: 'Comparison %1', args0: [{ type: 'field_dropdown', name: 'COMPARISON', options: [['less', 'less'], ['greater', 'greater'], ['equal', 'equal']] }], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_thresholdRange', message0: 'Threshold Range min %1 max %2', args0: [
+      { 
+        type: 'condition_option_pin', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#pin',
+        message0: 'Pin %1', 
+        args0: [{ type: 'field_number', name: 'PIN', value: 0, min: 0 }], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_state', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#state-1',
+        message0: 'State %1', 
+        args0: [{ type: 'field_dropdown', name: 'STATE', options: [['LOW', 'LOW'], ['HIGH', 'HIGH']] }], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_threshold', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#threshold',
+        message0: 'Threshold %1', 
+        args0: [{ type: 'field_number', name: 'THRESHOLD', value: 0 }], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_comparison', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#comparison',
+        message0: 'Comparison %1', 
+        args0: [{ type: 'field_dropdown', name: 'COMPARISON', options: [['less', 'less'], ['greater', 'greater'], ['equal', 'equal']] }], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_thresholdRange', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#threshold-range',
+        message0: 'Threshold Range min %1 max %2', args0: [
         { type: 'field_number', name: 'MIN', value: 0 },
         { type: 'field_number', name: 'MAX', value: 100 }
-      ], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_thresholdVoltage', message0: 'Threshold Voltage min %1 max %2', args0: [
+      ], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_thresholdVoltage', 
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#threshold-voltage',
+        message0: 'Threshold Voltage min %1 max %2', 
+        args0: [
         { type: 'field_number', name: 'VMIN', value: 0 },
         { type: 'field_number', name: 'VMAX', value: 5 }
-      ], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_thresholdPercent', message0: 'Threshold Percent min %1 max %2', args0: [
+      ], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_thresholdPercent',
+        helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#threshold-percent',
+        message0: 'Threshold Percent min %1 max %2', 
+        args0: [
         { type: 'field_number', name: 'PMIN', value: 0 },
         { type: 'field_number', name: 'PMAX', value: 100 }
-      ], colour: 40, previousStatement: null, nextStatement: null },
-      { type: 'condition_option_switch', message0: 'Switch %1', args0: [
+      ], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
+      { 
+        type: 'condition_option_switch', 
+         helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#switch',
+        message0: 'Switch %1', args0: [
         {
           type: 'field_dropdown',
           name: 'SWITCH_STATE',
@@ -674,9 +843,14 @@
             ['Held Released', 'heldReleased']
           ]
         }
-      ], colour: 40, previousStatement: null, nextStatement: null },
+      ], 
+        colour: 40, 
+        previousStatement: null, 
+        nextStatement: null 
+      },
       {
         type: 'condition_option_timer',
+         helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#timer-1',
         message0: ' %1 State %2',
         args0: [
           {
@@ -710,6 +884,7 @@
       },
       {
         type: 'condition_option_flag',
+         helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#flag-1',
         message0: '%1 Value %2',
         args0: [
           {
@@ -744,6 +919,7 @@
       },
       {
         type: 'timer_action_block',
+         helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#timer',
         message0: '%1 Action %2',
         args0: [
           { 
@@ -804,6 +980,7 @@
   init: function () {
     this.jsonInit({
       message0: '%1 Duration %2 Value %3',
+       helpUrl: 'https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/#timer',
       args0: [
         {
           type: 'field_dropdown',
@@ -1071,10 +1248,10 @@
       top: true,
       left: true,
     });
-
+      var toolbox = Blockly.utils.xml.textToDom(getDynamicToolboxXml());
     // Inject workspace with zoom controls and dynamic toolbox
     var workspace = Blockly.inject('blocklyDiv', {
-      toolbox: Blockly.utils.xml.textToDom(getDynamicToolboxXml()),
+      toolbox: toolbox,
       renderer: 'thrasos',
       scrollbars: true,
       trashcan: true,
@@ -1086,22 +1263,73 @@
     allowEmptyBackpackOpen: true,
     useFilledBackpackImage: true,
     skipSerializerRegistration: false,
-    contextMenu: {
-      emptyBackpack: false,
-      removeFromBackpack: true,
-      copyToBackpack: true,
-      copyAllToBackpack: true,
-      pasteAllToBackpack: true,
-      disablePreconditionChecks: false,
-    },
+      contextMenu: {
+        emptyBackpack: false,
+        removeFromBackpack: true,
+        copyToBackpack: true,
+        copyAllToBackpack: true,
+        pasteAllToBackpack: true,
+        disablePreconditionChecks: false,
+      },
+    };
+    
+    const options = {
+      toolbox: toolbox,
+
+      // The plugin should work with other plugins
+      // that require a custom block dragger, like
+      // the scroll-options plugin as this plugin
+      // was updated to not require a custom dragger.
+
+      // Double click the blocks to collapse/expand
+      // them (A feature from MIT App Inventor).
+      useDoubleClick: true,
+      // Bump neighbours after dragging to avoid overlapping.
+      bumpNeighbours: false,
+
+      // Keep the fields of multiple selected same-type blocks with the same value
+      // See note below.  
+      multiFieldUpdate: true,
+
+      // Auto focus the workspace when the mouse enters.
+      workspaceAutoFocus: true,
+
+      // Use custom icon for the multi select controls.
+      multiselectIcon: {
+        hideIcon: false,
+        weight: 3,
+        enabledIcon: 'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/select.svg',
+        disabledIcon: 'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/unselect.svg',
+      },
+
+      // Keys for multi-selection mode switch. Any key value is possible (see MDN docs).
+      // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+      // The best support (default) is given for Shift.  Provide an empty array []
+      // will revert to the default key.
+      // One thing to make sure is that the multiSelectKeys do not overlap with the
+      // keys defined for the shortcut actions as it will lead to a cascade of calls,
+      // which is not ideal for the browser.
+      multiSelectKeys: ['Shift'],
+
+      multiselectCopyPaste: {
+        // Enable the copy/paste accross tabs feature (true by default).
+        crossTab: true,
+        // Show the copy/paste menu entries (true by default).
+        menu: true,
+      }
   };
+    
     
     const backpack = new Backpack(workspace, defaultOptions);
     backpack.init();
 
     // Initialize the minimap plugin (correct usage)
-      const minimap = new PositionedMinimap(workspace);
-      minimap.init();
+    const minimap = new PositionedMinimap(workspace);
+    minimap.init();
+    
+    // Initialize plugin.
+    const multiselectPlugin = new Multiselect(workspace);
+    multiselectPlugin.init(options);
 
 
     // Update toolbox on block usage
