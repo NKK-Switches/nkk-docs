@@ -37,6 +37,11 @@ The **IS-S0110-2** is a non-wireless alternative to the IS-S0110 Single Switch S
 
 The 36x24 pixel LCD display can display graphics or characters while the backlight color options allow for status color schemes and modes of operation. In addition to the on-board flash, there are two look-up fonts (5x7 and 7x10) on board to create images based on characters. Up to 3 lines of 6 characters in font 5x7 or up to 2 lines of 4 characters in font 7x10 can be displayed.
 
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+<Image src="/assets/5x7-font.jpg" width="150"/>
+<Image src="/assets/7x10-font.jpg" width="150"/>
+</div>
+
 14 micro-controller pins are available for use. Pins can be configured to be analog inputs or digital inputs/outputs:
 - Analog inputs can be used to check the status of gauges such as temperature, pressure, voltage, amperage, oil level, gas level, etc.
 - Digital inputs can be used to check the ON/OFF statuses of devices or count the frequency of an event.
@@ -107,7 +112,7 @@ The evaluation kit IS-S0110-2DEM comes preprogrammed for demonstrating the Singl
   These devices are ESD sensitive. Please handle with care and use proper ESD precautions.
 </Aside>
 
-The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount accessory soldered to a small controller PCB.
+The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount accessory soldered to a small controller PCB. The microcontroller used is the ESP32-PICO-V3-02.
 
 Power input: 5V to 15V. The absolute maximum load is 1A.
 
@@ -367,11 +372,12 @@ To use the bmp_to_hex.py script, Python 3.13 or higher must be installed on your
 
 ## Resources
 
-- [NKK Switches IS-S0110-2 Product Page](https://www.nkkswitches.com/products/s0110-2-single-switch-solution)
-- [IS15BBFP4RGB Datasheet](https://www.nkkswitches.com/pdf/IS15BBFP4RGB_Wide36x24PB.pdf)
-- [ESP32-PICO-V3-02 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-pico-v3-02_datasheet_en.pdf)
-- [Microsoft Visual Studio Code Docs](https://code.visualstudio.com/docs)
-- [PlatformIO Extension](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode)
+- <a href="https://www.nkkswitches.com/products/s0110-2-single-switch-solution" target="_blank" rel="noopener noreferrer">NKK Switches IS-S0110-2 Product Page</a>
+- <a href="https://www.nkkswitches.com/pdf/IS15BBFP4RGB_Wide36x24PB.pdf" target="_blank" rel="noopener noreferrer">IS15BBFP4RGB Datasheet</a>
+- <a href="https://www.espressif.com/sites/default/files/documentation/esp32-pico-v3-02_datasheet_en.pdf" target="_blank" rel="noopener noreferrer">ESP32-PICO-V3-02 Datasheet</a>
+- <a href="https://code.visualstudio.com/docs" target="_blank" rel="noopener noreferrer">Microsoft Visual Studio Code Docs</a>
+- <a href="https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode" target="_blank" rel="noopener noreferrer">PlatformIO Extension</a>
+
 
 ## Warranty
 

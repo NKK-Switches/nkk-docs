@@ -187,7 +187,7 @@ The 0x50 signifies a switch response. The **AA**s are the 32-bit switch number m
 
 Example response: 50 32 31 30 30 34 30 30 33
 
-32 31 30 30 34 30 30 33 converted from ASCIII hex is 0x21004003 (0b00100001 00000000 01000000 00000011) Bits 0, 1, 14, 23, and 29 are high, meaning switches 1, 2, 15, 24, and 30 are all pressed. (Switch numbers are 0-indexed). Examples of single switch presses are:
+32 31 30 30 34 30 30 33 converted from ASCII hex is 0x21004003 (0b00100001 00000000 01000000 00000011) Bits 0, 1, 14, 23, and 29 are high, meaning switches 1, 2, 15, 24, and 30 are all pressed. (Switch numbers are 0-indexed). Examples of single switch presses are:
 
 | Hex Value | Switch Pressed    |
 | --------- | ----------------- |
@@ -283,7 +283,12 @@ The flash memory holds up to 16k images, backlights, and attributes. The flash m
 
 ## Command List
 
-Refer to the IS-C32G1 Command List xlsx file for the full list of commands and examples. The command list as well as example images and attributes can be downloaded here: [IS-C32G1 Documents](https://www.nkkswitches.com/wp-content/uploads/2024/01/IS-C32G1-Documents-Rev-C.zip)
+Refer to the IS-C32G1 Command List xlsx file for the full list of commands and examples. The command list as well as example images and attributes can be downloaded here:
+
+<LinkCard
+  title="IS-C32G1 Documents"
+  href="/assets/downloads/IS-C32G1-Documents-Rev-D.zip"
+/>
 
 ## Saving Images/Attributes using Engineering Kits Communicator
 

@@ -8,7 +8,7 @@ pagefind: true
 import Image from '../../../../components/Image.astro';
 import { LinkCard, Aside } from '@astrojs/starlight/components';
 
-This page will explain how to use the onboard program creator. To get started you will need to have one of our Wi-Fi enabled products and access the on board we portal. 
+This page will explain how to use the Program Creator. To get started you will need to have one of our Wi-Fi enabled products and access to the onboard we portal. 
 
 <Aside>If you need assistance with our Wi-Fi enabled products see the guide below.</Aside>
 
@@ -30,38 +30,44 @@ The input block will define all inputs that will be needed for your device. The 
 ## Outputs
 <Image src="/assets/output.png" />
 
-The output block will define all the outputs that will be needed for your device. The output block will take 3 parameters that are required to create a valid output. The output block will fit inside of the input block and will take states and conditions blocks will fit inside.  When PWM is selected the output block will require a channel and frequency input as well.&#x20;
+The output block will define all the outputs that will be needed for your device. The output block will take 3 parameters that are required to create a valid output. The output block will fit inside of the input block and will take states and conditions blocks will fit inside.  When PWM is selected, the output block will require a channel and frequency input as well.&#x20;
 
 | Parameter | Input description                                                                  | Default Value |
 | --------- | ---------------------------------------------------------------------------------- | ------------- |
 | Name      | The human readable comment of the output.                                          | out1          |
-| Pin       | The pin number that the output will represent.                                     | -1            |
+| Pin       | The output pin to drive. Select -1 for no output pin to be driven.                 | -1            |
 | Type      | The type of output. Either digital or PWM.                                         | digital       |
 | Channel   | PWM channel to use if type is set to PWM. There are 10 channels available for use. | 1             |
 | Frequency | The frequency in Hz of the PWM channel if type is set to PWM.                      | 1000          |
 
+ If the pin number is -1, the "type", "channel", and "frequency" fields have no effect. If a pin number is selected and the type is digital, the "channel" and "frequency" fields have no effect.
+
 ## States & Conditions
 
-### State
-
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
 <Image src="/assets/state.png" />
-
-The state block is a general block to set or show the state of the switch element. A maximum of 10 states can exist per output. For example, states are used to change images or text on the LCD, change the backlight color, drive the I/O pins, operate timers, change flag variables, etc. &#x20;
-
-### Condition
-
 <Image src="/assets/condition.png" />
+</div>
 
-The condition block is used to set conditions. A maximum of 10 conditions can exist per output. There are multiple options for conditions such as reading the switch press, pins, timers, and flags. &#x20;
+The state blocks are used to perform device actions. The condition blocks are used to set conditions to operate the device. State and condition blocks are placed within output blocks and are numbered state1, state2, condition1, condition2, etc. A maximum of 10 states and conditions can exist per output.
 
-States and conditions are numbered state1, state2, etc. When the conditions in condition1 are satisfied, state1 activates. A condition triggers when all the options are satisfied. 
+When the conditions in condition1 are satisfied, state1 activates. A condition triggers when all the options are satisfied. 
 
-Example: For an output:  
-State 1 is changing the backlight green.  
-State 2 is changing the backlight red.  
-Condition 1 is when the switch is pressed.  
-Condition 2 is when pin 14 is HIGH and pin 15 is LOW.  
-Therefore, when the switch is pressed, the backlight turns green. When both pin 14 is HIGH and pin 15 is LOW, the backlight turns red.
+States are used to change images or text on the LCD, change the backlight color, drive the I/O pins, operate timers, change flag variables, etc. 
+
+There are multiple options for conditions such as reading the switch press, pins, timers, and flags. 
+
+For example, an output is configured as follows:  
+- State 1 is changing the backlight green.  
+- State 2 is changing the backlight red.  
+- Condition 1 is when the switch is pressed.  
+- Condition 2 is when the switch is held and pin 14 is HIGH.  
+
+Therefore, when the switch is pressed, the backlight turns green. When both pin 14 is HIGH and the switch is held, the backlight turns red.
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+<Image src="/assets/block-example.png" />
+<Image src="/assets/block-example-json.png" />
+</div>
 
 ## State Options
 
@@ -108,25 +114,25 @@ Type the name of the image only. If the image name is not found on the flash swi
 
 <Image src="/assets/output_pin.png" />
 
-Sets the state of the output pin LOW or HIGH. The output "type" must be set to "digital".
+Sets the output pin defined in the output block either LOW or HIGH. The output "type" must be set to "digital" for this functionality to work.
 
 ### Duty
 
 <Image src="/assets/duty.png" />
 
-Sets the duty cycle of the PWM channel if the output "type" is set to "PWM".
+Sets the duty cycle in Hz of the PWM channel associated with the output pin defined in the output block. The output "type" must be set to "PWM" for this functionality to work.
 
 ### On Duration
 
 <Image src="/assets/on_duration.png" />
 
-Sets the pin HIGH for the set duration, overrides the "output" block and "PWM" setting.
+Sets the output pin HIGH for the set duration in ms. If this block is used, it will override using the "output" and "duty" state blocks.
 
 ### Off Duration
 
 <Image src="/assets/off_duration.png" />
 
-Sets the pin LOW for the set duration, overrides the "output" block and "PWM" setting.
+Sets the output pin LOW for the set duration in ms. If this block is used, it will override using the "output" and "duty" state blocks.
 
 ### Clear Background
 
@@ -174,6 +180,16 @@ Sets the backlight brightness from levels 1-10. The default level is 10.
 
 Sets the LCD contrast or the darkness of the pixels from levels 1-10. The default level is 7. It is not necessary to change the contrast. Adjusting the contrast is only needed if you see changes in the display due to extreme temperatures.
 
+### Stopwatch
+
+<Image src="/assets/stopwatch.png" />
+
+Operates the stopwatch. The stopwatch is the length of time the unit has been on since power-up. The stopwatch can be seen with the display stopwatch block. The actions to operate the stopwatch are:
+- Start - When the stopwatch is started, it begins counting up. The stopwatch automatically starts on power-up.
+- Stop - When stopped, the stopwatch is set to 0. The stopwatch is reset when the unit is powered off.
+- Pause - Pauses the stopwatch.
+- Resume - Resumes the stopwatch if paused.
+
 ### Display Analog Value
 
 <Image src="/assets/display_analog.png" />
@@ -183,7 +199,7 @@ Displays an analog reading from a pin on the LCD. Data can be displayed in vario
 * Display Analog Voltage: converts and shows the reading as a voltage from 0-3.3V.
 * Display Analog Percent: converts and shows the reading as a value from 0-100%.
 * Display Analog BarGraph: converts and shows the reading as a bar graph animation in one row.
-* Display Analog Fraction: converts and shows the reading as a fraction. The steps field sets the denominator or number of steps.
+* Display Analog Fraction: converts and shows the reading as a fraction. The "levels" field sets the denominator or number of steps.
 * Display Analog Value: shows the raw 12-bit analog value from 0-4095.
 
 ### Display Timer
@@ -198,16 +214,9 @@ Displays the value of the selected timer in seconds.
 
 Displays the value of the selected flag.
 
-### Stopwatch
-
-<Image src="/assets/stopwatch.png" />
-
-Start, stop, pause, or resume stopwatch.
-
 ### Display Stopwatch
 
 <Image src="/assets/display_stopwatch.png" />
-
 
 Displays the value of the stopwatch in format HH:MM:SS. The stopwatch begins automatically on startup and is reset on power reboot.
 
@@ -290,3 +299,7 @@ Reads the state of the timer. The options are:
 Reads the value of a flag.
 
 <LinkCard title="Getting Started With Wi-Fi Products" href="/docs/how-to/getting-started-with-wifi-products/" />
+
+## Demo Program Example
+
+You can find examples using the Program Creator that replicate the behavior of the default [demo program on the IS-S0110DEM](/docs/solutions/single-switch-solution/is-s0110-user-manual/#demo-program-example) evaluation kit.

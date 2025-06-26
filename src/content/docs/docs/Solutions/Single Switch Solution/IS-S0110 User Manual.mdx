@@ -30,6 +30,11 @@ The **Single Switch Solution** is a compact device that can both monitor and con
 
 The 36x24 pixel LCD display can display graphics or characters while the backlight color options allow for status color schemes and modes of operation. In addition to the on-board flash, there are two look-up fonts (5x7 and 7x10) on board to create images based on characters. Up to 3 lines of 6 characters in font 5x7 or up to 2 lines of 4 characters in font 7x10 can be displayed.
 
+<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+<Image src="/assets/5x7-font.jpg" width="150"/>
+<Image src="/assets/7x10-font.jpg" width="150"/>
+</div>
+
 14 micro-controller pins are available for use. Pins can be configured to be analog inputs or digital inputs/outputs:
 - Analog inputs can be used to check the status of gauges such as temperature, pressure, voltage, amperage, oil level, gas level, etc.
 - Digital inputs can be used to check the ON/OFF statuses of devices or count the frequency of an event.
@@ -95,7 +100,14 @@ The evaluation kit IS-S0110DEM comes preprogrammed with a demo for demonstrating
   These devices are ESD sensitive. Please handle with care and use proper ESD precautions.
 </Aside>
 
-The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount accessory soldered to a small controller PCB.
+The Single Switch System incorporates an IS15BBFP4RGB in an AT548 panel mount accessory soldered to a small controller PCB. The microcontroller used is the ESP32-PICO-MINI-02U. An external antenna can be connected via the following connectors:
+
+- W.FL Series connector from Hirose
+- MHF III connector from I-PEX
+- AMMC connector from Amphenol
+
+See the <a href="https://www.espressif.com/sites/default/files/documentation/esp32-pico-mini-02_datasheet_en.pdf" target="_blank" rel="noopener noreferrer">ESP32-PICO-MINI-02U Datasheet</a> for more information. 
+
 
 Power input: 5V to 15V. The absolute maximum load is 1A.
 
@@ -301,14 +313,14 @@ Upon power-up, the display shows the NKK Switches logo. After 3 seconds it will 
     <image src="/assets/s0110-menu9.png"  width="150;"/>
     Adjusts and displays the backlight brightness from 1 to 10.
     - Press the button to adjust the brightness level.
-    - After 5 seconds of inactivity, the program goes to LCD Contrast Adjustment.
+    - After 4 seconds of inactivity, the program goes to LCD Contrast Adjustment.
 </Card>
 
 <Card title="LCD Contrast Adjustment">
     <image src="/assets/s0110-menu10.png"  width="150;"/>
     Adjusts and displays the LCD contrast from 1 to 10.
     - Press the button to adjust the contrast level.
-    - After 5 seconds of inactivity, the program goes back to Demo Version.
+    - After 4 seconds of inactivity, the program goes back to Demo Version.
 </Card>
 
 </CardGrid>
@@ -319,15 +331,196 @@ Upon power-up, the display shows the NKK Switches logo. After 3 seconds it will 
 
 ## Programming
 
-The unit’s program can be configured in the web user interface. The program behavior can be configured to control the legends and backlighting of the SmartDisplay, control the state of the output pins, and respond to the switch actuation and input pins. Please see the page [Creator Program API Reference](/docs/how-to/creator-program-api-reference/) for information as well as the program creator page:
+The unit’s program can be configured in the web user interface using the Program Creator. The program behavior can be configured to control the legends and backlighting of the SmartDisplay, control the state of the output pins, and respond to the switch actuation and input pins. Please see the page Creator Program API Reference for information as well as the program creator page:
 
+<LinkCard title="Creator Program API Reference" href="https://docs.nkkswitches.com/docs/how-to/creator-program-api-reference/" />
 <LinkCard title="How to Create a Program" href="https://docs.nkkswitches.com/docs/how-to/how-to-create-a-program/" />
+
+## Demo Program Example
+
+The following are example blocks using the Program Creator that replicate the behavior of the default demo program on the IS-S0110DEM evaluation kit.
+
+### Inputs   
+- The following shows the configuration for the input pins. AN1-AN4 are the potentiometers of the IS-S0110DEM, and DIG1-DIG5 are the G12AP toggle switches.
+<image src="/assets/block-inputs.png"/>
+
+### Switch Press
+
+- Flag1 increments when the switch is released, which is used to toggle the various menus. When flag1 equals 9, it becomes 1. This is used to cycle between 8 different menus.
+- Flag6 is used to determine if the switch release toggles the main menus or the backlight brightness at the backlight brightness adjustment menu. This is why it is a condition along with the switch release. When flag6 is 0, the switch release increments flag1.
+- Since no output pin is driven with this behavior, the output pin is left as -1. When no output pin is set, the type, channel, and frequency fields have no effect. Most blocks in this example will leave the pin as -1.
+
+<image src="/assets/block-switch-press.png"/>
+
+### Setup / Splash Screen
+
+- All flags are 0 on startup. We use condition 0 for flag1 as a startup function to setup initial values such as other flags, timer durations, images, and colors.
+- On startup, timer1 is started for a duration of 3 seconds. The NKK_Logo image is displayed until timer1 expires, then flag1 is incremented to 1 to display another menu. This is to achieve a splash screen.
+
+<image src="/assets/block-menu0.png"/>
+  
+### Menu 1 - Battery Charge
+
+- This menu displays when flag1 is 1. 
+- Analog input pin 34 (AN1) is shown on row 3 of the display as a percentage. 
+- Other conditions are set to change the backlight color based on the reading of AN1.
+
+<image src="/assets/block-menu1-1.png"/>
+<image src="/assets/block-menu1-2.png"/>
+
+### Menu 2 - 12-bit Stepper
+
+- This menu displays when flag1 is 2. 
+- Analog input pin 39 (AN2) is shown on row 3 of the display as a 12-bit value and on row 1 as a bar graph. 
+
+<image src="/assets/block-menu2.png"/>
+
+### Menu 3 - Voltmeter
+
+- This menu displays when flag1 is 3. 
+- Analog input pin 38 (AN3) is shown on row 3 of the display as a voltage.
+
+<image src="/assets/block-menu3.png"/>
+
+### Menu 4 - Rotary Stepper
+
+- This menu displays when flag1 is 4.
+- Analog input pin 37 (AN4) is shown on row 3 of the display as a fraction.
+- The step resolution is set to either 4, 10, 16, 32, or 50 based on if flag3 is 0, 1, 2, 3, or 4. Pin 14 (DIG1) decrements flag3 and pin 15 (DIG2) increments flag3.
+
+<image src="/assets/block-menu4-1.png"/>
+<image src="/assets/block-menu4-2.png"/>
+<image src="/assets/block-menu4-3.png"/>
+
+### Menu 5 - Timer
+
+- This menu displays when flag1 is 5.
+- The value of timer2 in seconds is shown on row 3 of the display.
+- Timer2 can be operated using DIG1-DIG4 to start, stop, pause, and resume.  
+- DIG5 is used to toggle flag7 which is used to jump to a menu that adjusts the duration of timer2. When flag7 is 1, DIG1-DIG4 is used to adjust the duration of timer2 as well as flag8. Flag8 corresponds to the value of timer2 in seconds so it can be displayed on row 3 in this menu. 
+
+<image src="/assets/block-menu5-1.png"/>
+<image src="/assets/block-menu5-2.png"/>
+<image src="/assets/block-menu5-3.png"/>
+<image src="/assets/block-menu5-4.png"/>
+<image src="/assets/block-menu5-5.png"/>
+<image src="/assets/block-menu5-6.png"/>
+
+### Menu 6 - Counter
+
+- This menu displays when flag1 is 6.
+- The value of flag2 is shown on row 2 of the display as a counter. 
+- The value of flag2 can be adjusted with DIG1-DIG5.
+
+<image src="/assets/block-menu6-1.png"/>
+<image src="/assets/block-menu6-2.png"/>
+
+### Menu 7 - Stopwatch
+
+- This menu displays when flag1 is 7.
+- The value of the stopwatch is shown on row 3 of the display.
+- The stopwatch can be operated with DIG1-DIG4.
+
+<image src="/assets/block-menu7-1.png"/>
+<image src="/assets/block-menu7-2.png"/>
+
+### Menu 8 - Demo Version
+
+- This menu displays when flag1 is 8.
+- Text is displayed to show the demo version. 
+- On this menu, when the switch is held, flag1 is set to 10 to jump to the backlight brightness adjustment menu, and timer3 starts with a duration of 4 seconds. This is the timer to handle switch press inactivity to cycle to the next menu.
+
+<image src="/assets/block-menu8.png"/>
+
+### Backlight Brightness Adjustment
+
+- This menu displays when flag1 is 10.
+- Switch release increments flag4. 
+- Flag6 is set to 1, so that the switch release does not increment flag1.
+- Flag4 is used to change the brightness.
+- If the switch is pressed, timer3 restarts. When timer3 expires after 4 seconds of inactivity, flag1 becomes 11 to jump to the LCD contrast adjustment menu. 
+
+<image src="/assets/block-menu10-1.png"/>
+<image src="/assets/block-menu10-2.png"/>
+<image src="/assets/block-menu10-3.png"/>
+<image src="/assets/block-menu10-4.png"/>
+<image src="/assets/block-menu10-5.png"/>
+<image src="/assets/block-menu10-6.png"/>
+
+### LCD Contrast Adjustment
+
+- This menu displays when flag1 is 11. 
+- Switch release increments flag5.
+- Flag5 is used to change the contrast.  
+- If the switch is pressed, timer3 restarts. When timer3 expires after 4 seconds of inactivity, flag1 becomes 8 to jump to the demo version menu.
+
+<image src="/assets/block-menu11-1.png"/>
+<image src="/assets/block-menu11-2.png"/>
+<image src="/assets/block-menu11-3.png"/>
+<image src="/assets/block-menu11-4.png"/>
+<image src="/assets/block-menu11-5.png"/>
+<image src="/assets/block-menu11-6.png"/>
+
+### LED1
+
+- Pin 33 is set as a digital output for LED1. When the type is digital, the channel and frequency fields have no effect.
+- The LEDs are operated on menu 2 (12-bit stepper) and menu 4 (rotary stepper).
+- When flag1 is 2 (menu 2) LED1 is on when analog input pin 39 (AN2) is above a threshold value.
+- When flag1 is 4 (menu 4) LED1 is on when flag3 is 0 to indicate the step resolution.
+      
+<image src="/assets/block-led1-1.png"/>
+<image src="/assets/block-led1-2.png"/>
+<image src="/assets/block-led1-3.png"/>
+
+### LED2
+
+- Pin 32 is set as a digital output for LED2.
+- The LEDs are operated on menu 2 (12-bit stepper) and menu 4 (rotary stepper).
+- When flag1 is 2 (menu 2) LED2 is on when analog input pin 39 (AN2) is above a threshold value.
+- When flag1 is 4 (menu 4) LED2 is on when flag3 is 1 to indicate the step resolution.
+
+<image src="/assets/block-led2-1.png"/>
+<image src="/assets/block-led2-2.png"/>
+<image src="/assets/block-led2-3.png"/>
+
+### LED3
+
+- Pin 26 is set as a digital output for LED3.
+- The LEDs are operated on menu 2 (12-bit stepper) and menu 4 (rotary stepper).
+- When flag1 is 2 (menu 2) LED3 is on when analog input pin 39 (AN2) is above a threshold value.
+- When flag1 is 4 (menu 4) LED3 is on when flag3 is 2 to indicate the step resolution.
+
+<image src="/assets/block-led3-1.png"/>
+<image src="/assets/block-led3-2.png"/>
+<image src="/assets/block-led3-3.png"/>
+
+### LED4
+
+- Pin 25 is set as a digital output for LED4.
+- The LEDs are operated on menu 2 (12-bit stepper) and menu 4 (rotary stepper).
+- When flag1 is 2 (menu 2) LED4 is on when analog input pin 39 (AN2) is above a threshold value.
+- When flag1 is 4 (menu 4) LED4 is on when flag3 is 3 to indicate the step resolution.
+
+<image src="/assets/block-led4-1.png"/>
+<image src="/assets/block-led4-2.png"/>
+<image src="/assets/block-led4-3.png"/>
+
+### LED5
+
+- Pin 12 is set as a digital output for LED5.
+- The LEDs are operated on menu 2 (12-bit stepper) and menu 4 (rotary stepper).
+- When flag1 is 2 (menu 2) LED5 is on when analog input pin 39 (AN2) is above a threshold value.
+- When flag1 is 4 (menu 4) LED5 is on when flag3 is 4 to indicate the step resolution.
+
+<image src="/assets/block-led5-1.png"/>
+<image src="/assets/block-led5-2.png"/>
+<image src="/assets/block-led5-3.png"/>
 
 ## Resources
 
-- [NKK Switches IS-S0110 Product Page](https://www.nkkswitches.com/products/s0110-single-switch-solution)
-- [IS15BBFP4RGB Datasheet](https://www.nkkswitches.com/pdf/IS15BBFP4RGB_Wide36x24PB.pdf)
-- [ESP32-PICO-MINI-02U Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-pico-mini-02_datasheet_en.pdf)
+- <a href="https://www.nkkswitches.com/products/s0110-single-switch-solution" target="_blank" rel="noopener noreferrer">NKK Switches IS-S0110 Product Page</a>
+- <a href="https://www.nkkswitches.com/pdf/IS15BBFP4RGB_Wide36x24PB.pdf" target="_blank" rel="noopener noreferrer">IS15BBFP4RGB Datasheet</a>
+- <a href="https://www.espressif.com/sites/default/files/documentation/esp32-pico-mini-02_datasheet_en.pdf" target="_blank" rel="noopener noreferrer">ESP32-PICO-MINI-02U Datasheet</a>
 
 ## Warranty
 

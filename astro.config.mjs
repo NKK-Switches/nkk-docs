@@ -10,12 +10,15 @@ export default defineConfig({
     integrations: [
         starlight({
             title: 'NKK Switches Docs',
+            logo: {
+                dark: '/public/assets/logos/NKK-Logo-Black.png',
+                light: '/public/assets/logos/NKK-Logo-White.jpg',                
+            },
             social: {
                 github: 'https://github.com/withastro/starlight',
                 email: 'mailto:engineering@nkkswitches.com',
                 linkedin: 'https://www.linkedin.com/company/nkk-switches/',
-                facebook: 'https://facebook.com/NKKSwitches1',
-                github: 'https://github.com/NKK-Switches'
+                facebook: 'https://facebook.com/NKKSwitches1',                                               
             },
             sidebar: [
                 {
