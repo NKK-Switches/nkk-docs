@@ -11,8 +11,8 @@ export default defineConfig({
         starlight({
             title: 'NKK Switches Docs',
             logo: {
-                dark: '/public/assets/logos/NKK-Logo-Black.png',
-                light: '/public/assets/logos/NKK-Logo-White.jpg',                
+                light: '/public/assets/logos/NKK-Logo-White.png', 
+                dark: '/public/assets/logos/NKK-Logo-Black.png',                               
             },
             social: {
                 github: 'https://github.com/withastro/starlight',
