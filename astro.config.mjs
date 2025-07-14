@@ -9,7 +9,7 @@ export default defineConfig({
     base: '/',
     integrations: [
         starlight({
-            title: 'NKK Switches Docs',
+            title: 'Docs',
             logo: {
                 light: '/public/assets/logos/NKK-Logo-White.png', 
                 dark: '/public/assets/logos/NKK-Logo-Black.png',                               
