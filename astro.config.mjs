@@ -11,12 +11,12 @@ export default defineConfig({
         starlight({
             title: 'Docs',
             logo: {
-                light: '/public/assets/logos/NKK-Logo-White.png', 
-                dark: '/public/assets/logos/NKK-Logo-Black.png',                               
+                light: '/public/assets/logos/logo_white.png', 
+                dark: '/public/assets/logos/logo_black.png',                               
             },
             social: {
                 github: 'https://github.com/withastro/starlight',
-                email: 'mailto:engineering@nkkswitches.com',
+                email: 'https://www.nkkswitches.com/contact-us/',
                 linkedin: 'https://www.linkedin.com/company/nkk-switches/',
                 facebook: 'https://facebook.com/NKKSwitches1',                                               
             },
@@ -26,7 +26,7 @@ export default defineConfig({
                     link: '/',
                 },
                 {
-                    label: '[list-box]Datasheets',
+                    label: '[list-box]SmartDisplay Products',
                     link: 'docs/datasheets',
                 },
                 {
@@ -40,11 +40,20 @@ export default defineConfig({
 				},
                 {
                     label: '[book]Application Notes',
-                    autogenerate: { directory: 'docs/Application Notes' },
+                    items: [
+                        { label: 'OLED', link: 'docs/application-notes/oled-application-notes/' },
+                        { label: 'OLED Rocker', link: 'docs/application-notes/oled-rocker-application-notes/' },
+                        { label: 'LCD 64x32', link: 'docs/application-notes/lcd-64x32-application-notes/' },
+                        { label: 'LCD 36x24', link: 'docs/application-notes/lcd-36x24-application-notes/' },
+                    ]
                 },
                 {
                     label: '[rocket]Engineering Kits',
-                    autogenerate: { directory: 'docs/Engineering Kits' },
+                    items: [
+                        { label: 'OLED', link: 'docs/engineering-kits/oled-engineering-kits-user-manual/' },
+                        { label: 'LCD 64x32', link: 'docs/engineering-kits/lcd-64x32-engineering-kits-user-manual/' },
+                        { label: 'LCD 36x24', link: 'docs/engineering-kits/lcd-36x24-engineering-kits-user-manual/' },
+                    ]
                 },
                 {
                     label: '[bolt]Controllers',
@@ -67,6 +76,16 @@ export default defineConfig({
                             attrs: { target: '_blank', rel: 'noopener' }
                         }
                     ]
+                },
+                {
+                    label: '[video]Video Library',
+                    link: 'https://www.nkkswitches.com/video-library/#1611773871464-dac7b5f7-2475',
+                    attrs: { target: '_blank', rel: 'noopener' },
+                },
+                {
+                    label: '[mail]Contact Us',
+                    link: 'https://www.nkkswitches.com/contact-us/',
+                    attrs: { target: '_blank', rel: 'noopener' },
                 },
             ],
             lastUpdated: true,
