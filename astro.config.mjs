@@ -14,12 +14,14 @@ export default defineConfig({
                 light: '/public/assets/logos/logo_white.png', 
                 dark: '/public/assets/logos/logo_black.png',                               
             },
-            social: {
-                github: 'https://github.com/NKK-Switches',
-                email: 'https://www.nkkswitches.com/contact-us/',
-                linkedin: 'https://www.linkedin.com/company/nkk-switches/',
-                facebook: 'https://facebook.com/NKKSwitches1',                                               
-            },
+             social: [
+                    { icon: 'email', label: 'Email', href: 'https://www.nkkswitches.com/contact-us/' },
+                    { icon: 'external', label: 'Homepage', href: 'https://www.nkkswitches.com/' },
+                    { icon: 'github', label: 'GitHub', href: 'https://github.com/NKK-Switches' },
+                    { icon: 'linkedin', label: 'Linkedin', href: 'https://www.linkedin.com/company/nkk-switches/' },
+                    { icon: 'facebook', label: 'Facebook', href: 'https://facebook.com/NKKSwitches1' },
+                    
+ ],
             sidebar: [
                 {
                     label: '[home]Welcome',
