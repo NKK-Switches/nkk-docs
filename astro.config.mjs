@@ -15,7 +15,7 @@ export default defineConfig({
                 dark: '/public/assets/logos/logo_black.png',                               
             },
             social: {
-                github: 'https://github.com/withastro/starlight',
+                github: 'https://github.com/NKK-Switches',
                 email: 'https://www.nkkswitches.com/contact-us/',
                 linkedin: 'https://www.linkedin.com/company/nkk-switches/',
                 facebook: 'https://facebook.com/NKKSwitches1',                                               
