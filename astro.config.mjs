@@ -10,18 +10,25 @@ export default defineConfig({
     integrations: [
         starlight({
             title: 'Docs',
+            head: [
+                {
+                    tag: 'script',
+                    attrs: {
+                        src: '/new-tab.js',
+                    },
+                },
+            ],
             logo: {
-                light: '/public/assets/logos/logo_white.png', 
-                dark: '/public/assets/logos/logo_black.png',                               
+                light: '/public/assets/logos/logo_white.png',
+                dark: '/public/assets/logos/logo_black.png',
             },
-             social: [
-                    { icon: 'email', label: 'Email', href: 'https://www.nkkswitches.com/contact-us/' },
-                    { icon: 'external', label: 'Homepage', href: 'https://www.nkkswitches.com/' },
-                    { icon: 'github', label: 'GitHub', href: 'https://github.com/NKK-Switches' },
-                    { icon: 'linkedin', label: 'Linkedin', href: 'https://www.linkedin.com/company/nkk-switches/' },
-                    { icon: 'facebook', label: 'Facebook', href: 'https://facebook.com/NKKSwitches1' },
-                    
- ],
+            social: [
+                { icon: 'email', label: 'Email', href: 'https://www.nkkswitches.com/contact-us/', },
+                { icon: 'external', label: 'Homepage', href: 'https://www.nkkswitches.com/' },
+                { icon: 'github', label: 'GitHub', href: 'https://github.com/NKK-Switches' },
+                { icon: 'linkedin', label: 'Linkedin', href: 'https://www.linkedin.com/company/nkk-switches/' },
+                { icon: 'facebook', label: 'Facebook', href: 'https://facebook.com/NKKSwitches1' },
+            ],
             sidebar: [
                 {
                     label: '[home]Welcome',
@@ -35,11 +42,11 @@ export default defineConfig({
                     label: '[pen]Whitepapers',
                     link: 'docs/whitepapers',
                 },
-				{
-					label: '[box]Program Creator',
-					link: '/assets/creator.html',
-					attrs: { target: '_blank', rel: 'noopener' }
-				},
+                {
+                    label: '[box]Program Creator',
+                    link: '/assets/creator.html',
+                    attrs: { target: '_blank', rel: 'noopener' }
+                },
                 {
                     label: '[book]Application Notes',
                     items: [
@@ -62,7 +69,7 @@ export default defineConfig({
                     autogenerate: { directory: 'docs/Controllers' },
                 },
                 {
-                    label: '[lightbulb]Solutions',                        
+                    label: '[lightbulb]Solutions',
                     autogenerate: { directory: 'docs/Solutions' },
                 },
                 {
@@ -105,12 +112,13 @@ export default defineConfig({
                         links: [{
                             text: 'Homepage',
                             href: 'https://www.nkkswitches.com/',
+                            newTab: true
                         }],
                         icons: [{
                             name: 'github',
-                            href: 'https://github.com/NKK-Switches'
+                            href: 'https://github.com/NKK-Switches',
+                            newTab: true
                         }],
-                        newTab: true
                     }
                 }),
             ],
