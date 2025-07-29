@@ -21,7 +21,7 @@ export default defineConfig({
                     { icon: 'linkedin', label: 'Linkedin', href: 'https://www.linkedin.com/company/nkk-switches/' },
                     { icon: 'facebook', label: 'Facebook', href: 'https://facebook.com/NKKSwitches1' },
                     
- ],
+                    ],
             sidebar: [
                 {
                     label: '[home]Welcome',
