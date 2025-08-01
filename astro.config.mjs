@@ -43,11 +43,11 @@ export default defineConfig({
                     label: '[pen]Whitepapers',
                     link: 'docs/whitepapers',
                 },
-                {
-                    label: '[box]Program Creator',
-                    link: '/assets/creator.html',
-                    attrs: { target: '_blank', rel: 'noopener' }
-                },
+                // {
+                //     label: '[box]Program Creator',
+                //     link: '/assets/creator.html',
+                //     attrs: { target: '_blank', rel: 'noopener' }
+                // },
                 {
                     label: '[book]Application Notes',
                     items: [
@@ -73,10 +73,10 @@ export default defineConfig({
                     label: '[lightbulb]Solutions',
                     autogenerate: { directory: 'docs/Solutions' },
                 },
-                {
-                    label: '[box]How To',
-                    autogenerate: { directory: 'docs/How To' },
-                },
+                // {
+                //     label: '[box]How To',
+                //     autogenerate: { directory: 'docs/How To' },
+                // },
                 {
                     label: '[list]Engineering Documents',
                     items: [
