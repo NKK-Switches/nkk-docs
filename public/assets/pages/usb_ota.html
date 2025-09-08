@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>USB File Manager + OTA</title>
+<style>
+  :root {
+    --bg:#ffffff; --fg:#0f172a; --muted:#475569; --card:#f8fafc; --border:#e2e8f0;
+    --accent:#2563eb; --accent-fg:#ffffff; --bad:#dc2626; --good:#16a34a; --chip:#e2e8f0; --kbd:#0f172a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0b1220; --fg:#e5e7eb; --muted:#9ca3af; --card:#111827; --border:#1f2937;
+      --accent:#60a5fa; --accent-fg:#0b1220; --bad:#f87171; --good:#34d399; --chip:#1f2937; --kbd:#e5e7eb;
+    }
+  }
+  [data-theme="light"] { --bg:#fff;--fg:#0f172a;--muted:#475569;--card:#f8fafc;--border:#e2e8f0;--accent:#2563eb;--accent-fg:#fff;--bad:#dc2626;--good:#16a34a;--chip:#e2e8f0;--kbd:#0f172a; }
+  [data-theme="dark"]  { --bg:#0b1220;--fg:#e5e7eb;--muted:#9ca3af;--card:#111827;--border:#1f2937;--accent:#60a5fa;--accent-fg:#0b1220;--bad:#f87171;--good:#34d399;--chip:#1f2937;--kbd:#e5e7eb; }
+
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:var(--bg); color:var(--fg); }
+  .container { max-width:1100px; margin:0 auto; padding:24px; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
+  .pill { display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px; background:var(--chip); font-size:12px; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  button { appearance:none; border:1px solid var(--border); background:transparent; color:var(--fg); padding:8px 12px; border-radius:10px; cursor:pointer; transition: background .15s ease, transform .02s ease; }
+  button:hover { background: color-mix(in oklab, var(--card) 70%, var(--fg) 5%); }
+  button:active { transform: translateY(1px); }
+  .btn-primary { background:var(--accent); color:var(--accent-fg); border-color: color-mix(in oklab, var(--accent) 80%, #000 10%); }
+  .btn-danger { border-color: color-mix(in oklab, var(--bad) 60%, #000 10%); color:var(--bad); }
+  .row { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; }
+  @media (max-width:980px){ .row { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
+  .card h3 { margin:0 0 12px 0; font-size:16px; }
+  .statusbar { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 12px; border:1px dashed var(--border); border-radius:10px; background: color-mix(in oklab, var(--card) 85%, var(--fg) 5%); }
+  .hint { font-size:12px; color:var(--muted); }
+  .right { text-align:right; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:980px){ .grid-2 { grid-template-columns:1fr; } }
+  .table { width:100%; border-collapse:collapse; font-size:14px; }
+  .table th,.table td { padding:10px; border-bottom:1px solid var(--border); text-align:left; }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .terminal { background:#000; color:#8af88a; border-radius:10px; padding:10px; height:220px; overflow:auto; font-family:ui-monospace, monospace; font-size:12px; border:1px solid var(--border); }
+  .progress { width:100%; height:10px; border-radius:999px; background:var(--border); overflow:hidden; }
+  .progress > div { height:100%; width:0%; background:var(--accent); transition:width .1s linear; }
+
+  /* Themed form controls */
+  input[type="text"], input[type="file"], select {
+    color-scheme: light dark;
+    background: var(--card); color: var(--fg);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 12px; outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  input::placeholder { color: var(--muted); }
+  input[type="text"]:hover, input[type="file"]:hover, select:hover {
+    border-color: color-mix(in oklab, var(--border) 60%, var(--fg) 10%);
+  }
+  input[type="text"]:focus, input[type="file"]:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent 70%);
+  }
+  select {
+    appearance:none; padding-right:2rem;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--fg) 50%),
+      linear-gradient(135deg, var(--fg) 50%, transparent 50%),
+      linear-gradient(to right, transparent, transparent);
+    background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%, 100% 0;
+    background-size: 6px 6px, 6px 6px, 2.5em 100%; background-repeat:no-repeat;
+  }
+  input[type="file"]::file-selector-button {
+    margin-right:10px; padding:8px 12px; border:1px solid var(--border);
+    border-radius:8px; background: color-mix(in oklab, var(--card) 80%, var(--fg) 4%);
+    color: var(--fg); cursor:pointer;
+  }
+  input[type="file"]::file-selector-button:hover {
+    border-color: color-mix(in oklab, var(--border) 60%, var(--fg) 10%);
+    background: color-mix(in oklab, var(--card) 75%, var(--fg) 7%);
+  }
+</style>
+</head>
+<body>
+<div class="container" id="appRoot">
+  <header>
+    <div><strong>USB File Manager + OTA</strong> <span class="pill" id="connPill">🔌 Disconnected</span></div>
+    <div class="controls">
+      <button class="btn-primary" id="btnConnect">Connect</button>
+      <button id="btnDisconnect">Disconnect</button>
+      <select id="baudSel" title="Baud Rate">
+        <option>9600</option>
+        <option>57600</option>
+        <option selected>115200</option>
+        <option>230400</option>
+        <option>460800</option>
+        <option>921600</option>
+      </select>
+      <select id="themeSel" title="Theme">
+        <option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="statusbar">
+    <div id="statusMsg" class="hint">Ready.</div>
+    <div class="right hint">Tip: Press Enter in “Send to Serial”.</div>
+  </div>
+
+  <div class="row" style="margin-top:16px;">
+    <!-- File Manager -->
+    <section class="card">
+      <h3>📂 File Manager</h3>
+      <div class="grid-2">
+        <div>
+          <div class="controls" style="margin-bottom:8px;">
+            <input type="file" id="fileInput" />
+            <button class="btn-primary" id="btnUpload">Upload</button>
+            <button id="btnRefresh">Refresh</button>
+          </div>
+          <div class="progress" title="Upload progress"><div id="upBar"></div></div>
+          <div class="hint" id="upHint">No active upload.</div>
+        </div>
+        <div>
+          <div class="controls" style="margin-bottom:8px;">
+            <input type="text" id="deleteName" placeholder="filename.ext" />
+            <button class="btn-danger" id="btnDelete">Delete</button>
+          </div>
+          <div class="progress" title="Download progress"><div id="downBar"></div></div>
+          <div class="hint" id="downHint">No active download.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <table class="table" id="filesTable">
+          <thead><tr><th>Name</th><th>Size</th><th class="right">Actions</th></tr></thead>
+          <tbody id="filesTbody"><tr><td colspan="3" class="hint">No files yet. Click “Refresh”.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- OTA + Console -->
+    <section class="card">
+      <h3>🛠️ OTA Update</h3>
+      <div class="controls" style="margin-bottom:8px;">
+        <select id="otaType"><option value="fw">Firmware (.bin)</option><option value="fs">Filesystem (LittleFS .bin)</option></select>
+        <input type="file" id="binInput" accept=".bin" />
+        <button class="btn-primary" id="btnOTA">Upload & Update</button>
+      </div>
+      <div class="progress" title="OTA progress"><div id="otaBar"></div></div>
+      <div class="hint" id="otaHint">Select a .bin and Update.</div>
+
+      <div style="margin-top:18px;">
+        <h3>💻 Serial Console</h3>
+        <div id="terminal" class="terminal" aria-label="Serial terminal output"></div>
+        <div class="controls" style="margin-top:8px;">
+          <input id="serialInput" type="text" placeholder="Type command…" style="flex:1;" />
+          <button id="btnSendSerial">Send</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  // ---------- Theme ----------
+  const themeSel = document.getElementById('themeSel');
+  const savedTheme = localStorage.getItem('esp32_theme') || 'system';
+  themeSel.value = savedTheme; applyTheme(savedTheme);
+  themeSel.addEventListener('change', () => { localStorage.setItem('esp32_theme', themeSel.value); applyTheme(themeSel.value); });
+  function applyTheme(mode){ if(mode==='system'){document.documentElement.removeAttribute('data-theme');} else {document.documentElement.setAttribute('data-theme', mode);} }
+
+  // ---------- UI elements ----------
+  const connPill = document.getElementById('connPill');
+  const statusMsg = document.getElementById('statusMsg');
+  const btnConnect = document.getElementById('btnConnect');
+  const btnDisconnect = document.getElementById('btnDisconnect');
+  const btnUpload = document.getElementById('btnUpload');
+  const btnRefresh = document.getElementById('btnRefresh');
+  const btnDelete = document.getElementById('btnDelete');
+  const btnOTA = document.getElementById('btnOTA');
+  const filesTbody = document.getElementById('filesTbody');
+  const fileInput = document.getElementById('fileInput');
+  const deleteName = document.getElementById('deleteName');
+  const otaType = document.getElementById('otaType');
+  const binInput = document.getElementById('binInput');
+  const terminal = document.getElementById('terminal');
+  const serialInput = document.getElementById('serialInput');
+  const btnSendSerial = document.getElementById('btnSendSerial');
+  const upBar = document.getElementById('upBar');   const upHint = document.getElementById('upHint');
+  const downBar = document.getElementById('downBar'); const downHint = document.getElementById('downHint');
+  const otaBar = document.getElementById('otaBar'); const otaHint = document.getElementById('otaHint');
+  const baudSel = document.getElementById('baudSel');
+
+  // ---------- Serial state ----------
+  let port, writer, textReader, textDecoderStream, rawReader;
+  let readerActive = false;
+  let connecting = false;
+
+  function setStatus(text, ok=true){ statusMsg.textContent = text; connPill.textContent = writer ? "🔗 Connected" : "🔌 Disconnected"; connPill.style.color = ok ? 'inherit' : 'var(--bad)'; }
+  function ensureConnected(){ if(!writer){ alert("Not connected. Click Connect first."); throw new Error("Not connected"); } }
+
+  async function disconnectESP32() {
+    try { if (textReader) await textReader.cancel(); } catch {}
+    try { if (textReader) textReader.releaseLock(); } catch {}
+    textReader = null; readerActive = false;
+
+    try { if (writer) writer.releaseLock(); } catch {}
+    writer = null;
+
+    try { if (rawReader) await rawReader.cancel(); } catch {}
+    try { if (rawReader) rawReader.releaseLock(); } catch {}
+    rawReader = null;
+
+    try { if (port) await port.close(); } catch {}
+    port = null;
+  }
+
+  async function connectESP32() {
+    if (!('serial' in navigator)) {
+      setStatus("This browser doesn’t support Web Serial. Use Chrome/Edge 89+.", false);
+      return;
+    }
+    if (connecting) return; // guard against double-clicks
+    connecting = true; btnConnect.disabled = true; btnConnect.textContent = "Connecting…";
+
+    try {
+      if (port) await disconnectESP32();
+
+      // Unfiltered chooser (per your request)
+      port = await navigator.serial.requestPort();
+
+      const baud = parseInt(baudSel.value, 10) || 115200;
+      await port.open({ baudRate: baud, bufferSize: 255 });
+
+      writer = port.writable.getWriter();
+
+      startTextReader();
+      setStatus(`Connected @ ${baud} baud.`); connPill.textContent = "🔗 Connected";
+
+      port.addEventListener("disconnect", async () => {
+        setStatus("Port disconnected.", false);
+        await disconnectESP32();
+        connPill.textContent = "🔌 Disconnected";
+      });
+
+    } catch (err) {
+      console.error("connectESP32 error:", err);
+      let hint = "Failed to open serial port.";
+      if (err.name === "InvalidStateError")      hint += " It’s already open in another app/tab.";
+      else if (err.name === "NotFoundError")     hint += " No device chosen or access was denied.";
+      else if (err.name === "NetworkError")      hint += " The chooser was canceled or the device vanished.";
+      else if (err.name === "OperationError")    hint += " Driver/permission issue (or security context).";
+      else                                        hint += " " + (err.message || "");
+      setStatus(hint, false);
+      connPill.textContent = "🔌 Disconnected";
+      await disconnectESP32();
+    } finally {
+      connecting = false; btnConnect.disabled = false; btnConnect.textContent = "Connect";
+    }
+  }
+
+  function startTextReader(){
+    if (readerActive) return; // safety: don't start twice
+    textDecoderStream = new TextDecoderStream();
+    port.readable.pipeTo(textDecoderStream.writable).catch(()=>{});
+    textReader = textDecoderStream.readable.getReader();
+    readerActive = true;
+    (async () => {
+      try {
+        while (true) {
+          const { value, done } = await textReader.read();
+          if (done) break;
+          if (value) {
+            terminal.textContent += value;
+            terminal.scrollTop = terminal.scrollHeight;
+          }
+        }
+      } catch(_) {} finally { readerActive = false; }
+    })();
+  }
+
+  async function stopTextReaderForBinary(){
+    if (textReader) {
+      try { await textReader.cancel(); } catch {}
+      try { textReader.releaseLock(); } catch {}
+      textReader = null; readerActive = false;
+    }
+  }
+  async function restoreTextReader(){ if (!readerActive && port?.readable) startTextReader(); }
+
+  async function sendLine(s){ ensureConnected(); const enc = new TextEncoder(); await writer.write(enc.encode(s + "\n")); }
+
+  // ---------- File list ----------
+  function fmtSize(n){ if(n<1024) return n+" B"; if(n<1024*1024) return (n/1024).toFixed(1)+" KB"; return (n/1024/1024).toFixed(2)+" MB"; }
+  function sanitizeName(name){ const base = name.replace(/[\\\/]+/g,'_').replace(/\s+/g,'_'); return base.replace(/[^A-Za-z0-9._\-]/g,'_'); }
+
+  function renderFilesTable(entries){
+    filesTbody.innerHTML = "";
+    if (!entries.length){ filesTbody.innerHTML = `<tr><td colspan="3" class="hint">No files found.</td></tr>`; return; }
+    for (const {name,size} of entries){
+      const tr = document.createElement('tr');
+      const tdN = document.createElement('td'); tdN.textContent = name;
+      const tdS = document.createElement('td'); tdS.textContent = fmtSize(size);
+      const tdA = document.createElement('td'); tdA.className = 'right';
+      const actions = document.createElement('div'); actions.className = 'actions';
+
+      const btnD = document.createElement('button'); btnD.textContent = "Download"; btnD.addEventListener('click', ()=>doDownload(name));
+      const btnX = document.createElement('button'); btnX.className='btn-danger'; btnX.textContent="Delete"; btnX.addEventListener('click', ()=>doDelete(name));
+      actions.appendChild(btnD); actions.appendChild(btnX); tdA.appendChild(actions);
+
+      tr.appendChild(tdN); tr.appendChild(tdS); tr.appendChild(tdA); filesTbody.appendChild(tr);
+    }
+  }
+
+  function parseTerminalForFiles(){
+    // Parse lines like: "/name.ext (123 bytes)" printed by ESP32 after LIST
+    const lines = terminal.textContent.split('\n'); const out = [];
+    for (const line of lines){
+      const m = line.match(/\/?([^\/\s]+)\s*\((\d+)\s*bytes\)/i);
+      if (m) out.push({ name: m[1], size: Number(m[2]) });
+    }
+    renderFilesTable(out);
+  }
+
+  // ---------- Actions ----------
+  btnConnect.addEventListener('click', connectESP32);
+  btnDisconnect.addEventListener('click', async ()=>{ await disconnectESP32(); setStatus("Disconnected."); connPill.textContent="🔌 Disconnected"; });
+
+  btnRefresh.addEventListener('click', async ()=>{
+    try { ensureConnected(); setStatus("Listing files…"); await sendLine("LIST"); setTimeout(parseTerminalForFiles, 250); }
+    catch(e){ setStatus("List failed: "+e.message, false); }
+  });
+
+  btnUpload.addEventListener('click', async ()=>{
+    try {
+      ensureConnected();
+      const f = fileInput.files[0]; if (!f) return alert("Pick a file to upload.");
+      const clean = sanitizeName(f.name); const data = new Uint8Array(await f.arrayBuffer());
+      setStatus(`Uploading ${clean}…`); upHint.textContent = `${clean} (${fmtSize(data.length)})`; upBar.style.width = "0%";
+
+      await sendLine("UPLOAD " + clean);
+      await sendLine(String(data.length));
+
+      const chunk = 16*1024;
+      for (let o=0; o<data.length; o+=chunk){
+        const slice = data.subarray(o, Math.min(o+chunk, data.length));
+        await writer.write(slice);
+        upBar.style.width = Math.round(((o + slice.length)/data.length)*100) + "%";
+      }
+      setStatus(`Upload complete: ${clean}`); upHint.textContent = "Upload complete.";
+      await new Promise(r=>setTimeout(r,200));
+      await sendLine("LIST"); setTimeout(parseTerminalForFiles, 250);
+    } catch (e) { setStatus("Upload failed: " + e.message, false); }
+  });
+
+  btnDelete.addEventListener('click', async ()=>{
+    const n = deleteName.value.trim(); if (!n) return alert("Enter filename to delete.");
+    await doDelete(n);
+  });
+
+  async function doDelete(fname){
+    try { ensureConnected(); setStatus(`Deleting ${fname}…`); await sendLine("DELETE " + fname); setTimeout(()=>{ sendLine("LIST"); setTimeout(parseTerminalForFiles, 250); }, 250); }
+    catch(e){ setStatus("Delete failed: " + e.message, false); }
+  }
+
+  async function doDownload(fname){
+    try {
+      ensureConnected(); setStatus(`Downloading ${fname}…`); downBar.style.width="0%"; downHint.textContent="Receiving…";
+      await stopTextReaderForBinary();
+      rawReader = port.readable.getReader();
+      await sendLine("DOWNLOAD " + fname);
+
+      const chunks = []; const EOT = 0x04;
+      while (true){
+        const { value, done } = await rawReader.read(); if (done) break; if (!value) continue;
+        // EOT terminator support
+        let eotIdx = -1; for (let i=0;i<value.length;i++){ if (value[i]===EOT){ eotIdx=i; break; } }
+        if (eotIdx >= 0){ if (eotIdx>0) chunks.push(value.slice(0,eotIdx)); break; }
+
+        // DONE text terminator support
+        const asText = new TextDecoder().decode(value);
+        if (asText.includes("\nDONE")){
+          const idx = asText.indexOf("\nDONE");
+          if (idx>0) chunks.push(value.slice(0, idx));
+          break;
+        }
+        chunks.push(value);
+        // Indeterminate progress (without size)
+        const total = chunks.reduce((s, c)=>s+c.length, 0);
+        downBar.style.width = (total % 100000)/1000 + "%";
+      }
+
+      const blob = new Blob(chunks);
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fname; a.click(); URL.revokeObjectURL(a.href);
+      downBar.style.width="100%"; downHint.textContent=`Saved ${fname} (${fmtSize(blob.size)})`; setStatus(`Download complete: ${fname}`);
+    } catch (e) {
+      setStatus("Download failed: " + e.message, false);
+    } finally {
+      if (rawReader){ try { await rawReader.cancel(); } catch {} try { rawReader.releaseLock(); } catch {} rawReader=null; }
+      await restoreTextReader(); setTimeout(()=>{ downBar.style.width="0%"; }, 600);
+    }
+  }
+
+  btnOTA.addEventListener('click', async ()=>{
+    try {
+      ensureConnected();
+      const f = binInput.files[0]; if (!f) return alert("Pick a .bin file.");
+      const mode = otaType.value; const data = new Uint8Array(await f.arrayBuffer());
+      setStatus(`OTA ${mode}…`); otaHint.textContent = `${f.name} (${fmtSize(data.length)})`; otaBar.style.width="0%";
+
+      await sendLine("OTA " + mode);
+      const chunk = 16*1024;
+      for (let o=0; o<data.length; o+=chunk){
+        const slice = data.subarray(o, Math.min(o+chunk, data.length));
+        await writer.write(slice);
+        otaBar.style.width = Math.round(((o + slice.length)/data.length)*100) + "%";
+      }
+      setStatus("OTA transfer complete. Device may reboot."); otaHint.textContent="OTA sent. Watch console for reboot.";
+    } catch (e) { setStatus("OTA failed: " + e.message, false); }
+  });
+
+  btnSendSerial.addEventListener('click', sendSerial);
+  serialInput.addEventListener('keydown', e=>{ if(e.key==='Enter') sendSerial(); });
+  async function sendSerial(){ try { ensureConnected(); const line = serialInput.value; if(!line) return; await sendLine(line); serialInput.value=""; } catch(e){ setStatus("Send failed: "+e.message, false); } }
+
+  // Buttons
+  btnConnect.addEventListener('click', connectESP32);
+  btnDisconnect.addEventListener('click', async ()=>{ await disconnectESP32(); setStatus("Disconnected."); connPill.textContent="🔌 Disconnected"; });
+
+  // Hint if a previously granted device exists
+  (async () => {
+    try {
+      const granted = await navigator.serial.getPorts();
+      if (granted.length && !port) setStatus("Previously granted device available. Click Connect.");
+    } catch {}
+  })();
+})();
+</script>
+</body>
+</html>

@@ -45,7 +45,7 @@ export default defineConfig({
                 },
                 // {
                 //     label: '[box]Program Creator',
-                //     link: '/assets/creator.html',
+                //     link: '/assets/pages/creator.html',
                 //     attrs: { target: '_blank', rel: 'noopener' }
                 // },
                 {

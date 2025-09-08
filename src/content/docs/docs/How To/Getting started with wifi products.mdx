@@ -95,16 +95,16 @@ When a program is clicked, you are able to set the program as the startup progra
 | Error Code	| Error description                         | Solution 		|
 | --------- 	| ----------------------------------------- | ------------- |
 | 1      		| PE_Failed_to_mount_LittleFS               | Restart Device           |
-| 2      		| PE_Failed_to_open_file                    | Check to see of program is in flash storage             |
+| 2      		| PE_Failed_to_open_file                    | Check to see of program is in flash storage           |
 | 3      		| PE_Failed_to_parse_JSON                   | Check to see if the program is a valid program        |
-| 4      		| PE_Error_Creating_file_for_upload 		| DNP           |
-| 5      		| PE_File_not_found_for_delete 				| DNP           |
-| 6      		| BM_Error_Open_BMP_File 					| DNP           |
-| 7      		| BM_Error_Reading_BMP_Header 				| DNP           |
-| 8      		| BM_Error_Invalid_BMP_Format 				| DNP           |
-| 9      		| BM_Error_Unsupported_BMP_Dimensions 		| DNP           |
-| 10  			| BM_Unsupported_BMP_Type 					| DNP           |
-| 11  			| PE_Failed_to_open_directory_for_delete 	| DNP           |
-| 12 			| PE_Failed_to_delete_file 					| DNP           |
-| 13  			| IU_Failed_to_open_directory_for_delete 	| DNP           |
-| 14  			| IU_Failed_to_delete_file 					| DNP           |
+| 4      		| PE_Error_Creating_file_for_upload 		| Restart and retry upload           |
+| 5      		| PE_File_not_found_for_delete 				| Check to make sure file is actually valid, and the name is correct           |
+| 6      		| BM_Error_Open_BMP_File 					| Check to see if the Bitmap is valid and the name is correct           |
+| 7      		| BM_Error_Reading_BMP_Header 				| Check to see of Bitmap is saved correctly           |
+| 8      		| BM_Error_Invalid_BMP_Format 				| Bitmap format is invalid           |
+| 9      		| BM_Error_Unsupported_BMP_Dimensions 		| Wrong Dimensions for the switch you are using           |
+| 10  			| BM_Unsupported_BMP_Type 					| Wrong bitmap type for the switch you are using           |
+| 11  			| PE_Failed_to_open_directory_for_delete 	| Restart Device           |
+| 12 			| PE_Failed_to_delete_file 					| Restart Device           |
+| 13  			| IU_Failed_to_open_directory_for_delete 	| Restart Device             |
+| 14  			| IU_Failed_to_delete_file 					| Restart Device             |
