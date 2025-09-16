@@ -17,6 +17,12 @@ export default defineConfig({
                         src: '/new-tab.js',
                     },
                 },
+                {
+                    tag: 'script',
+                    attrs: {
+                        src: '/ga.js',
+                    }
+                }
             ],
             logo: {
                 light: '/public/assets/logos/logo_white.png',
