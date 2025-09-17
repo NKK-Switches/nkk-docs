@@ -17,10 +17,17 @@ export default defineConfig({
                         src: '/new-tab.js',
                     },
                 },
+                 {
+                    tag: 'script',
+                    attrs: {
+                        async: "true",
+                        src: "https://www.googletagmanager.com/gtag/js?id=G-GZZBW74GMD"
+                    }
+                },
                 {
                     tag: 'script',
                     attrs: {
-                        src: '/ga.js',
+                        src: "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-GZZBW74GMD');",
                     }
                 }
             ],
