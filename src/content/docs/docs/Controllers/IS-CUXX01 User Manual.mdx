@@ -50,12 +50,12 @@ The IS-CUXX01 SmartDisplay Controller is a versatile embedded controller for use
     These products are ESD sensitive. ESD handling procedures must be followed.
 </Aside>
 
-- 1.2A maximum (All switches changing simultaneously)
+- 2.4A maximum @5VDC (All 64 switches changing simultaneously)
 - Two options for input voltage:
     1. +5VDC
     2. +9VDC to +24VDC
 
-When the 0-ohm resistor labeled “Jump” is populated, the controller is configured to only accept +5VDC input voltage. If the resistor is removed, the input voltage range will be +9VDC to +24VDC. The controller is shipped with the “Jump” resistor populated by default. 
+For Rev C boards and above, when the 0-ohm resistor labeled “Jump” is populated, the controller is configured to only accept +5VDC input voltage. If the resistor is removed, the input voltage range will be +9VDC to +24VDC. The controller is shipped with the “Jump” resistor populated by default. 
 
 <image src="/assets/cuxx01-power.png" width="200"/>
 
@@ -190,7 +190,7 @@ The system can communicate over USB and ethernet. If using ethernet, the system 
 
 The USB connection automatically shows up as a COM device in Windows 10. This allows quick testing, loading of images, and integration with customer software.  Earlier versions of windows may require a driver. The communication is done using serial over USB and is baud-rate agnostic. For testing, the NKK Engineering Kits Communicator, or a standard terminal program such as Putty, can be used. 
 
-All commands and responses are detailed in the associated (command list)(#command-list). A non-inclusive list of commands is as follows:
+All commands and responses are detailed in the associated [command list](#command-list). A non-inclusive list of commands is as follows:
 
 - Acknowledge.
 - Erase flash memory.
